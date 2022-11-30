@@ -33,24 +33,24 @@ module Gen_Add_16_8(check_wcol_out, add7_out_1,add7_out_2, add7_out_3, add7_out_
 		//fourth four have all inputs different
 
 		Adder32Bit Adder32Bit_1(out_mux1, add7_out_1, Out1);
-		Adder32Bit Adder32Bit_1(out_mux2, add7_out_1, Out2);
-		Adder32Bit Adder32Bit_1(out_mux3, add7_out_1, Out3);
-		Adder32Bit Adder32Bit_1(out_mux4, add7_out_1, Out4);
+		Adder32Bit Adder32Bit_2(out_mux2, add7_out_1, Out2);
+		Adder32Bit Adder32Bit_3(out_mux3, add7_out_1, Out3);
+		Adder32Bit Adder32Bit_4(out_mux4, add7_out_1, Out4);
 		//First four
-		Adder32Bit Adder32Bit_1(out_mux5, add7_out_2, Out5);
-		Adder32Bit Adder32Bit_1(out_mux6, add7_out_2, Out6);
-		Adder32Bit Adder32Bit_1(out_mux7, add7_out_2, Out7);
-		Adder32Bit Adder32Bit_1(out_mux8, add7_out_2, Out8);
+		Adder32Bit Adder32Bit_5(out_mux5, add7_out_2, Out5);
+		Adder32Bit Adder32Bit_6(out_mux6, add7_out_2, Out6);
+		Adder32Bit Adder32Bit_7(out_mux7, add7_out_2, Out7);
+		Adder32Bit Adder32Bit_8(out_mux8, add7_out_2, Out8);
 		//second four
-		Adder32Bit Adder32Bit_1(out_mux9, add7_out_3, Out9);
-		Adder32Bit Adder32Bit_1(out_mux10, add7_out_3, Out10);
-		Adder32Bit Adder32Bit_1(out_mux11, add7_out_3, Out11);
-		Adder32Bit Adder32Bit_1(out_mux12, add7_out_3, Out12);
+		Adder32Bit Adder32Bit_9(out_mux9, add7_out_3, Out9);
+		Adder32Bit Adder32Bit_10(out_mux10, add7_out_3, Out10);
+		Adder32Bit Adder32Bit_11(out_mux11, add7_out_3, Out11);
+		Adder32Bit Adder32Bit_12(out_mux12, add7_out_3, Out12);
 		//third four
-		Adder32Bit Adder32Bit_1(out_mux13, add7_out_4, Out13);
-		Adder32Bit Adder32Bit_1(out_mux14, add7_out_4, Out14);
-		Adder32Bit Adder32Bit_1(out_mux15, add7_out_4, Out15);
-		Adder32Bit Adder32Bit_1(out_mux16, add7_out_4, Out16);
+		Adder32Bit Adder32Bit_13(out_mux13, add7_out_4, Out13);
+		Adder32Bit Adder32Bit_14(out_mux14, add7_out_4, Out14);
+		Adder32Bit Adder32Bit_15(out_mux15, add7_out_4, Out15);
+		Adder32Bit Adder32Bit_16(out_mux16, add7_out_4, Out16);
 		//fourth four
 
 
