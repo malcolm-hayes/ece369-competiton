@@ -1,7 +1,7 @@
 //8th operation used for calculating generate_window
 `timescale 1ns / 1ps
 
-module Memmory_16_Generate(Clk, Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16);
+module Memmory_16(Clk, Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16);
 
 	input [1:0] check_wcol_out; // control bits for ALU operation
                       
@@ -9,7 +9,7 @@ module Memmory_16_Generate(Clk, Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out
 
 	output reg [31:0] Out;	// answer
 	
-
+//      BaseAddress, WriteData, Clk, MemWrite, MemRead, ReadData
         DataMemory DataMemory_1(Out1, 0, Clk, 0, 1, ReadData1);
         DataMemory DataMemory_2(Out2, 0, Clk, 0, 1, ReadData2);
         DataMemory DataMemory_3(Out3, 0, Clk, 0, 1, ReadData3);
@@ -32,7 +32,7 @@ module Memmory_16_Generate(Clk, Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out
         
 
 
-
+//Maybe hardcode clock as 1 or 0 to save usage or something
 
 	
 endmodule

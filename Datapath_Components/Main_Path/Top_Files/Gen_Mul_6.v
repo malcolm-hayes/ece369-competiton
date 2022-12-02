@@ -1,7 +1,7 @@
 //7th operation used for calculating generate_window
 `timescale 1ns / 1ps
 
-module Gen_Add_16_6(check_wcol_out, frow, 
+module Gen_Mul_6(check_wcol_out, frow, 
                 mul_out_1,mul_out_2,mul_out_3,mul_out_4);
 
 	input [1:0] check_wcol_out; // control bits for ALU operation
