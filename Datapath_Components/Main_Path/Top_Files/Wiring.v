@@ -12,45 +12,7 @@ module Top(Clk, Reset, v0_Out, v1_Out);
 
     output wire [31:0] v0_Out, v1_Out;
     
-    IFU:
-    Controller:
-
-    //Move
-    //MoveCheck MoveCheck_1(x, y, cdif, outx,outy); //EX1
-    //Adder32Bit Add_x(A, B, Out); //EX2
-    //Adder32Bit Add_y(A, B, Out); //EX2
-    writetoregistertwice://maybe can do it at different pipeline stages?
-
-    //SAD16
-
-    //CheckWindowColumns CheckWindowColums_1(window_columns, check_wcol_out); //EX1
-    //Arithmetic and memmory for generated window
-        //Following 4 modules can be parrallel to the instructions after
-    //Multiplier32Bit Mul_it_numrow(A, B, Out); //multiplies the iterator and the initialized numrow value //EX2
-    //Adder32Bit Add_y_itxnumrow(A, B, Out); //adds the iterator and numrow to the y coord //EX3
-    //Adder32Bit Add_frame_result(A, B, Out); //adds frame base address to the result of Add_y_itxnumrow //EX3
-    //Multiplier32Bit Mul_frow_result(A, B, Out); //multiplies the number of rows in the frame and the result from Add_frame_result //EX3 for now
-        //following three modules can be parallel to the previous three
-    //Gen_Mul_6 Gen_Mul_6_1(check_wcol_out, frow, mul_out_1,mul_out_2,mul_out_3,mul_out_4); //EX2
-    //Gen_Add_16_7 Gen_Add_16_7_1(x, mul_out_1,mul_out_2,mul_out_3,mul_out_4, add7_out_1, add7_out_2, add7_out_3, add7_out_4); //EX3
-    //Gen_Add_16_8 Gen_Add_16_8_1(check_wcol_out, add7_out_1,add7_out_2, add7_out_3, add7_out_4, 
-    //            In1,In2,In3,In4,In5,In6,In7,In8,In9,In10,In11,In12,In13,In14,In15,In16); //EX3
-        //following module requires the results from previous 6 modules 
-    // Gen_Add_16_Final Gen_Add_16_Final_1(add4_out,
-	// 			In1,In2,In3,In4,In5,In6,In7,In8,In9,In10,In11,In12,In13,In14,In15,In16,
-    //             Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16); //EX4
-    // Memmory_16 Memmory_16_Generate(Clk, Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16,
-    //             ReadData1,ReadData2,ReadData3,ReadData4,ReadData5,ReadData6,ReadData7,ReadData8,ReadData9,ReadData10,
-    //             ReadData11,ReadData12,ReadData13,ReadData14,ReadData15,ReadData16); //EX5
     
-    //Arithmetic and Memmory for target window
-    //in parralel to previous 2 instructions
-    //Target_Add_16 Target_Add_16_1(target_window, Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16);
-    // Memmory_16 Memmory_16_Target(Clk, Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16,
-    //             ReadData1,ReadData2,ReadData3,ReadData4,ReadData5,ReadData6,ReadData7,ReadData8,ReadData9,ReadData10,
-    //             ReadData11,ReadData12,ReadData13,ReadData14,ReadData15,ReadData16); //EX5
-
-    //ADD 16 -> ADD 1
 
     // DATAPATH START
 
