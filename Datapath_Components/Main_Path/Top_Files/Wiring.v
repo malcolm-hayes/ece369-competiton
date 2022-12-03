@@ -15,36 +15,332 @@ module Top(Clk, Reset, v0_Out, v1_Out);
     IFU:
     Controller:
 
+    //Move
+    //MoveCheck MoveCheck_1(x, y, cdif, outx,outy); //EX1
+    //Adder32Bit Add_x(A, B, Out); //EX2
+    //Adder32Bit Add_y(A, B, Out); //EX2
+    writetoregistertwice://maybe can do it at different pipeline stages?
+
     //SAD16
 
-    CheckWindowColumns CheckWindowColums_1(window_columns, check_wcol_out);
+    //CheckWindowColumns CheckWindowColums_1(window_columns, check_wcol_out); //EX1
     //Arithmetic and memmory for generated window
-    Gen_Mul_6 Gen_Mul_6_1(check_wcol_out, frow, mul_out_1,mul_out_2,mul_out_3,mul_out_4);
-    Gen_Add_16_7 Gen_Add_16_7_1(x, mul_out_1,mul_out_2,mul_out_3,mul_out_4, add7_out_1, add7_out_2, add7_out_3, add7_out_4);
-    Gen_Add_16_8 Gen_Add_16_8_1(check_wcol_out, add7_out_1,add7_out_2, add7_out_3, add7_out_4, 
-                In1,In2,In3,In4,In5,In6,In7,In8,In9,In10,In11,In12,In13,In14,In15,In16);
-    Gen_Add_16_Final Gen_Add_16_Final_1(add4_out,
-				In1,In2,In3,In4,In5,In6,In7,In8,In9,In10,In11,In12,In13,In14,In15,In16,
-                Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16);
-    Memmory_16_Generate Memmory_16_Generate(Clk, Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16);
+        //Following 4 modules can be parrallel to the instructions after
+    //Multiplier32Bit Mul_it_numrow(A, B, Out); //multiplies the iterator and the initialized numrow value //EX2
+    //Adder32Bit Add_y_itxnumrow(A, B, Out); //adds the iterator and numrow to the y coord //EX3
+    //Adder32Bit Add_frame_result(A, B, Out); //adds frame base address to the result of Add_y_itxnumrow //EX3
+    //Multiplier32Bit Mul_frow_result(A, B, Out); //multiplies the number of rows in the frame and the result from Add_frame_result //EX3 for now
+        //following three modules can be parallel to the previous three
+    //Gen_Mul_6 Gen_Mul_6_1(check_wcol_out, frow, mul_out_1,mul_out_2,mul_out_3,mul_out_4); //EX2
+    //Gen_Add_16_7 Gen_Add_16_7_1(x, mul_out_1,mul_out_2,mul_out_3,mul_out_4, add7_out_1, add7_out_2, add7_out_3, add7_out_4); //EX3
+    //Gen_Add_16_8 Gen_Add_16_8_1(check_wcol_out, add7_out_1,add7_out_2, add7_out_3, add7_out_4, 
+    //            In1,In2,In3,In4,In5,In6,In7,In8,In9,In10,In11,In12,In13,In14,In15,In16); //EX3
+        //following module requires the results from previous 6 modules 
+    // Gen_Add_16_Final Gen_Add_16_Final_1(add4_out,
+	// 			In1,In2,In3,In4,In5,In6,In7,In8,In9,In10,In11,In12,In13,In14,In15,In16,
+    //             Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16); //EX4
+    // Memmory_16 Memmory_16_Generate(Clk, Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16,
+    //             ReadData1,ReadData2,ReadData3,ReadData4,ReadData5,ReadData6,ReadData7,ReadData8,ReadData9,ReadData10,
+    //             ReadData11,ReadData12,ReadData13,ReadData14,ReadData15,ReadData16); //EX5
     
     //Arithmetic and Memmory for target window
-    Target_Add_16 Target_Add_16_1(target_window, Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16);
-    Memmory_16_Generate Memmory_16_Target(Clk, Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16);
-    
-    //Pipelines for SAD function
-    IF_ID_Reg:
-    ID_EX1_Reg:
-    EX1_EX2_Reg:
-    EX2_EX3_Reg:
-    EX3_EX4_Reg:
-    EX4_EX5_Reg:
-    EX5_EX6_Reg:
-    EX6_MEM_Reg:
-    MEM_WB_Reg:
-    //
+    //in parralel to previous 2 instructions
+    //Target_Add_16 Target_Add_16_1(target_window, Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16);
+    // Memmory_16 Memmory_16_Target(Clk, Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16,
+    //             ReadData1,ReadData2,ReadData3,ReadData4,ReadData5,ReadData6,ReadData7,ReadData8,ReadData9,ReadData10,
+    //             ReadData11,ReadData12,ReadData13,ReadData14,ReadData15,ReadData16); //EX5
 
+    //ADD 16 -> ADD 1
+
+    // DATAPATH START
+
+// INSTRUCTION FETCH STAGE
+    PCAdder PCAdder_1(PCResult, PCAddResult);   // PCAddResult --> 2x1Mux --> 2x1Mux --> 2x1Mux --> PC
+ 
+    Mux32Bit2To1 Mux32Bit2To1_PCSrc(PCSrc_Result_MUX, PCAddResult, PCPlusOffset_ID, Branch); 
+    Mux32Bit2To1 Mux32Bit2To1_jump(jump_Result_MUX, PCSrc_Result_MUX, JumpPC, jump); // debug these
+    Mux32Bit2To1 Mux32Bit2To1_jr(jr_Result_MUX, jump_Result_MUX, rs_value_ID, jr);
+
+    ProgramCounter ProgramCounter_1(jr_Result_MUX, PCResult, PC_Write, Reset, Clk);
+    InstructionMemory InstructionMemory_1(PCResult, Instruction);
+// END of IF
+    // PIPELINE
+    IF_ID_Reg IF_ID_Reg_1(PCAddResult, Instruction, PCAddResult_ID, Instruction_ID, IF_Flush, IF_ID_Write, Clk, Reset);
+// DECODE STAGE
+    Controller Controller_1(rsgz, tes, rsez, Instruction_ID, RegWrite, RegDst, ALUSrc, ALUOp, 
+                            MemWrite, MemRead, MemToReg, Branch, jump, jal_RA, jr, isBranch, move, sad); // new controller signals needed (jump instruction, etc.)
+
+    Mux5Bit2To1 Mux5Bit2To1_WriteReg(WriteReg_MUX, RegDst1Result_WB, 5'b11111, jal_Control);
+    Mux32Bit2To1 Mux32Bit2To1_WriteDat(WriteData_MUX, MemToReg_WB_MUX, PCAddResult_ID, jal_Control);
+
+    ShiftLeft2 ShiftLeft2__1(Immediate_ID, ShiftLeft2Out_ID); // debug this
+
+    Adder32Bit Adder32Bit_1(PCAddResult_ID, ShiftLeft2Out_ID, PCPlusOffset_ID); // debug this
+
+    ORGate ORGate_RegWrite(RegWrite_WB, jal_RA, RegWrite_ORGate);
+
+    //RegisterFile_ID RegisterFile_1(Instruction_ID[25:21], Instruction_ID[20:16], WriteReg_MUX, WriteData_MUX, RegWrite_ORGate, Clk, rs_value_ID, rt_value_ID);
+                              //ReadRegister1     , ReadRegister2     , WriteRegister   , WriteData     , RegWrite, Clk, ReadData1  , ReadData2
+    RegisterFile_ID RegisterFile_ID_1(Instruction_ID[25:21], Instruction_ID[20:16], WriteReg_MUX, WriteData_MUX, RegWrite, Clk, 
+						rs_value_ID, rt_value_ID,s0_numrow_value_ID,s1_cdif_value_ID,s2_it_value_ID, t1_sad_value_ID, s4_frow_value_ID, 
+						s5_wcol_value_ID,s6_x_value_ID, s7_y_value_ID,t0_target_value_ID, a1_frame_value_ID);
+
+    BranchCheck BranchCheck_1(BranchCheckMUX_rs, BranchCheckMUX_rt, rsgz, tes, rsez);
+    SignExtension SignExtension_1(Instruction_ID[15:0], Immediate_ID[31:0]);
+    JumpConcatenate JumpConcatenate_1(Instruction_ID[25:0], PCAddResult_ID[31:28], JumpPC);
+
+// FORWARDING UNIT AND HAZARD DETECTION (AND MUXES)
+    ForwardingUnit ForwardingUnit_1(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, rs_address_EX, rt_address_EX, ALU_input_rs, ALU_input_rt, WriteMEMData_Signal);
+//                                 EX_MEM_RegWrite,  EX_MEM_rd,   MEM_WB_RegWrite,   MEM_WB_rd,        ID_EX_rs,      ID_EX_rt, ALU_input_rs, ALU_input_rt, WriteMEMData_Signal
+    Mux32Bit3To1 Mux32Bit3To1_rs(rs_value_EX, ALUResult_MEM, MemToReg_WB_MUX, forward_rs_value, ALU_input_rs);
+    Mux32Bit3To1 Mux32Bit3To1_rt(rt_value_EX, ALUResult_MEM, MemToReg_WB_MUX, forward_rt_value, ALU_input_rt);
+//                              (A,B,C,out,sel)
+    HazardDetection HazardDetection_1(RegDst_MUX, RegDst1Result_MEM, MemRead_EX,MemRead_MEM, Branch, jump, IF_Flush, Instruction_ID[25:21], Instruction_ID[20:16], PC_Write, IF_ID_Write, 
+                                        ControlMuxSig, isBranch, RegWrite_EX, RegWrite_WB, RegDst1Result_WB, jal_RA/*, RegWrite_MEM */, jal_Control);
+//FORWARDING UNIT FOR BRANCHING AND MUXES
+    ForwardBranch ForwardBranch_1(Instruction_ID[25:21], Instruction_ID[20:16], RegDst1Result_MEM, RegWrite_MEM, rs_MUX, rt_MUX);
+//                                  rs_ID,                      rt_ID,            EX_MEM_rd,      EX_MEM_RegWrite, rs_MUX, rt_MUX
+    Mux32Bit2To1 Mux32Bit2To1_BRANCHrs(BranchCheckMUX_rs, rs_value_ID, ALUResult_MEM, rs_MUX); 
+    Mux32Bit2To1 Mux32Bit2To1_BRANCHrt(BranchCheckMUX_rt, rt_value_ID, ALUResult_MEM, rt_MUX);
+//                                      out, A, B, sel
+// END of ID
+    //PIPELINE
+    ID_EX1_Reg ID_EX1_Reg_1(RegWrite, RegDst, ALUOp, ALUSrc, /*Branch,*/ MemWrite, MemToReg, MemRead, 
+    rs_value_ID, rt_value_ID, Immediate_ID, Instruction_ID[25:21], Instruction_ID[20:16], Instruction_ID[15:11], /*PCAddResult_ID,*/ jal_RA, jump, jr, JumpPC,
+    //                                          rs_address_ID  ^      rt_address_ID   ^    , rd_address_ID   ^
+      RegWrite_EX, RegDst_EX, ALUOp_EX, ALUSrc_EX, /*Branch_EX,*/ MemWrite_EX, MemToReg_EX, MemRead_EX, 
+      rs_value_EX, rt_value_EX, Immediate_EX, rs_address_EX, rt_address_EX, rd_address_EX, /*PCAddResult_EX,*/ jal_EX, Jump_EX, JR_EX, JumpPC_EX, ControlMuxSig, Clk, Reset
+    move, sad, move_EX, sad_EX,
+    //registers for custom instruction ID
+    s0_numrow_value_ID,s1_cdif_value_ID,s2_it_value_ID, t1_sad_value_ID, s4_frow_value_ID, 
+	s5_wcol_value_ID,s6_x_value_ID, s7_y_value_ID,t0_target_value_ID, a1_frame_value_ID,
+    //registers for custom instruction EX1
+    s0_numrow_value_EX1,s1_cdif_value_EX1,s2_it_value_EX1, t1_sad_value_EX1, s4_frow_value_EX1, 
+	s5_wcol_value_EX1,s6_x_value_EX1, s7_y_value_EX1,t0_target_value_EX1, a1_frame_value_EX1
+    );
+// EXECUTE 1 Stage
+    ALUControl ALUControl_1(Immediate_EX[5:0], ALUOp_EX, rt_address_EX[0], ALUControl);
+    Mux32Bit2To1 Mux32Bit2To1_ALUSrc(ALUSrc_MUX, rt_value_EX, Immediate_EX, ALUSrc_EX);
+
+    Mux32Bit3To1 Mux32Bit3To1_WriteMEMData(rt_value_EX, ALUResult_MEM, MemToReg_WB_MUX, WriteMEMData_MUX, WriteMEMData_Signal);
+
+    ALU32Bit ALU32Bit_1(ALUControl, forward_rs_value, forward_rt_value, Immediate_EX, ALUResult_EX /*, Zero*/);
+
+    Mux5Bit2To1 Mux5Bit2To1_RegDst(RegDst1Result_EX, rt_address_EX, rd_address_EX, ORGate_movecheck_out);
+
+    //CUSTOM INSTRUCTION UNITS
+    ORGate ORGate_movecheck(outRegister, RegDst_EX, ORGate_movecheck_out);
+    MoveCheck MoveCheck_1(s6_x_value_EX1, s7_y_value_EX1, move_EX, s1_cdif_value_EX1, outRegister);
+    CheckWindowColumns CheckWindowColums_1(s5_wcol_value_EX1, check_wcol_out);
+
+
+// END of EX1
+    // PIPELINE
+    EX1_EX2_Reg EX1_EX2_Reg_1(ALUResult_EX, /*PCPlusOffset_EX,*/ rt_Register_Value_EX,
+    RegDst1Result_EX, /*Zero_EX,*/ MemWrite_EX, MemToReg_EX, MemRead_EX, /*Branch_EX,*/ RegWrite_EX, 
+    jal_EX, Jump_EX, JR_EX, JumpPC_EX, rs_value_EX, rt_value_EX,
+    ALUResult_EX2, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX2,
+    RegDst1Result_EX2, /*Zero_MEM,*/ MemWrite_EX2, MemToReg_EX2, MemRead_EX2, /*Branch_MEM,*/ RegWrite_EX2, 
+    jal_EX2, Jump_EX2, JR_EX2, JumpPC_EX2, rs_value_EX2, rt_value_EX2 Clk, Reset    
+    //registers for custom instruction EX1
+    s0_numrow_value_EX1,s1_cdif_value_EX1,s2_it_value_EX1, t1_sad_value_EX1, s4_frow_value_EX1, sad_EX,
+	s6_x_value_EX1, s7_y_value_EX1,t0_target_value_EX1, outx, outy, check_wcol_out,a1_frame_value_EX1,
+    //registers for custom instruction EX2
+    s0_numrow_value_EX2,s1_cdif_value_EX2,s2_it_value_EX2, t1_sad_value_EX2, s4_frow_value_EX2, sad_EX2,
+	s6_x_value_EX2, s7_y_value_EX2,t0_target_value_EX2, outx_EX2, outy_EX2, check_wcol_out_EX2,a1_frame_value_EX2
+    ); 
+
+
+//EX2 stage
+    //Adder32Bit Add_x(A, B, Out);
+    //Adder32Bit Add_y(A, B, Out);
+    Multiplier32Bit Mul_it_numrow(s2_it_value_EX2, s0_numrow_value_EX2, itxnumrow_out); //multiplies the iterator and the initialized numrow value
+    Gen_Mul_6 Gen_Mul_6_1(check_wcol_out_EX2, s4_frow_value_EX2, mul6_out_1,mul6_out_2,mul6_out_3,mul6_out_4);
+
+//END EX2 stage
+    //PIPELINE
+    EX2_EX3_Reg EX2_EX3_Reg_1(ALUResult_EX2, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX2,
+    RegDst1Result_EX2, /*Zero_MEM,*/ MemWrite_EX2, MemToReg_EX2, MemRead_EX2, /*Branch_MEM,*/ RegWrite_EX2, 
+    jal_EX2, Jump_EX2, JR_EX2, JumpPC_EX2, rs_value_EX2, rt_value_EX2, Clk, Reset
+    //EX3
+    ALUResult_EX3, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX3,
+    RegDst1Result_EX3, /*Zero_MEM,*/ MemWrite_EX3, MemToReg_EX3, MemRead_EX3, /*Branch_MEM,*/ RegWrite_EX3, 
+    jal_EX3, Jump_EX3, JR_EX3, JumpPC_EX3, rs_value_EX3, rt_value_EX3,
+    //registers for custom instruction EX2
+    t1_sad_value_EX2, s4_frow_value_EX2, sad_EX2,
+	s6_x_value_EX2, s7_y_value_EX2,t0_target_value_EX2, outx_EX2, outy_EX2, check_wcol_out_EX2,
+    mul6_out_1,mul6_out_2,mul6_out_3,mul6_out_4, itxnumrow_out,a1_frame_value_EX2
+    //registers for custom instruction EX3
+    t1_sad_value_EX3, s4_frow_value_EX3, sad_EX3,
+	s6_x_value_EX3, s7_y_value_EX3, t0_target_value_EX3, outx_EX3, outy_EX3, check_wcol_out_EX3
+    mul6_out_1_EX3,mul6_out_2_EX3,mul6_out_3_EX3,mul6_out_4_EX3, itxnumrow_out_EX3,a1_frame_value_EX3
+    ); 
+//EX3 stage
+    Adder32Bit Add_y_itxnumrow_1(s7_y_value_EX3, itxnumrow_out_EX3, add_y_itxnumrow); //adds the iterator and numrow to the y coord  
+    Gen_Add_16_7 Gen_Add_16_7_1(s6_x_value_EX3, mul6_out_1_EX3,mul6_out_2_EX3,mul6_out_3_EX3,mul6_out_4_EX3, 
+        add7_out_1, add7_out_2, add7_out_3, add7_out_4);
+    Gen_Add_16_8 Gen_Add_16_8_1(check_wcol_out_EX3, add7_out_1,add7_out_2, add7_out_3, add7_out_4, 
+                In1,In2,In3,In4,In5,In6,In7,In8,In9,In10,In11,In12,In13,In14,In15,In16);
+    Multiplier32Bit Mul_frow_result(add_y_itxnumrow, s4_frow_value_EX3, mul_frow_out); //multiplies the number of rows in the frame and the result from Add_y_itxnumrow
+//END EX3 stage
+    //PIPELINE
+    EX3_EX4_Reg EX3_EX4_Reg_1(ALUResult_EX3, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX3,
+    RegDst1Result_EX3, /*Zero_MEM,*/ MemWrite_EX3, MemToReg_EX3, MemRead_EX3, /*Branch_MEM,*/ RegWrite_EX3, 
+    jal_EX3, Jump_EX3, JR_EX3, JumpPC_EX3, rs_value_EX3, rt_value_EX3, Clk, Reset
+    //EX4
+    ALUResult_EX4, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX4,
+    RegDst1Result_EX4, /*Zero_MEM,*/ MemWrite_EX4, MemToReg_EX4, MemRead_EX4, /*Branch_MEM,*/ RegWrite_EX4, 
+    jal_EX4, Jump_EX4, JR_EX4, JumpPC_EX4, rs_value_EX4, rt_value_EX4,
+    //registers for custom instruction EX3
+    t1_sad_value_EX3,  
+	t0_target_value_EX3, outx_EX3, outy_EX3, sad_EX3,
+    a1_frame_value_EX3, In1,In2,In3,In4,In5,In6,In7,In8,In9,In10,In11,In12,In13,
+    In14,In15,In16, mul_frow_out,
+    //registers for custom instruction EX4
+    t1_sad_value_EX4, 
+	t0_target_value_EX4, outx_EX4, outy_EX4,sad_EX4,
+    a1_frame_value_EX4, In1_EX4,In2_EX4,In3_EX4,In4_EX4,In5_EX4,In6_EX4,In7_EX4,In8_EX4,In9_EX4,In10_EX4,In11_EX4,In12_EX4,In13_EX4,
+    In14_EX4,In15_EX4,In16_EX4, mul_frow_out_EX4
+    ); 
+//EX4 stage
+    Adder32Bit Add_frame_result(mul_frow_out_EX4,a1_frame_value_EX4, add_frame_out); //adds frame base address to the result of Add_y_itxnumrow*frow
+    Gen_Add_16_Final Gen_Add_16_Final_1(add_frame_out,
+				In1_EX4,In2_EX4,In3_EX4,In4_EX4,In5_EX4,In6_EX4,In7_EX4,In8_EX4,In9_EX4,In10_EX4,In11_EX4,In12_EX4,In13_EX4,
+                In14_EX4,In15_EX4,In16_EX4,
+                Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16);
+    Target_Add_16 Target_Add_16_1(t0_target_value_EX4,
+                tOut1,tOut2,tOut3,tOut4,tOut5,tOut6,tOut7,tOut8,tOut9,tOut10,tOut11,tOut12,tOut13,tOut14,tOut15,tOut16);            
+//END EX4 stage
+    //PIPELINE
+    EX4_EX5_Reg EX4_EX5_Reg_1(ALUResult_EX4, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX4,
+    RegDst1Result_EX4, /*Zero_MEM,*/ MemWrite_EX4, MemToReg_EX4, MemRead_EX4, /*Branch_MEM,*/ RegWrite_EX4, 
+    jal_EX4, Jump_EX4, JR_EX4, JumpPC_EX4, rs_value_EX4,rt_value_EX4, Clk, Reset
+    //EX5
+    ALUResult_EX5, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX5,
+    RegDst1Result_EX5, /*Zero_MEM,*/ MemWrite_EX5, MemToReg_EX5, MemRead_EX5, /*Branch_MEM,*/ RegWrite_EX5, 
+    jal_EX5, Jump_EX5, JR_EX5, JumpPC_EX5, rs_value_EX5,rt_value_EX5,
+    //registers for custom instruction EX4
+    t1_sad_value_EX4, outx_EX4, outy_EX4,sad_EX4,
+    Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16,
+    tOut1,tOut2,tOut3,tOut4,tOut5,tOut6,tOut7,tOut8,tOut9,tOut10,tOut11,tOut12,tOut13,tOut14,tOut15,tOut16, 
+    //registers for custom instruction EX5
+    t1_sad_value_EX5, t0_target_value_EX5, outx_EX5, outy_EX5,sad_EX5,
+    Out1_EX5,Out2_EX5,Out3_EX5,Out4_EX5,Out5_EX5,Out6_EX5,Out7_EX5,Out8_EX5,Out9_EX5,Out10_EX5,Out11_EX5,Out12_EX5,
+    Out13_EX5,Out14_EX5,Out15_EX5,Out16_EX5,
+    tOut1_EX5,tOut2_EX5,tOut3_EX5,tOut4_EX5,tOut5_EX5,tOut6_EX5,tOut7_EX5,tOut8_EX5,tOut9_EX5,tOut10_EX5,tOut11_EX5,tOut12_EX5,
+    tOut13_EX5,tOut14_EX5,tOut15_EX5,tOut16_EX5 
+    ); 
+//EX5 stage
+    Memmory_16 Memmory_16_Generate(Clk, Out1_EX5,Out2_EX5,Out3_EX5,Out4_EX5,Out5_EX5,Out6_EX5,Out7_EX5,Out8_EX5,Out9_EX5,Out10_EX5,
+                Out11_EX5,Out12_EX5,Out13_EX5,Out14_EX5,Out15_EX5,Out16_EX5,
+                ReadData1,ReadData2,ReadData3,ReadData4,ReadData5,ReadData6,ReadData7,ReadData8,ReadData9,ReadData10,
+                ReadData11,ReadData12,ReadData13,ReadData14,ReadData15,ReadData16);
+    Memmory_16 Memmory_16_Target(Clk, tOut1_EX5,tOut2_EX5,tOut3_EX5,tOut4_EX5,tOut5_EX5,tOut6_EX5,tOut7_EX5,tOut8_EX5,tOut9_EX5,
+                tOut10_EX5,tOut11_EX5,tOut12_EX5,tOut13_EX5,tOut14_EX5,tOut15_EX5,tOut16_EX5 
+                tReadData1,tReadData2,tReadData3,tReadData4,tReadData5,tReadData6,tReadData7,tReadData8,tReadData9,tReadData10,
+                tReadData11,tReadData12,tReadData13,tReadData14,tReadData15,tReadData16);
     
+//END EX5 stage
+    //PIPELINE
+    EX5_EX6_Reg EX5_EX6_Reg_1(ALUResult_EX5, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX5,
+    RegDst1Result_EX5, /*Zero_MEM,*/ MemWrite_EX5, MemToReg_EX5, MemRead_EX5, /*Branch_MEM,*/ RegWrite_EX5, 
+    jal_EX5, Jump_EX5, JR_EX5, JumpPC_EX5, rs_value_EX5, rt_value_EX5,Clk, Reset
+    //EX6
+    ALUResult_EX6, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX6,
+    RegDst1Result_EX6, /*Zero_MEM,*/ MemWrite_EX6, MemToReg_EX6, MemRead_EX6, /*Branch_MEM,*/ RegWrite_EX6, 
+    jal_EX6, Jump_EX6, JR_EX6, JumpPC_EX6, rs_value_EX6,rt_value_EX6,
+    //registers for custom instruction EX5
+    t1_sad_value_EX5, outx_EX5, outy_EX5,sad_EX5,
+    ReadData1,ReadData2,ReadData3,ReadData4,ReadData5,ReadData6,ReadData7,ReadData8,ReadData9,ReadData10,
+    ReadData11,ReadData12,ReadData13,ReadData14,ReadData15,ReadData16,
+    tReadData1,tReadData2,tReadData3,tReadData4,tReadData5,tReadData6,tReadData7,tReadData8,tReadData9,tReadData10,
+    tReadData11,tReadData12,tReadData13,tReadData14,tReadData15,tReadData16,
+    //registers for custom instruction EX6
+    t1_sad_value_EX6, outx_EX6, outy_EX6,sad_EX6,
+    ReadData1_EX6,ReadData2_EX6,ReadData3_EX6,ReadData4_EX6,ReadData5_EX6,ReadData6_EX6,ReadData7_EX6,ReadData8_EX6,ReadData9_EX6,
+    ReadData10_EX6,ReadData11_EX6,ReadData12_EX6,ReadData13_EX6,ReadData14_EX6,ReadData15_EX6,ReadData16_EX6,
+    tReadData1_EX6,tReadData2_EX6,tReadData3_EX6,tReadData4_EX6,tReadData5_EX6,tReadData6_EX6,tReadData7_EX6,tReadData8_EX6,
+    tReadData9_EX6,tReadData10_EX6, tReadData11_EX6,tReadData12_EX6,tReadData13_EX6,tReadData14_EX6,tReadData15_EX6,tReadData16_EX6 
+    );
+//EX6 stage
+    Adder32bit_16 Adder_first_round(ReadData1_EX6,ReadData2_EX6,ReadData3_EX6,ReadData4_EX6,ReadData5_EX6,ReadData6_EX6,ReadData7_EX6,
+        ReadData8_EX6,ReadData9_EX6,ReadData10_EX6,ReadData11_EX6,ReadData12_EX6,ReadData13_EX6,ReadData14_EX6,ReadData15_EX6,
+        ReadData16_EX6,tReadData1_EX6,tReadData2_EX6,tReadData3_EX6,tReadData4_EX6,tReadData5_EX6,tReadData6_EX6,tReadData7_EX6,tReadData8_EX6,
+        tReadData9_EX6,tReadData10_EX6, tReadData11_EX6,tReadData12_EX6,tReadData13_EX6,tReadData14_EX6,tReadData15_EX6,tReadData16_EX6,
+                	fOut1,fOut2,fOut3,fOut4,fOut5,fOut6,fOut7,fOut8,fOut9,fOut10,fOut11,fOut12,fOut13,fOut14,fOut15,fOut16);
+    Adder32bit_8 Adder_second_round(fOut1,fOut2,fOut3,fOut4,fOut5,fOut6,fOut7,fOut8,fOut9,fOut10,fOut11,fOut12,fOut13,fOut14,fOut15,fOut16,
+                	sOut1,sOut2,sOut3,sOut4,sOut5,sOut6,sOut7,sOut8);
+//END EX6 stage
+    //PIPELINE
+    EX6_EX7_Reg EX6_EX7_Reg_1(ALUResult_EX6, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX6,
+    RegDst1Result_EX6, /*Zero_MEM,*/ MemWrite_EX6, MemToReg_EX6, MemRead_EX6, /*Branch_MEM,*/ RegWrite_EX6, 
+    jal_EX6, Jump_EX6, JR_EX6, JumpPC_EX6, rs_value_EX6, rt_value_EX6,Clk, Reset
+    //EX7
+    ALUResult_EX7, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX7,
+    RegDst1Result_EX7, /*Zero_MEM,*/ MemWrite_EX7, MemToReg_EX7, MemRead_EX7, /*Branch_MEM,*/ RegWrite_EX7, 
+    jal_EX7, Jump_EX7, JR_EX7, JumpPC_EX7, rs_value_EX7,rt_value_EX7,
+    //registers for custom instruction EX6
+    t1_sad_value_EX6, outx_EX6, outy_EX6,sad_EX6
+    sOut1,sOut2,sOut3,sOut4,sOut5,sOut6,sOut7,sOut8,
+    //registers for custom instruction EX7
+    t1_sad_value_EX7, outx_EX7, outy_EX7,sad_EX7
+    sOut1_EX7,sOut2_EX7,sOut3_EX7,sOut4_EX7,sOut5_EX7,sOut6_EX7,sOut7_EX7,sOut8_EX7
+    );
+//EX7 stage
+    Adder32bit_4 Adder_third_round(sOut1_EX7,sOut2_EX7,sOut3_EX7,sOut4_EX7,sOut5_EX7,sOut6_EX7,sOut7_EX7,sOut8_EX7,
+                	tOut1,tOut2,tOut3,tOut4);
+    Adder32bit_2 Adder_fourth_round(tOut1,tOut2,tOut3,tOut4,
+                	foOut1,foOut2);
+//END EX7 stage
+    //PIPELINE
+    EX7_EX8_Reg EX7_EX8_Reg_1(ALUResult_EX7, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX7,
+    RegDst1Result_EX7, /*Zero_MEM,*/ MemWrite_EX7, MemToReg_EX7, MemRead_EX7, /*Branch_MEM,*/ RegWrite_EX7, 
+    jal_EX7, Jump_EX7, JR_EX7, JumpPC_EX7, rs_value_EX7, rt_value_EX7,Clk, Reset
+    //EX8
+    ALUResult_EX8, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX8,
+    RegDst1Result_EX8, /*Zero_MEM,*/ MemWrite_EX8, MemToReg_EX8, MemRead_EX8, /*Branch_MEM,*/ RegWrite_EX8, 
+    jal_EX8, Jump_EX8, JR_EX8, JumpPC_EX8, rs_value_EX8,rt_value_EX8,
+    //registers for custom instruction EX7
+    t1_sad_value_EX7, outx_EX7, outy_EX7,sad_EX7,
+    foOut1,foOut2,
+    //registers for custom instruction EX8
+    t1_sad_value_EX8, outx_EX8, outy_EX8,sad_EX8,
+    foOut1_EX8,foOut2_EX8
+    );
+//EX8 stage
+    Adder32Bit Adder_fifth_round(foOut1_EX8,foOut2_EX8, FinalOut);
+    Adder32Bit Adder_incrementSAD(FinalOut, t1_sad_value_EX8, SAD_Out);
+    Mux32Bit2To1 Mux32Bit2To1_SADorNot(sadMUX_regwrite_value, SAD_Out, ALUResult_EX8, sad_EX8);
+//END EX8 stage
+    //PIPELINE
+    EX8_MEM_Reg EX8_MEM_Reg_1(ALUResult_EX8, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX8,
+    RegDst1Result_EX8, /*Zero_MEM,*/ MemWrite_EX8, MemToReg_EX8, MemRead_EX8, /*Branch_MEM,*/ RegWrite_EX8, 
+    jal_EX8, Jump_EX8, JR_EX8, JumpPC_EX8, rs_value_EX8,rt_value_EX8, Clk, Reset
+    //MEM
+    ALUResult_MEM, /*PCPlusOffset_MEM,*/ rt_Register_Value_MEM,
+    RegDst1Result_MEM, /*Zero_MEM,*/ MemWrite_MEM, MemToReg_MEM, MemRead_MEM, /*Branch_MEM,*/ RegWrite_MEM, 
+    jal_MEM, Jump_MEM, JR_MEM, JumpPC_MEM, rs_value_MEM,rt_value_MEM,
+    //registers for custom instruction EX8
+    t1_sad_value_EX8, outx_EX8, outy_EX8,
+    sadMUX_regwrite_value,
+    //registers for custom instruction MEM
+    t1_sad_value_MEM, outx_MEM, outy_MEM,
+    sadMUX_regwrite_value_MEM
+    );
+// MEMORY STAGE
+    //NEED TO FORWARD THE SAD_MUX_regwrite_value and fix forwarding inputs
+    DataMemory DataMemory_1(ALUResult_MEM, rt_value_MEM, Clk, MemWrite_MEM, MemRead_MEM, ReadData_MEM);
+
+// END OF MEM
+    // PIPELINE
+    MEM_WB_Reg MEM_WB_Reg_1(ReadData_MEM, ReadData_WB, ALUResult_MEM, ALUResult_WB, 
+                  MemToReg_MEM, MemToReg_WB, RegWrite_MEM, RegWrite_WB,
+                  RegDst1Result_MEM, RegDst1Result_WB, jal_MEM, jal_WB, Jump_MEM, Jump_WB, JR_MEM, JR_WB, Clk, Reset
+                  sadMUX_regwrite_value_MEM, sadMUX_regwrite_value_WB);
+
+// BEGIN WB
+    Mux32Bit2To1 Mux32Bit2To1_MemToReg(MemToReg_WB_MUX, sadMUX_regwrite_value_WB, ReadData_WB, MemToReg_WB);
+
 
 
 endmodule

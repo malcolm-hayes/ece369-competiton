@@ -16,15 +16,15 @@ module CheckWindowColumns(window_columns, check_wcol_out);
     //                = 1 for 8
     //                = 2 for 16
 
-    if (window_columns == 4){
+    if (window_columns == 4)
         check_wcol_out = 0;
-    }
-	else if (window_columns == 8){
+    
+	else if (window_columns == 8)
         check_wcol_out = 1;
-    }
-    else if (window_columns == 16){
+    
+    else if (window_columns == 16)
         check_wcol_out = 2;
-    }
+    
 
 	
 endmodule

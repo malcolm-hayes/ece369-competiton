@@ -3,7 +3,7 @@
 // input ALUResult, Zero flag, output of RegDst Mux, Rt_register_value from readdata2, PCPlusOffset
 // need branch, MemWrite, MemToReg, MemRead, PCSrc(?)
 
-module EX_MEM_Reg(ALUResult_EX, /*PCPlusOffset_EX,*/ rt_Register_Value_EX,
+module EX8_MEM_Reg(ALUResult_EX, /*PCPlusOffset_EX,*/ rt_Register_Value_EX,
  RegDst1Result_EX, /*Zero_EX,*/ MemWrite_EX, MemToReg_EX, MemRead_EX, /*Branch_EX,*/ RegWrite_EX, jal_EX, Jump_EX, JR_EX, JumpPC_EX, rs_value_EX,
  ALUResult_MEM, /*PCPlusOffset_MEM,*/ rt_Register_Value_MEM,
  RegDst1Result_MEM, /*Zero_MEM,*/ MemWrite_MEM, MemToReg_MEM, MemRead_MEM, /*Branch_MEM,*/ RegWrite_MEM, jal_MEM, Jump_MEM, JR_MEM, JumpPC_MEM, rs_value_MEM, Clk, Reset);

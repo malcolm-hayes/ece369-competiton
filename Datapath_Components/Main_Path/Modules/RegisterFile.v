@@ -48,7 +48,7 @@
 // to allow for data multiplexing and setup time.
 ////////////////////////////////////////////////////////////////////////////////
 
-module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, RegWrite, Clk, ReadData1, ReadData2, v0, v1);
+module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, RegWrite, Clk, ReadData1, ReadData2);
 
 	input Clk, RegWrite;
 	input [4:0] ReadRegister1;
@@ -58,7 +58,7 @@ module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, RegW
 	
 	output reg [31:0] ReadData1;
 	output reg [31:0] ReadData2;
-	output reg [31:0] v0, v1;
+	//output reg [31:0] v0, v1;
 
 	reg jal_flag;
 
