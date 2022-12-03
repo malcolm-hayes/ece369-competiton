@@ -2,7 +2,7 @@
 
 module Controller(rsgz, tes, rsez, Instruction, RegWrite, RegDst, ALUSrc, ALUOp, 
         MemWrite, MemRead, MemToReg,
-        Branch, jump, jal, jr, isBranch
+        Branch, jump, jal, jr, isBranch,
         move, sad);
         
         input [31:0] Instruction;
@@ -10,7 +10,7 @@ module Controller(rsgz, tes, rsez, Instruction, RegWrite, RegDst, ALUSrc, ALUOp,
         output reg isBranch; //for hazard detection
 
 output reg RegWrite, RegDst, ALUSrc,   //  // we need JumpPC control signal for a mux, 1 if we are jumping (read from opcode) and 0 if we are not jumping
-        MemToReg, Branch, jump, jal, jr
+        MemToReg, Branch, jump, jal, jr,
         move, sad;
 
 output reg [1:0] MemRead, MemWrite; // extend the amount of bits for how many different funct codes we need to specify

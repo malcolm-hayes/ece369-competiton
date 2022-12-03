@@ -15,7 +15,10 @@ module CheckWindowColumns(window_columns, check_wcol_out);
     // check_wcol_out = 0 for 4
     //                = 1 for 8
     //                = 2 for 16
-
+    initial begin
+        check_wcol_out <= 0;
+    end
+    always @(*)begin
     if (window_columns == 4)
         check_wcol_out = 0;
     
@@ -24,7 +27,7 @@ module CheckWindowColumns(window_columns, check_wcol_out);
     
     else if (window_columns == 16)
         check_wcol_out = 2;
-    
+    end
 
 	
 endmodule

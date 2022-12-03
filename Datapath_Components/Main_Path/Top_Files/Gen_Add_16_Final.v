@@ -6,10 +6,9 @@ module Gen_Add_16_Final(add4_out,
                 Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16);
 
 	input [1:0] check_wcol_out; // control bits for ALU operation
-                      
+    input [31:0] add4_out,In1,In2,In3,In4,In5,In6,In7,In8,In9,In10,In11,In12,In13,In14,In15,In16;                  
 	input signed [31:0] A, B;	    // inputs
-
-	output reg [31:0] Out;	// answer
+	output wire [31:0] Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16;	// answer
 	
 
 		Adder32Bit Adder32Bit_1(In1, add4_out, Out1);
