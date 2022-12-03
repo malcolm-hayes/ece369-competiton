@@ -1,32 +1,127 @@
 `timescale 1ns / 1ps
 
-module EX1_EX2_Reg(RegWrite_ID, RegDst_ID, ALUOp_ID,
- ALUSrc_ID, /*Branch_ID,*/ MemWrite_ID, MemToReg_ID, MemRead_ID, 
- rs_value_ID, rt_value_ID, Immediate_ID, rs_address_ID, rt_address_ID, rd_address_ID, /*PCAddresult_ID,*/ jal_ID, Jump_ID, JR_ID, JumpPC_ID,
- RegWrite_EX, RegDst_EX, ALUOp_EX,
- ALUSrc_EX, /*Branch_EX,*/ MemWrite_EX, MemToReg_EX, MemRead_EX, 
- rs_value_EX, rt_value_EX, Immediate_EX, rs_address_EX, rt_address_EX, rd_address_EX, /*PCAddresult_EX,*/ jal_EX, Jump_EX, JR_EX, JumpPC_EX, ControlMuxSig,Clk, Reset); 
+module EX1_EX2_Reg(ALUResult_EX, /*PCPlusOffset_EX,*/ rt_Register_Value_EX,
+    RegDst1Result_EX, /*Zero_EX,*/ MemWrite_EX, MemToReg_EX, MemRead_EX, /*Branch_EX,*/ RegWrite_EX, 
+    jal_EX, Jump_EX, JR_EX, JumpPC_EX, rs_value_EX, rt_value_EX,
+    ALUResult_EX2, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX2,
+    RegDst1Result_EX2, /*Zero_MEM,*/ MemWrite_EX2, MemToReg_EX2, MemRead_EX2, /*Branch_MEM,*/ RegWrite_EX2, 
+    jal_EX2, Jump_EX2, JR_EX2, JumpPC_EX2, rs_value_EX2, rt_value_EX2 Clk, Reset    
+    //registers for custom instruction EX1
+    s0_numrow_value_EX1,s1_cdif_value_EX1,s2_it_value_EX1, t1_sad_value_EX1, s4_frow_value_EX1, sad_EX,
+	s6_x_value_EX1, s7_y_value_EX1,t0_target_value_EX1, outx, outy, check_wcol_out,a1_frame_value_EX1,
+    //registers for custom instruction EX2
+    s0_numrow_value_EX2,s1_cdif_value_EX2,s2_it_value_EX2, t1_sad_value_EX2, s4_frow_value_EX2, sad_EX2,
+	s6_x_value_EX2, s7_y_value_EX2,t0_target_value_EX2, outx_EX2, outy_EX2, check_wcol_out_EX2, a1_frame_value_EX2
+    ); 
 
-input [31:0] ;
-input [4:0] ;
+input [31:0] ALUResult_EX, rt_Register_Value_EX, rs_value_EX, rt_value_EX;
+input [4:0] RegDst1Result_EX;
+input MemWrite_EX, MemToReg_EX, MemRead_EX, RegWrite_EX, jal_EX, Jump_EX, JR_EX, JumpPC_EX;
 input Clk, Reset;
 
-output reg [31:0] ;
+output reg [31:0] ALUResult_EX2, rt_Register_Value_EX2, rs_value_EX2, rt_value_EX2;
+output reg [4:0] RegDst1Result_EX2;
+output reg MemWrite_EX2, MemToReg_EX2, MemRead_EX2, RegWrite_EX2, jal_EX2, Jump_EX2, JR_EX2, JumpPC_EX2;
+
+//custom instruction
+input [31:0] s0_numrow_value_EX1, s1_cdif_value_EX1, s2_it_value_EX1, t1_sad_value_EX1, s4_frow_value_EX1,
+             sad_EX, s6_x_value_EX1, s7_y_value_EX1, t0_target_value_EX1, outx, outy, check_wcol_out, a1_frame_value_EX1;
+
+output reg [31:0] s0_numrow_value_EX2, s1_cdif_value_EX2, s2_it_value_EX2, t1_sad_value_EX2, s4_frow_value_EX1,
+             sad_EX2, s6_x_value_EX2, s7_y_value_EX2, t0_target_value_EX2, outx_EX2, outy_EX2, check_wcol_out_EX2, a1_frame_value_EX2;
 
 input Reset;
 input Clk;  // each pipeline register should be clocked
 
  initial begin
-     
+    ALUResult_EX <= 0;
+    rt_Register_Value_EX <= 0;
+    rs_value_EX <= 0;
+    rt_value_EX <= 0;
+    RegDst1Result_EX <= 0;
+    MemWrite_EX <= 0;
+    MemToReg_EX <= 0;
+    MemRead_EX <= 0;
+    RegWrite_EX <= 0;
+    jal_EX <= 0;
+    Jump_EX <= 0;
+    JR_EX <= 0;
+    JumpPC_EX <= 0;
+
+    s0_numrow_value_EX1 <= 0;
+    s1_cdif_value_EX1 <= 0;
+    s2_it_value_EX1 <= 0;
+    t1_sad_value_EX1 <= 0;
+    s4_frow_value_EX <= 0;
+    sad_EX <= 0;
+    s6_x_value_EX1 <= 0;
+    s7_y_value_EX1 <= 0;
+    t0_target_value_EX1 <= 0;
+    outx <= 0;
+    outy <= 0;
+    check_wcol_out <= 0;
+    a1_frame_EX1 <= 0;
  end
 
 always @(posedge Clk) begin
     
     if (Reset == 1)begin
-    
+        ALUResult_EX2 <= 0;
+        rt_Register_Value_EX2 <= 0;
+        rs_value_EX2 <= 0;
+        rt_value_EX2 <= 0;
+        RegDst1Result_EX2 <= 0;
+        MemWrite_EX2 <= 0;
+        MemToReg_EX2 <= 0;
+        MemRead_EX2 <= 0;
+        RegWrite_EX2 <= 0;
+        jal_EX2 <= 0;
+        Jump_EX2 <= 0;
+        JR_EX2 <= 0;
+        JumpPC_EX2 <= 0;
+
+        s0_numrow_value_EX2 <= 0;
+        s1_cdif_value_EX2 <= 0;
+        s2_it_value_EX2 <= 0;
+        t1_sad_value_EX2 <= 0;
+        s4_frow_value_EX2 <= 0;
+        sad_EX2 <= 0;
+        s6_x_value_EX2 <= 0;
+        s7_y_value_EX2 <= 0;
+        t0_target_value_EX2 <= 0;
+        outx_EX2 <= 0;
+        outy_EX2 <= 0;
+        check_wcol_out_EX2 <= 0;
+        a1_frame_EX2 <= 0;
     end
     else begin
-    
+        ALUResult_EX2 <= 0;
+        rt_Register_Value_EX2 <= 0;
+        rs_value_EX2 <= 0;
+        rt_value_EX2 <= 0;
+        RegDst1Result_EX2 <= 0;
+        MemWrite_EX2 <= 0;
+        MemToReg_EX2 <= 0;
+        MemRead_EX2 <= 0;
+        RegWrite_EX2 <= 0;
+        jal_EX2 <= 0;
+        Jump_EX2 <= 0;
+        JR_EX2 <= 0;
+        JumpPC_EX2 <= 0;
+
+        s0_numrow_value_EX2 <= 0;
+        s1_cdif_value_EX2 <= 0;
+        s2_it_value_EX2 <= 0;
+        t1_sad_value_EX2 <= 0;
+        s4_frow_value_EX2 <= 0;
+        sad_EX2 <= 0;
+        s6_x_value_EX2 <= 0;
+        s7_y_value_EX2 <= 0;
+        t0_target_value_EX2 <= 0;
+        outx_EX2 <= 0;
+        outy_EX2 <= 0;
+        check_wcol_out_EX2 <= 0;
+        a1_frame_EX2 <= 0;
     end
     
 end
