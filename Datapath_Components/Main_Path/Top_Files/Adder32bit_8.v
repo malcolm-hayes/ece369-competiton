@@ -3,12 +3,10 @@
 
 module Adder32bit_8(In1,In2,In3,In4,In5,In6,In7,In8,In9,In10,In11,In12,In13,In14,In15,In16,
                 	Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8);
-
-	input [1:0] check_wcol_out; // control bits for ALU operation
                       
-	input signed [31:0] A, B;	    // inputs
+	input [31:0] In1,In2,In3,In4,In5,In6,In7,In8,In9,In10,In11,In12,In13,In14,In15,In16;	    // inputs
 
-	output reg [31:0] Out;	// answer
+	output wire [31:0] Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8;	// answer
 	
 
         

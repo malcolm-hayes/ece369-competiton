@@ -18,6 +18,7 @@ module MoveCheck(x, y, cdif, move,outValue,outRegister);
         outValue <= 0;
         outRegister <= 0;
     end
+    always @(*)begin
     if (move)begin
     if ((x != cdif) && (y[0] == 1))begin
         outValue <= x+1;
@@ -39,6 +40,7 @@ module MoveCheck(x, y, cdif, move,outValue,outRegister);
     else begin
         outValue <= 0;
         outRegister <= 0;
+    end
     end    
 	
 endmodule

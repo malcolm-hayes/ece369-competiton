@@ -4,11 +4,10 @@
 module Adder32bit_2(In1,In2,In3,In4,
                 	Out1,Out2);
 
-	input [1:0] check_wcol_out; // control bits for ALU operation
                       
-	input signed [31:0] A, B;	    // inputs
+	input [31:0] In1,In2,In3,In4;	    // inputs
 
-	output reg [31:0] Out;	// answer
+	output wire [31:0] Out1,Out2;	// answer
 	
 
         
