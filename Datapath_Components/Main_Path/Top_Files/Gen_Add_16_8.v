@@ -7,7 +7,7 @@ module Gen_Add_16_8(check_wcol_out, add7_out_1,add7_out_2, add7_out_3, add7_out_
 	input [1:0] check_wcol_out; // control bits for ALU operation
                       
 	input [31:0] add7_out_1,add7_out_2, add7_out_3, add7_out_4;	    // inputs
-	wire [31:0] out_mux1,out_mux2,out_mux3,out_mux4,out_mux5,out_mux6,out_mux7,out_mux8,out_mux9,out_mux10,out_mux12,out_mux13
+	wire [31:0] out_mux1,out_mux2,out_mux3,out_mux4,out_mux5,out_mux6,out_mux7,out_mux8,out_mux9,out_mux10,out_mux11,out_mux12,out_mux13
 				,out_mux14,out_mux15,out_mux16;
 	output wire [31:0] Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16;	// answer
 	

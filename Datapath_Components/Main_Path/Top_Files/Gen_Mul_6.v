@@ -9,6 +9,7 @@ module Gen_Mul_6(check_wcol_out, frow,
 	input [31:0] frow;	    // inputs
 
 	output wire [31:0] mul_out_1,mul_out_2,mul_out_3,mul_out_4;
+	wire [31:0] out1,out2,out3,out4;
 
 		//                A, B, C, out, sel
 		Mux32Bit3To1 MUX_1_to_4(0, 0, 0, out1, check_wcol_out);

@@ -8,8 +8,7 @@ module Top_tb();
     reg Clk, Reset;
     wire [31:0] v0, v1;
   //  wire [31:0] zeroreg, s0, memat6; //delete this
-
-    Top Top_1(Clk, Reset, v0, v1);
+    Wiring Wiring_1(Clk, Reset, v0, v1);
     
     initial begin
 		Clk = 1'b0;

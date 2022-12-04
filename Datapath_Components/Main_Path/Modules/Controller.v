@@ -58,7 +58,7 @@ output reg [3:0] ALUOp;
         ALUSrc <=   0;
         MemToReg <= 0;
         RegWrite <= 0;
-        MemRead <=  2'b00;
+        MemRead <=  2'b11;
         MemWrite <= 2'b00;
         Branch <=   0;
         ALUOp <=    4'b0001;

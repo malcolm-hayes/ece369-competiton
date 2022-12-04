@@ -24,9 +24,9 @@ module ID_EX1_Reg (RegWrite_ID, RegDst_ID, ALUOp_ID,
 input Reset;
 input Clk;
 input RegWrite_ID, RegDst_ID, 
- ALUSrc_ID, /*Branch_ID,*/ MemToReg_ID, jal_ID, Jump_ID, JR_ID;
+ ALUSrc_ID, /*Branch_ID,*/ MemToReg_ID, jal_ID, Jump_ID, JR_ID, move, sad;
 input [3:0] ALUOp_ID;
-input [1:0] MemWrite_ID, MemRead_ID, move, sad;
+input [1:0] MemWrite_ID, MemRead_ID;
 input [31:0] rs_value_ID, rt_value_ID /*,PCAddresult_ID*/;
 input [31:0] Immediate_ID;
 input [4:0] rs_address_ID, rt_address_ID, rd_address_ID;
@@ -34,13 +34,13 @@ input [31:0] JumpPC_ID;
 
 input ControlMuxSig;
 
-output reg [1:0] MemWrite_EX, MemRead_EX, move_EX, sad_EX;
+output reg [1:0] MemWrite_EX, MemRead_EX;
 output reg [3:0] ALUOp_EX;
 output reg [4:0] rs_address_EX, rt_address_EX, rd_address_EX;
 output reg [31:0] rs_value_EX, rt_value_EX /*,PCAddresult_EX*/;
 output reg [31:0] Immediate_EX;
 output reg RegWrite_EX, RegDst_EX, 
- ALUSrc_EX, /*Branch_EX,*/ MemToReg_EX, jal_EX, Jump_EX, JR_EX;
+ ALUSrc_EX, /*Branch_EX,*/ MemToReg_EX, jal_EX, Jump_EX, JR_EX, move_EX, sad_EX;
 output reg [31:0] JumpPC_EX;
 
 input [31:0] s0_numrow_value_ID,s1_cdif_value_ID,s2_it_value_ID, t1_sad_value_ID, s4_frow_value_ID, 
