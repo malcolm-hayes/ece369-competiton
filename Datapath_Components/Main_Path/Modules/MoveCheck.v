@@ -9,7 +9,7 @@
 module MoveCheck(x, y, cdif, move,outValue,outRegister);
     input [31:0] x,y, cdif;
     input move;
-    output reg [31:0] outx,outy;
+    output reg [31:0] outValue;
     output reg outRegister;
     //x = 0(rt), y = 1(rd)
     

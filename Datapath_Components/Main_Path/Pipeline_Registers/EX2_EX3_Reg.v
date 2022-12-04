@@ -2,7 +2,7 @@
 
 module EX2_EX3_Reg(ALUResult_EX2, /*PCPlusOffset_MEM,*/ /*rt_Register_Value_EX2, */
     RegDst1Result_EX2, /*Zero_MEM,*/ MemWrite_EX2, MemToReg_EX2, MemRead_EX2, /*Branch_MEM,*/ RegWrite_EX2, 
-    jal_EX2, Jump_EX2, JR_EX2, JumpPC_EX2, rs_value_EX2, rt_value_EX2, Clk, Reset
+    jal_EX2, Jump_EX2, JR_EX2, JumpPC_EX2, rs_value_EX2, rt_value_EX2, Clk, Reset,
     //EX3
     ALUResult_EX3, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX3,*/
     RegDst1Result_EX3, /*Zero_MEM,*/ MemWrite_EX3, MemToReg_EX3, MemRead_EX3, /*Branch_MEM,*/ RegWrite_EX3, 
@@ -10,10 +10,10 @@ module EX2_EX3_Reg(ALUResult_EX2, /*PCPlusOffset_MEM,*/ /*rt_Register_Value_EX2,
     //registers for custom instruction EX2
     t1_sad_value_EX2, s4_frow_value_EX2, sad_EX2,
 	s6_x_value_EX2, s7_y_value_EX2,t0_target_value_EX2, outx_EX2, outy_EX2, check_wcol_out_EX2,
-    mul6_out_1,mul6_out_2,mul6_out_3,mul6_out_4, itxnumrow_out,a1_frame_value_EX2
+    mul6_out_1,mul6_out_2,mul6_out_3,mul6_out_4, itxnumrow_out,a1_frame_value_EX2,
     //registers for custom instruction EX3
     t1_sad_value_EX3, s4_frow_value_EX3, sad_EX3,
-	s6_x_value_EX3, s7_y_value_EX3, t0_target_value_EX3, outx_EX3, outy_EX3, check_wcol_out_EX3
+	s6_x_value_EX3, s7_y_value_EX3, t0_target_value_EX3, outx_EX3, outy_EX3, check_wcol_out_EX3,
     mul6_out_1_EX3,mul6_out_2_EX3,mul6_out_3_EX3,mul6_out_4_EX3, itxnumrow_out_EX3,a1_frame_value_EX3
     );
 
@@ -63,7 +63,7 @@ output reg [31:0] mul6_out_1_EX3, mul6_out_2_EX3, mul6_out_3_EX3, mul6_out_4_EX3
     outx_EX3 <= 0;
     outy_EX3 <= 0;
     check_wcol_out_EX3 <= 0;
-    a1_frame_EX3 <= 0;
+    a1_frame_value_EX3 <= 0;
 
     mul6_out_1_EX3 <= 0;
     mul6_out_2_EX3 <= 0;
@@ -98,7 +98,7 @@ always @(posedge Clk) begin
         outx_EX3 <= 0;
         outy_EX3 <= 0;
         check_wcol_out_EX3 <= 0;
-        a1_frame_EX3 <= 0;
+        a1_frame_value_EX3 <= 0;
 
         mul6_out_1_EX3 <= 0;
         mul6_out_2_EX3 <= 0;
@@ -130,7 +130,7 @@ always @(posedge Clk) begin
         outx_EX3 <= outx_EX2;
         outy_EX3 <= outy_EX2;
         check_wcol_out_EX3 <= check_wcol_out_EX2;
-        a1_frame_EX3 <= a1_frame_EX2;
+        a1_frame_value_EX3 <= a1_frame_value_EX2;
 
         mul6_out_1_EX3 <= mul6_out_1;
         mul6_out_2_EX3 <= mul6_out_2;

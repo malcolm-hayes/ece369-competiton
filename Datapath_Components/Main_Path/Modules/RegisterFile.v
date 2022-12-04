@@ -67,8 +67,8 @@ module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, RegW
 	
 	initial begin
 		jal_flag <= 0;
-		v0 <= 0;
-		v1 <= 0;
+		//v0 <= 0;
+		//v1 <= 0;
 		for (i = 0; i < 32; i = i + 1)
 			RegisterFile[i] <= 0; // initially clear all registers
 
@@ -87,8 +87,8 @@ module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, RegW
 	
 		end
 // if (RegisterFile[22] == 7777)begin
-		v0 <= RegisterFile[2];
-		v1 <= RegisterFile[3];
+		//v0 <= RegisterFile[2];
+		//v1 <= RegisterFile[3];
 
 // end
 	end

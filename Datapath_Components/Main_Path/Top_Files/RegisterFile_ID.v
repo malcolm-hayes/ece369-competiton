@@ -11,7 +11,7 @@ module RegisterFile_ID(ReadRegister1, ReadRegister2, WriteRegister, WriteData, R
 	input [4:0] WriteRegister;
 	input [31:0] WriteData;
 	
-	output reg [31:0] ReadData1, ReadData2,ReadData3, ReadData4,ReadData5, ReadData6,ReadData7, 
+	output wire [31:0] ReadData1, ReadData2,ReadData3, ReadData4,ReadData5, ReadData6,ReadData7, 
 						ReadData8,ReadData9, ReadData10,ReadData11, ReadData12;
 	
 

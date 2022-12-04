@@ -2,7 +2,7 @@
 
 module EX7_EX8_Reg(ALUResult_EX7, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX7,*/
     RegDst1Result_EX7, /*Zero_MEM,*/ MemWrite_EX7, MemToReg_EX7, MemRead_EX7, /*Branch_MEM,*/ RegWrite_EX7, 
-    jal_EX7, Jump_EX7, JR_EX7, JumpPC_EX7, rs_value_EX7, rt_value_EX7,Clk, Reset
+    jal_EX7, Jump_EX7, JR_EX7, JumpPC_EX7, rs_value_EX7, rt_value_EX7,Clk, Reset,
     //EX8
     ALUResult_EX8, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX8,*/
     RegDst1Result_EX8, /*Zero_MEM,*/ MemWrite_EX8, MemToReg_EX8, MemRead_EX8, /*Branch_MEM,*/ RegWrite_EX8, 
@@ -47,7 +47,7 @@ output reg [31:0] t1_sad_value_EX8, outx_EX8, outy_EX8,sad_EX8,
     JumpPC_EX8 <= 0;
 
     t1_sad_value_EX8 <= 0;
-    t0_target_value_EX8 <= 0;
+    //t0_target_value_EX8 <= 0;
     outx_EX8 <= 0;
     outy_EX8 <= 0;
     sad_EX8 <= 0;
@@ -74,7 +74,7 @@ always @(posedge Clk) begin
     JumpPC_EX8 <= 0;
 
     t1_sad_value_EX8 <= 0;
-    t0_target_value_EX8 <= 0;
+    //t0_target_value_EX8 <= 0;
     outx_EX8 <= 0;
     outy_EX8 <= 0;
     sad_EX8 <= 0;
@@ -98,7 +98,7 @@ always @(posedge Clk) begin
     JumpPC_EX8 <= JumpPC_EX7;
 
     t1_sad_value_EX8 <= t1_sad_value_EX7;
-    t0_target_value_EX8 <= t0_target_value_EX7;
+    //t0_target_value_EX8 <= t0_target_value_EX7;
     outx_EX8 <= outx_EX7;
     outy_EX8 <= outy_EX7;
     sad_EX8 <= sad_EX7;

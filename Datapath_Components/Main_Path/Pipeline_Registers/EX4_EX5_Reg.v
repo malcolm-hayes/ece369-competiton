@@ -2,7 +2,7 @@
 
 module EX4_EX5_Reg(ALUResult_EX4, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX4,*/
     RegDst1Result_EX4, /*Zero_MEM,*/ MemWrite_EX4, MemToReg_EX4, MemRead_EX4, /*Branch_MEM,*/ RegWrite_EX4, 
-    jal_EX4, Jump_EX4, JR_EX4, JumpPC_EX4, rs_value_EX4,rt_value_EX4, Clk, Reset
+    jal_EX4, Jump_EX4, JR_EX4, JumpPC_EX4, rs_value_EX4,rt_value_EX4, Clk, Reset,
     //EX5
     ALUResult_EX5, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX5,*/
     RegDst1Result_EX5, /*Zero_MEM,*/ MemWrite_EX5, MemToReg_EX5, MemRead_EX5, /*Branch_MEM,*/ RegWrite_EX5, 
@@ -173,39 +173,39 @@ always @(posedge Clk) begin
         outy_EX5 <= outy_EX4;
         sad_EX5 <= sad_EX4;
 
-        Out1_EX5 <= Out1_EX4;
-        Out2_EX5 <= Out2_EX4;
-        Out3_EX5 <= Out3_EX4;
-        Out4_EX5 <= Out4_EX4;
-        Out5_EX5 <= Out5_EX4;
-        Out6_EX5 <= Out6_EX4;
-        Out7_EX5 <= Out7_EX4;
-        Out8_EX5 <= Out8_EX4;
-        Out9_EX5 <= Out9_EX4;
-        Out10_EX5 <= Out10_EX4;
-        Out11_EX5 <= Out11_EX4;
-        Out12_EX5 <= Out12_EX4;
-        Out13_EX5 <= Out13_EX4;
-        Out14_EX5 <= Out14_EX4;
-        Out15_EX5 <= Out15_EX4;
-        Out16_EX5 <= Out16_EX4;
+        Out1_EX5 <= Out1;
+        Out2_EX5 <= Out2;
+        Out3_EX5 <= Out3;
+        Out4_EX5 <= Out4;
+        Out5_EX5 <= Out5;
+        Out6_EX5 <= Out6;
+        Out7_EX5 <= Out7;
+        Out8_EX5 <= Out8;
+        Out9_EX5 <= Out9;
+        Out10_EX5 <= Out10;
+        Out11_EX5 <= Out11;
+        Out12_EX5 <= Out12;
+        Out13_EX5 <= Out13;
+        Out14_EX5 <= Out14;
+        Out15_EX5 <= Out15;
+        Out16_EX5 <= Out16;
 
-        tOut1_EX5 <= tOut1_EX4;
-        tOut2_EX5 <= tOut2_EX4;
-        tOut3_EX5 <= tOut3_EX4;
-        tOut4_EX5 <= tOut4_EX4;
-        tOut5_EX5 <= tOut5_EX4;
-        tOut6_EX5 <= tOut6_EX4;
-        tOut7_EX5 <= tOut7_EX4;
-        tOut8_EX5 <= tOut8_EX4;
-        tOut9_EX5 <= tOut9_EX4;
-        tOut10_EX5 <= tOut10_EX4;
-        tOut11_EX5 <= tOut11_EX4;
-        tOut12_EX5 <= tOut12_EX4;
-        tOut13_EX5 <= tOut13_EX4;
-        tOut14_EX5 <= tOut14_EX4;
-        tOut15_EX5 <= tOut15_EX4;
-        tOut16_EX5 <= tOut16_EX4;
+        tOut1_EX5 <= tOut1;
+        tOut2_EX5 <= tOut2;
+        tOut3_EX5 <= tOut3;
+        tOut4_EX5 <= tOut4;
+        tOut5_EX5 <= tOut5;
+        tOut6_EX5 <= tOut6;
+        tOut7_EX5 <= tOut7;
+        tOut8_EX5 <= tOut8;
+        tOut9_EX5 <= tOut9;
+        tOut10_EX5 <= tOut10;
+        tOut11_EX5 <= tOut11;
+        tOut12_EX5 <= tOut12;
+        tOut13_EX5 <= tOut13;
+        tOut14_EX5 <= tOut14;
+        tOut15_EX5 <= tOut15;
+        tOut16_EX5 <= tOut16;
     end
     
 end

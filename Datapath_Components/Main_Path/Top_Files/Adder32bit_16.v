@@ -5,7 +5,7 @@ module Adder32bit_16(In1,In2,In3,In4,In5,In6,In7,In8,In9,In10,In11,In12,In13,In1
 					In17,In18,In19,In20,In21,In22,In23,In24,In25,In26,In27,In28,In29,In30,In31,In32,
                 	Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16);
 
-	input [1:0] check_wcol_out; // control bits for ALU operation
+	//input [1:0] check_wcol_out; // control bits for ALU operation
                       
 	input [31:0] In1,In2,In3,In4,In5,In6,In7,In8,In9,In10,In11,In12,In13,In14,In15,In16,
 					In17,In18,In19,In20,In21,In22,In23,In24,In25,In26,In27,In28,In29,In30,In31,In32;	    // inputs

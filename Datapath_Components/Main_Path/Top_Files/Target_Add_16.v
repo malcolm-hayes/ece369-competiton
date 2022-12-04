@@ -4,11 +4,9 @@
 module Target_Add_16(target_window,
                 Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16);
 
-	input [1:0] check_wcol_out; // control bits for ALU operation
-                      
-	input signed [31:0] A, B;	    // inputs
-
-	output reg [31:0] Out;	// answer
+      
+    input [31:0] target_window;
+	output wire [31:0] Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16;	// answer
 	
 
         

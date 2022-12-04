@@ -4,12 +4,10 @@
 module Memmory_16(Clk, Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16,
                 ReadData1,ReadData2,ReadData3,ReadData4,ReadData5,ReadData6,ReadData7,ReadData8,ReadData9,ReadData10,
                 ReadData11,ReadData12,ReadData13,ReadData14,ReadData15,ReadData16);
-
-	input [1:0] check_wcol_out; // control bits for ALU operation
-                      
-	input signed [31:0] A, B;	    // inputs
-
-	output reg [31:0] Out;	// answer
+    input Clk;                  
+    input [31:0] Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16;
+	output wire [31:0] ReadData1,ReadData2,ReadData3,ReadData4,ReadData5,ReadData6,ReadData7,ReadData8,ReadData9,ReadData10,
+                ReadData11,ReadData12,ReadData13,ReadData14,ReadData15,ReadData16;	// answer
 	
 //      BaseAddress, WriteData, Clk, MemWrite, MemRead, ReadData
         DataMemory DataMemory_1(Out1, 0, Clk, 0, 1, ReadData1);

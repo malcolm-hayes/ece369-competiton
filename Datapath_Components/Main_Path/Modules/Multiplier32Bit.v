@@ -32,7 +32,7 @@ module Multiplier32Bit(A, B, Out);
                       // you need to adjust the bitwidth as needed
 	input signed [31:0] A, B;	    // inputs
 
-	output reg [31:0] ALUResult;	// answer
+	output reg [31:0] Out;	// answer
 	//output reg Zero;	    // Zero=1 if ALUResult == 0
 
 initial begin

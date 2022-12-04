@@ -8,14 +8,19 @@
 //  THIS SHOULD NOT BE SET AS TOP FILE, SET Top_Board AS TOP FILE!!!!!!!!!!!!!!!!!!
 //  THIS SHOULD NOT BE SET AS TOP FILE, SET Top_Board AS TOP FILE!!!!!!!!!!!!!!!!!!
 
-module Top(Clk, Reset, v0_Out, v1_Out);
-
+module Wiring(Clk, Reset, v0_Out, v1_Out);
+    
+    input Clk, Reset;
     output wire [31:0] v0_Out, v1_Out;
-
+    
+    wire [31:0] Instruction_ID, Immediate_ID,PCAddResult_ID, Immediate_EX;
+    
     wire [31:0] ALUResult_EX, ALUResult_EX2, ALUResult_EX3, ALUResult_EX4, ALUResult_EX5, ALUResult_EX6, ALUResult_EX7, ALUResult_EX8, ALUResult_MEM, 
         rs_value_EX, rs_value_EX2, rs_value_EX3, rs_value_EX4, rs_value_EX5, rs_value_EX6, rs_value_EX7, rs_value_EX8, rs_value_MEM, 
         rt_value_EX, rt_value_EX2, rt_value_EX3, rt_value_EX4, rt_value_EX5, rt_value_EX6, rt_value_EX7, rt_value_EX8, rt_value_MEM;
     wire [4:0] RegDst1Result_EX, RegDst1Result_EX2, RegDst1Result_EX3, RegDst1Result_EX4, RegDst1Result_EX5, RegDst1Result_EX6, RegDst1Result_EX7, RegDst1Result_EX8, RegDst1Result_MEM;
+    wire [4:0] rt_address_EX;
+    
     wire MemWrite_EX, MemWrite_EX2, MemWrite_EX3, MemWrite_EX4, MemWrite_EX5, MemWrite_EX6, MemWrite_EX7, MemWrite_EX8, MemWrite_MEM,
         MemToReg_EX, MemToReg_EX2, MemToReg_EX3, MemToReg_EX4, MemToReg_EX5, MemToReg_EX6, MemToReg_EX7, MemToReg_EX8, MemToReg_MEM,
         MemRead_EX, MemRead_EX2, MemRead_EX3, MemRead_EX4, MemRead_EX5, MemRead_EX6, MemRead_EX7, MemRead_EX8, MemRead_MEM,
@@ -60,7 +65,7 @@ module Top(Clk, Reset, v0_Out, v1_Out);
         foOut1_EX8, foOut2_EX8,
         
         mul6_out_1, mul6_out_1_EX3, mul6_out_2, mul6_out_2_EX3, mul6_out_3, mul6_out_3_EX3, mul6_out_4, mul6_out_4_EX3,
-        mul_frow_out, mul_frow_out_EX4, Mul_frow_result;
+        mul_frow_out, mul_frow_out_EX4;
     wire [1:0] check_wcol_out, check_wcol_out_EX1, check_wcol_out_EX2, check_wcol_out_EX3;
 
     // DATAPATH START
@@ -120,7 +125,7 @@ module Top(Clk, Reset, v0_Out, v1_Out);
     rs_value_ID, rt_value_ID, Immediate_ID, Instruction_ID[25:21], Instruction_ID[20:16], Instruction_ID[15:11], /*PCAddResult_ID,*/ jal_RA, jump, jr, JumpPC,
     //                                          rs_address_ID  ^      rt_address_ID   ^    , rd_address_ID   ^
       RegWrite_EX, RegDst_EX, ALUOp_EX, ALUSrc_EX, /*Branch_EX,*/ MemWrite_EX, MemToReg_EX, MemRead_EX, 
-      rs_value_EX, rt_value_EX, Immediate_EX, rs_address_EX, rt_address_EX, rd_address_EX, /*PCAddResult_EX,*/ jal_EX, Jump_EX, JR_EX, JumpPC_EX, ControlMuxSig, Clk, Reset
+      rs_value_EX, rt_value_EX, Immediate_EX, rs_address_EX, rt_address_EX, rd_address_EX, /*PCAddResult_EX,*/ jal_EX, Jump_EX, JR_EX, JumpPC_EX, ControlMuxSig, Clk, Reset,
     move, sad, move_EX, sad_EX,
     //registers for custom instruction ID
     s0_numrow_value_ID,s1_cdif_value_ID,s2_it_value_ID, t1_sad_value_ID, s4_frow_value_ID, 
@@ -152,7 +157,7 @@ module Top(Clk, Reset, v0_Out, v1_Out);
     jal_EX, Jump_EX, JR_EX, JumpPC_EX, rs_value_EX, rt_value_EX,
     ALUResult_EX2, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX2,*/
     RegDst1Result_EX2, /*Zero_MEM,*/ MemWrite_EX2, MemToReg_EX2, MemRead_EX2, /*Branch_MEM,*/ RegWrite_EX2, 
-    jal_EX2, Jump_EX2, JR_EX2, JumpPC_EX2, rs_value_EX2, rt_value_EX2 Clk, Reset    
+    jal_EX2, Jump_EX2, JR_EX2, JumpPC_EX2, rs_value_EX2, rt_value_EX2, Clk, Reset,    
     //registers for custom instruction EX1
     s0_numrow_value_EX1,s1_cdif_value_EX1, s2_it_value_EX1, t1_sad_value_EX1, s4_frow_value_EX1, sad_EX,
 	s6_x_value_EX1, s7_y_value_EX1, t0_target_value_EX1, outx, outy, check_wcol_out, a1_frame_value_EX1,
@@ -172,7 +177,7 @@ module Top(Clk, Reset, v0_Out, v1_Out);
     //PIPELINE
     EX2_EX3_Reg EX2_EX3_Reg_1(ALUResult_EX2, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX2,*/
     RegDst1Result_EX2, /*Zero_MEM,*/ MemWrite_EX2, MemToReg_EX2, MemRead_EX2, /*Branch_MEM,*/ RegWrite_EX2, 
-    jal_EX2, Jump_EX2, JR_EX2, JumpPC_EX2, rs_value_EX2, rt_value_EX2, Clk, Reset
+    jal_EX2, Jump_EX2, JR_EX2, JumpPC_EX2, rs_value_EX2, rt_value_EX2, Clk, Reset,
     //EX3
     ALUResult_EX3, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX3,*/
     RegDst1Result_EX3, /*Zero_MEM,*/ MemWrite_EX3, MemToReg_EX3, MemRead_EX3, /*Branch_MEM,*/ RegWrite_EX3, 
@@ -180,10 +185,10 @@ module Top(Clk, Reset, v0_Out, v1_Out);
     //registers for custom instruction EX2
     t1_sad_value_EX2, s4_frow_value_EX2, sad_EX2,
 	s6_x_value_EX2, s7_y_value_EX2,t0_target_value_EX2, outx_EX2, outy_EX2, check_wcol_out_EX2,
-    mul6_out_1,mul6_out_2,mul6_out_3,mul6_out_4, itxnumrow_out,a1_frame_value_EX2
+    mul6_out_1,mul6_out_2,mul6_out_3,mul6_out_4, itxnumrow_out,a1_frame_value_EX2,
     //registers for custom instruction EX3
     t1_sad_value_EX3, s4_frow_value_EX3, sad_EX3,
-	s6_x_value_EX3, s7_y_value_EX3, t0_target_value_EX3, outx_EX3, outy_EX3, check_wcol_out_EX3
+	s6_x_value_EX3, s7_y_value_EX3, t0_target_value_EX3, outx_EX3, outy_EX3, check_wcol_out_EX3,
     mul6_out_1_EX3,mul6_out_2_EX3,mul6_out_3_EX3,mul6_out_4_EX3, itxnumrow_out_EX3,a1_frame_value_EX3
     ); 
 //EX3 stage
@@ -197,7 +202,7 @@ module Top(Clk, Reset, v0_Out, v1_Out);
     //PIPELINE
     EX3_EX4_Reg EX3_EX4_Reg_1(ALUResult_EX3, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX3,*/
     RegDst1Result_EX3, /*Zero_MEM,*/ MemWrite_EX3, MemToReg_EX3, MemRead_EX3, /*Branch_MEM,*/ RegWrite_EX3, 
-    jal_EX3, Jump_EX3, JR_EX3, JumpPC_EX3, rs_value_EX3, rt_value_EX3, Clk, Reset
+    jal_EX3, Jump_EX3, JR_EX3, JumpPC_EX3, rs_value_EX3, rt_value_EX3, Clk, Reset,
     //EX4
     ALUResult_EX4, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX4,*/
     RegDst1Result_EX4, /*Zero_MEM,*/ MemWrite_EX4, MemToReg_EX4, MemRead_EX4, /*Branch_MEM,*/ RegWrite_EX4, 
@@ -225,7 +230,7 @@ module Top(Clk, Reset, v0_Out, v1_Out);
     //PIPELINE
     EX4_EX5_Reg EX4_EX5_Reg_1(ALUResult_EX4, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX4, */
     RegDst1Result_EX4, /*Zero_MEM,*/ MemWrite_EX4, MemToReg_EX4, MemRead_EX4, /*Branch_MEM,*/ RegWrite_EX4, 
-    jal_EX4, Jump_EX4, JR_EX4, JumpPC_EX4, rs_value_EX4,rt_value_EX4, Clk, Reset
+    jal_EX4, Jump_EX4, JR_EX4, JumpPC_EX4, rs_value_EX4,rt_value_EX4, Clk, Reset,
     //EX5
     ALUResult_EX5, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX5, */
     RegDst1Result_EX5, /*Zero_MEM,*/ MemWrite_EX5, MemToReg_EX5, MemRead_EX5, /*Branch_MEM,*/ RegWrite_EX5, 
@@ -247,7 +252,7 @@ module Top(Clk, Reset, v0_Out, v1_Out);
                 ReadData1,ReadData2,ReadData3,ReadData4,ReadData5,ReadData6,ReadData7,ReadData8,ReadData9,ReadData10,
                 ReadData11,ReadData12,ReadData13,ReadData14,ReadData15,ReadData16);
     Memmory_16 Memmory_16_Target(Clk, tOut1_EX5,tOut2_EX5,tOut3_EX5,tOut4_EX5,tOut5_EX5,tOut6_EX5,tOut7_EX5,tOut8_EX5,tOut9_EX5,
-                tOut10_EX5,tOut11_EX5,tOut12_EX5,tOut13_EX5,tOut14_EX5,tOut15_EX5,tOut16_EX5 
+                tOut10_EX5,tOut11_EX5,tOut12_EX5,tOut13_EX5,tOut14_EX5,tOut15_EX5,tOut16_EX5, 
                 tReadData1,tReadData2,tReadData3,tReadData4,tReadData5,tReadData6,tReadData7,tReadData8,tReadData9,tReadData10,
                 tReadData11,tReadData12,tReadData13,tReadData14,tReadData15,tReadData16);
     
@@ -255,7 +260,7 @@ module Top(Clk, Reset, v0_Out, v1_Out);
     //PIPELINE
     EX5_EX6_Reg EX5_EX6_Reg_1(ALUResult_EX5, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX5,*/
     RegDst1Result_EX5, /*Zero_MEM,*/ MemWrite_EX5, MemToReg_EX5, MemRead_EX5, /*Branch_MEM,*/ RegWrite_EX5, 
-    jal_EX5, Jump_EX5, JR_EX5, JumpPC_EX5, rs_value_EX5, rt_value_EX5,Clk, Reset
+    jal_EX5, Jump_EX5, JR_EX5, JumpPC_EX5, rs_value_EX5, rt_value_EX5,Clk, Reset,
     //EX6
     ALUResult_EX6, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX6,*/
     RegDst1Result_EX6, /*Zero_MEM,*/ MemWrite_EX6, MemToReg_EX6, MemRead_EX6, /*Branch_MEM,*/ RegWrite_EX6, 
@@ -285,16 +290,16 @@ module Top(Clk, Reset, v0_Out, v1_Out);
     //PIPELINE
     EX6_EX7_Reg EX6_EX7_Reg_1(ALUResult_EX6, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX6,*/
     RegDst1Result_EX6, /*Zero_MEM,*/ MemWrite_EX6, MemToReg_EX6, MemRead_EX6, /*Branch_MEM,*/ RegWrite_EX6, 
-    jal_EX6, Jump_EX6, JR_EX6, JumpPC_EX6, rs_value_EX6, rt_value_EX6,Clk, Reset
+    jal_EX6, Jump_EX6, JR_EX6, JumpPC_EX6, rs_value_EX6, rt_value_EX6,Clk, Reset,
     //EX7
     ALUResult_EX7, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX7,*/
     RegDst1Result_EX7, /*Zero_MEM,*/ MemWrite_EX7, MemToReg_EX7, MemRead_EX7, /*Branch_MEM,*/ RegWrite_EX7, 
     jal_EX7, Jump_EX7, JR_EX7, JumpPC_EX7, rs_value_EX7,rt_value_EX7,
     //registers for custom instruction EX6
-    t1_sad_value_EX6, outx_EX6, outy_EX6,sad_EX6
+    t1_sad_value_EX6, outx_EX6, outy_EX6,sad_EX6,
     sOut1,sOut2,sOut3,sOut4,sOut5,sOut6,sOut7,sOut8,
     //registers for custom instruction EX7
-    t1_sad_value_EX7, outx_EX7, outy_EX7,sad_EX7
+    t1_sad_value_EX7, outx_EX7, outy_EX7,sad_EX7,
     sOut1_EX7,sOut2_EX7,sOut3_EX7,sOut4_EX7,sOut5_EX7,sOut6_EX7,sOut7_EX7,sOut8_EX7
     );
 //EX7 stage
@@ -306,7 +311,7 @@ module Top(Clk, Reset, v0_Out, v1_Out);
     //PIPELINE
     EX7_EX8_Reg EX7_EX8_Reg_1(ALUResult_EX7, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX7,*/
     RegDst1Result_EX7, /*Zero_MEM,*/ MemWrite_EX7, MemToReg_EX7, MemRead_EX7, /*Branch_MEM,*/ RegWrite_EX7, 
-    jal_EX7, Jump_EX7, JR_EX7, JumpPC_EX7, rs_value_EX7, rt_value_EX7,Clk, Reset
+    jal_EX7, Jump_EX7, JR_EX7, JumpPC_EX7, rs_value_EX7, rt_value_EX7,Clk, Reset,
     //EX8
     ALUResult_EX8, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX8,*/
     RegDst1Result_EX8, /*Zero_MEM,*/ MemWrite_EX8, MemToReg_EX8, MemRead_EX8, /*Branch_MEM,*/ RegWrite_EX8, 
@@ -324,19 +329,17 @@ module Top(Clk, Reset, v0_Out, v1_Out);
     Mux32Bit2To1 Mux32Bit2To1_SADorNot(sadMUX_regwrite_value, SAD_Out, ALUResult_EX8, sad_EX8);
 //END EX8 stage
     //PIPELINE
-    EX8_MEM_Reg EX8_MEM_Reg_1(ALUResult_EX8, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX8,*/
+    EX8_MEM_Reg EX8_MEM_Reg_1(sadMUX_regwrite_value, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX8,*/
     RegDst1Result_EX8, /*Zero_MEM,*/ MemWrite_EX8, MemToReg_EX8, MemRead_EX8, /*Branch_MEM,*/ RegWrite_EX8, 
-    jal_EX8, Jump_EX8, JR_EX8, JumpPC_EX8, rs_value_EX8,rt_value_EX8, Clk, Reset
+    jal_EX8, Jump_EX8, JR_EX8, JumpPC_EX8, rs_value_EX8,rt_value_EX8, Clk, Reset,
     //MEM
-    ALUResult_MEM, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_MEM,*/
+    sadMUX_regwrite_value_MEM, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_MEM,*/
     RegDst1Result_MEM, /*Zero_MEM,*/ MemWrite_MEM, MemToReg_MEM, MemRead_MEM, /*Branch_MEM,*/ RegWrite_MEM, 
     jal_MEM, Jump_MEM, JR_MEM, JumpPC_MEM, rs_value_MEM,rt_value_MEM,
     //registers for custom instruction EX8
     t1_sad_value_EX8, outx_EX8, outy_EX8,
-    sadMUX_regwrite_value,
     //registers for custom instruction MEM
-    t1_sad_value_MEM, outx_MEM, outy_MEM,
-    sadMUX_regwrite_value_MEM
+    t1_sad_value_MEM, outx_MEM, outy_MEM
     );
 // MEMORY STAGE
     //NEED TO FORWARD THE SAD_MUX_regwrite_value and fix forwarding inputs
@@ -346,7 +349,7 @@ module Top(Clk, Reset, v0_Out, v1_Out);
     // PIPELINE
     MEM_WB_Reg MEM_WB_Reg_1(ReadData_MEM, ReadData_WB, ALUResult_MEM, ALUResult_WB, 
                   MemToReg_MEM, MemToReg_WB, RegWrite_MEM, RegWrite_WB,
-                  RegDst1Result_MEM, RegDst1Result_WB, jal_MEM, jal_WB, Jump_MEM, Jump_WB, JR_MEM, JR_WB, Clk, Reset
+                  RegDst1Result_MEM, RegDst1Result_WB, jal_MEM, jal_WB, Jump_MEM, Jump_WB, JR_MEM, JR_WB, Clk, Reset,
                   sadMUX_regwrite_value_MEM, sadMUX_regwrite_value_WB);
 
 // BEGIN WB
