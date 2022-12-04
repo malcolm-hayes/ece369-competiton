@@ -23,12 +23,14 @@ module EX5_EX6_Reg(ALUResult_EX5, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX5
 
 input [31:0] ALUResult_EX5, /* rt_Register_Value_EX,*/ rs_value_EX5, rt_value_EX5, JumpPC_EX5;
 input [4:0] RegDst1Result_EX5;
-input MemWrite_EX5, MemToReg_EX5, MemRead_EX5, RegWrite_EX5, jal_EX5, Jump_EX5, JR_EX5,sad_EX5;
+input [1:0] MemWrite_EX5, MemRead_EX5;
+input MemToReg_EX5, RegWrite_EX5, jal_EX5, Jump_EX5, JR_EX5,sad_EX5;
 input Clk, Reset;
 
 output reg [31:0] ALUResult_EX6, /* rt_Register_Value_EX2,*/ rs_value_EX6, rt_value_EX6, JumpPC_EX6;
 output reg [4:0] RegDst1Result_EX6;
-output reg MemWrite_EX6, MemToReg_EX6, MemRead_EX6, RegWrite_EX6, jal_EX6, Jump_EX6, JR_EX6,sad_EX6;
+output reg [1:0] MemWrite_EX6, MemRead_EX6;
+output reg MemToReg_EX6, RegWrite_EX6, jal_EX6, Jump_EX6, JR_EX6,sad_EX6;
 
 // custom instruction
 input [31:0] t1_sad_value_EX5, outx_EX5, outy_EX5,

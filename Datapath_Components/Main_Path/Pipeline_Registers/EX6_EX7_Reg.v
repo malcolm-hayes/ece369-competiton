@@ -17,12 +17,14 @@ module EX6_EX7_Reg(ALUResult_EX6, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX6
 
 input [31:0] ALUResult_EX6, /* rt_Register_Value_EX,*/ rs_value_EX6, rt_value_EX6, JumpPC_EX6;
 input [4:0] RegDst1Result_EX6;
-input MemWrite_EX6, MemToReg_EX6, MemRead_EX6, RegWrite_EX6, jal_EX6, Jump_EX6, JR_EX6,sad_EX6;
+input [1:0] MemWrite_EX6, MemRead_EX6;
+input MemToReg_EX6, RegWrite_EX6, jal_EX6, Jump_EX6, JR_EX6,sad_EX6;
 input Clk, Reset;
 
 output reg [31:0] ALUResult_EX7, /* rt_Register_Value_EX2,*/ rs_value_EX7, rt_value_EX7, JumpPC_EX7;
 output reg [4:0] RegDst1Result_EX7;
-output reg MemWrite_EX7, MemToReg_EX7, MemRead_EX7, RegWrite_EX7, jal_EX7, Jump_EX7, JR_EX7,sad_EX7;
+input [1:0] MemWrite_EX7, MemRead_EX7;
+output reg MemToReg_EX7, RegWrite_EX7, jal_EX7, Jump_EX7, JR_EX7,sad_EX7;
 
 // custom instruction
 input [31:0] t1_sad_value_EX6, outx_EX6, outy_EX6,

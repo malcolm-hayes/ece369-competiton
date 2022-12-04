@@ -19,12 +19,14 @@ module EX2_EX3_Reg(ALUResult_EX2, /*PCPlusOffset_MEM,*/ /*rt_Register_Value_EX2,
 
 input [31:0] ALUResult_EX2, /* rt_Register_Value_EX,*/ rs_value_EX2, rt_value_EX2, JumpPC_EX2;
 input [4:0] RegDst1Result_EX2;
-input MemWrite_EX2, MemToReg_EX2, MemRead_EX2, RegWrite_EX2, jal_EX2, Jump_EX2, JR_EX2;
+input [1:0] MemWrite_EX2, MemRead_EX2;
+input MemToReg_EX2, RegWrite_EX2, jal_EX2, Jump_EX2, JR_EX2;
 input Clk, Reset;
 
 output reg [31:0] ALUResult_EX3, /* rt_Register_Value_EX2,*/ rs_value_EX3, rt_value_EX3, JumpPC_EX3;
 output reg [4:0] RegDst1Result_EX3;
-output reg MemWrite_EX3, MemToReg_EX3, MemRead_EX3, RegWrite_EX3, jal_EX3, Jump_EX3, JR_EX3;
+output reg [1:0] MemWrite_EX3, MemRead_EX3;
+output reg MemToReg_EX3, RegWrite_EX3, jal_EX3, Jump_EX3, JR_EX3;
 
 //custom instruction
 input [31:0] t1_sad_value_EX2, s4_frow_value_EX2,
