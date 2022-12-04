@@ -124,7 +124,7 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
         JR_EX2, JR_EX3, JR_EX4, JR_EX5, JR_EX6, JR_EX7, JR_EX8;
         
     wire sad, sad_EX, sad_EX2, sad_EX3, sad_EX4, sad_EX5, sad_EX6, sad_EX7, sad_EX8,
-         move, move_EX;
+         move, move_EX,move_EX2,ORGate_movecheck_out_EX1;
     
     wire [31:0] s5_wcol_value_ID,s0_numrow_value_ID,s1_cdif_value_ID,s2_it_value_ID, 
         t1_sad_value_ID, s4_frow_value_ID,s6_x_value_ID, s7_y_value_ID,t0_target_value_ID, a1_frame_value_ID,
@@ -135,7 +135,7 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
         s2_it_value_EX1, s2_it_value_EX2,
         t1_sad_value_EX1, t1_sad_value_EX2, t1_sad_value_EX3, t1_sad_value_EX4, t1_sad_value_EX5, t1_sad_value_EX6, t1_sad_value_EX7, t1_sad_value_EX8, t1_sad_value_MEM,
         s4_frow_value_EX1, s4_frow_value_EX2, s4_frow_value_EX3,
-        s5_wcol_value_EX1,
+        s5_wcol_value_EX1, moveCheck_outValue, moveCheck_outValue_EX2,
         s6_x_value_EX1, s6_x_value_EX2, s6_x_value_EX3,
         s7_y_value_EX1, s7_y_value_EX2, s7_y_value_EX3,
         
@@ -239,12 +239,12 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
     Mux32Bit3To1 Mux32Bit3To1_WriteMEMData(rt_value_EX, ALUResult_MEM, MemToReg_WB_MUX, WriteMEMData_MUX, WriteMEMData_Signal);
 
     ALU32Bit ALU32Bit_1(ALUControl, forward_rs_value, forward_rt_value, Immediate_EX, ALUResult_EX /*, Zero*/);
-
-    Mux5Bit2To1 Mux5Bit2To1_RegDst(RegDst1Result_EX, rt_address_EX, rd_address_EX, ORGate_movecheck_out);
+                                //out, A, B, sel
+    Mux5Bit2To1 Mux5Bit2To1_RegDst(RegDst1Result_EX, rt_address_EX, rd_address_EX, ORGate_movecheck_out_EX1); //important for bit code for move
 
     //CUSTOM INSTRUCTION UNITS
-    ORGate ORGate_movecheck(outRegister, RegDst_EX, ORGate_movecheck_out);
-    MoveCheck MoveCheck_1(s6_x_value_EX1, s7_y_value_EX1, s1_cdif_value_EX1,move_EX, outRegister);
+    ORGate ORGate_movecheck(outRegister, RegDst_EX, ORGate_movecheck_out_EX1);
+    MoveCheck MoveCheck_1(s6_x_value_EX1, s7_y_value_EX1, s1_cdif_value_EX1,move_EX, moveCheck_outValue, outRegister);
     CheckWindowColumns CheckWindowColums_1(s5_wcol_value_EX1, check_wcol_out);
 
 
@@ -257,10 +257,10 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
     RegDst1Result_EX2, /*Zero_MEM,*/ MemWrite_EX2, MemToReg_EX2, MemRead_EX2, /*Branch_MEM,*/ RegWrite_EX2, 
     jal_EX2, Jump_EX2, JR_EX2, JumpPC_EX2, rs_value_EX2, rt_value_EX2, Clk, Reset,    
     //registers for custom instruction EX1
-    s0_numrow_value_EX1,s1_cdif_value_EX1, s2_it_value_EX1, t1_sad_value_EX1, s4_frow_value_EX1, sad_EX,
-	s6_x_value_EX1, s7_y_value_EX1, t0_target_value_EX1, outx, outy, check_wcol_out, a1_frame_value_EX1,
+    s0_numrow_value_EX1,s1_cdif_value_EX1, s2_it_value_EX1, t1_sad_value_EX1, s4_frow_value_EX1, sad_EX,moveCheck_outValue,
+	s6_x_value_EX1, s7_y_value_EX1, t0_target_value_EX1, outx, outy, check_wcol_out, a1_frame_value_EX1,move_EX, 
     //registers for custom instruction EX2
-    s0_numrow_value_EX2,s1_cdif_value_EX2,s2_it_value_EX2, t1_sad_value_EX2, s4_frow_value_EX2, sad_EX2,
+    s0_numrow_value_EX2,s1_cdif_value_EX2,s2_it_value_EX2, t1_sad_value_EX2, s4_frow_value_EX2, sad_EX2,move_EX2,moveCheck_outValue_EX2,
 	s6_x_value_EX2, s7_y_value_EX2,t0_target_value_EX2, outx_EX2, outy_EX2, check_wcol_out_EX2,a1_frame_value_EX2
     ); 
 
@@ -268,12 +268,13 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
 //EX2 stage
     //Adder32Bit Add_x(A, B, Out);
     //Adder32Bit Add_y(A, B, Out);
+    Mux32Bit2To1 Mux32Bit2To1_Move_Value(ALUResult_EX2_MOVEMUX, ALUResult_EX2,moveCheck_outValue_EX2 , move_EX2);
     Multiplier32Bit Mul_it_numrow(s2_it_value_EX2, s0_numrow_value_EX2, itxnumrow_out); //multiplies the iterator and the initialized numrow value
     Gen_Mul_6 Gen_Mul_6_1(check_wcol_out_EX2, s4_frow_value_EX2, mul6_out_1,mul6_out_2,mul6_out_3,mul6_out_4);
 
 //END EX2 stage
     //PIPELINE
-    EX2_EX3_Reg EX2_EX3_Reg_1(ALUResult_EX2, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX2,*/
+    EX2_EX3_Reg EX2_EX3_Reg_1(ALUResult_EX2_MOVEMUX, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX2,*/
     RegDst1Result_EX2, /*Zero_MEM,*/ MemWrite_EX2, MemToReg_EX2, MemRead_EX2, /*Branch_MEM,*/ RegWrite_EX2, 
     jal_EX2, Jump_EX2, JR_EX2, JumpPC_EX2, rs_value_EX2, rt_value_EX2, Clk, Reset,
     //EX3
