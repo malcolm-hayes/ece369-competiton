@@ -114,10 +114,10 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
     wire [4:0] RegDst1Result_EX, RegDst1Result_EX2, RegDst1Result_EX3, RegDst1Result_EX4, RegDst1Result_EX5, RegDst1Result_EX6, RegDst1Result_EX7, RegDst1Result_EX8;
 
 
-    wire [1:0] MemWrite_EX2, MemWrite_EX3, MemWrite_EX4, MemWrite_EX5, MemWrite_EX6, MemWrite_EX7, MemWrite_EX8;
+    wire [1:0] MemWrite_EX2, MemWrite_EX3, MemWrite_EX4, MemWrite_EX5, MemWrite_EX6, MemWrite_EX7, MemWrite_EX8,
+        MemRead_EX2, MemRead_EX3, MemRead_EX4, MemRead_EX5, MemRead_EX6, MemRead_EX7, MemRead_EX8;
     
     wire MemToReg_EX2, MemToReg_EX3, MemToReg_EX4, MemToReg_EX5, MemToReg_EX6, MemToReg_EX7, MemToReg_EX8,
-        MemRead_EX2, MemRead_EX3, MemRead_EX4, MemRead_EX5, MemRead_EX6, MemRead_EX7, MemRead_EX8,
         RegWrite_EX2, RegWrite_EX3, RegWrite_EX4, RegWrite_EX5, RegWrite_EX6, RegWrite_EX7, RegWrite_EX8,
         jal_EX2, jal_EX3, jal_EX4, jal_EX5, jal_EX6, jal_EX7, jal_EX8, 
         Jump_EX2, Jump_EX3, Jump_EX4, Jump_EX5, Jump_EX6, Jump_EX7, Jump_EX8,
@@ -128,7 +128,10 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
     
     wire [31:0] s5_wcol_value_ID,s0_numrow_value_ID,s1_cdif_value_ID,s2_it_value_ID, 
         t1_sad_value_ID, s4_frow_value_ID,s6_x_value_ID, s7_y_value_ID,t0_target_value_ID, a1_frame_value_ID,
-        JumpPC_EX2, JumpPC_EX3, JumpPC_EX4, JumpPC_EX5, JumpPC_EX6, JumpPC_EX7, JumpPC_EX8;
+        JumpPC_EX2, JumpPC_EX3, JumpPC_EX4, JumpPC_EX5, JumpPC_EX6, JumpPC_EX7, JumpPC_EX8,itxnumrow_out,itxnumrow_out_EX3,add7_out_1,
+        add7_out_2,add7_out_3,add7_out_4,add_frame_out,ALUResult_EX2_MOVEMUX,sadMUX_regwrite_value,sadMUX_regwrite_value_MEM,
+        sadMUX_regwrite_value_WB,add_y_itxnumrow,FinalOut, SAD_Out,
+        fOut1,fOut2,fOut3,fOut4,fOut5,fOut6,fOut7,fOut8,fOut9,fOut10,fOut11,fOut12,fOut13,fOut14,fOut15,fOut16;
 
     wire [31:0] s0_numrow_value_EX1, s0_numrow_value_EX2,
         s1_cdif_value_EX1, s1_cdif_value_EX2,
@@ -155,6 +158,8 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
         tReadData1, tReadData2, tReadData3, tReadData4, tReadData5, tReadData6, tReadData7, tReadData8, tReadData9, tReadData10, tReadData11, tReadData12, tReadData13, tReadData14, tReadData15, tReadData16,
         ReadData1_EX6,ReadData2_EX6,ReadData3_EX6,ReadData4_EX6,ReadData5_EX6,ReadData6_EX6,ReadData7_EX6,ReadData8_EX6,ReadData9_EX6,
         ReadData10_EX6,ReadData11_EX6,ReadData12_EX6,ReadData13_EX6,ReadData14_EX6,ReadData15_EX6,ReadData16_EX6,
+        tReadData1_EX6,tReadData2_EX6,tReadData3_EX6,tReadData4_EX6,tReadData5_EX6,tReadData6_EX6,tReadData7_EX6,tReadData8_EX6,
+        tReadData9_EX6,tReadData10_EX6, tReadData11_EX6,tReadData12_EX6,tReadData13_EX6,tReadData14_EX6,tReadData15_EX6,tReadData16_EX6,
 
         sOut1, sOut2, sOut3, sOut4, sOut5, sOut6, sOut7, sOut8,
         sOut1_EX7,sOut2_EX7,sOut3_EX7,sOut4_EX7,sOut5_EX7,sOut6_EX7,sOut7_EX7,sOut8_EX7,
