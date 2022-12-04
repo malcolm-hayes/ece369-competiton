@@ -355,12 +355,12 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
                 Out11_EX5,Out12_EX5,Out13_EX5,Out14_EX5,Out15_EX5,Out16_EX5,
                 ReadData1,ReadData2,ReadData3,ReadData4,ReadData5,ReadData6,ReadData7,ReadData8,ReadData9,ReadData10,
                 ReadData11,ReadData12,ReadData13,ReadData14,ReadData15,ReadData16,
-                rt_value_MEM, MemWrite_MEM, MemRead_EX5);
+                sadMUX_regwrite_value_MEM, MemWrite_MEM, MemRead_EX5);
     Memmory_16 Memory_16_Target(Clk, tOut1_EX5,tOut2_EX5,tOut3_EX5,tOut4_EX5,tOut5_EX5,tOut6_EX5,tOut7_EX5,tOut8_EX5,tOut9_EX5,
                 tOut10_EX5,tOut11_EX5,tOut12_EX5,tOut13_EX5,tOut14_EX5,tOut15_EX5,tOut16_EX5, 
                 tReadData1,tReadData2,tReadData3,tReadData4,tReadData5,tReadData6,tReadData7,tReadData8,tReadData9,tReadData10,
                 tReadData11,tReadData12,tReadData13,tReadData14,tReadData15,tReadData16,
-                rt_value_MEM, MemWrite_MEM, MemRead_EX5);
+                sadMUX_regwrite_value_MEM, MemWrite_MEM, MemRead_EX5);
     
 //END EX5 stage
     //PIPELINE
@@ -449,14 +449,14 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
     );
 // MEMORY STAGE
     //NEED TO FORWARD THE SAD_MUX_regwrite_value and fix forwarding inputs
-    DataMemory DataMemory_1(sadMUX_regwrite_value, rt_value_MEM, Clk, MemWrite_MEM, MemRead_MEM, ReadData_MEM);
+    DataMemory DataMemory_1(sadMUX_regwrite_value_MEM, rt_value_MEM, Clk, MemWrite_MEM, MemRead_MEM, ReadData_MEM);
 
 // END OF MEM
     // PIPELINE
     MEM_WB_Reg MEM_WB_Reg_1(ReadData_MEM, ReadData_WB,  
                   MemToReg_MEM, MemToReg_WB, RegWrite_MEM, RegWrite_WB,
                   RegDst1Result_MEM, RegDst1Result_WB, jal_MEM, jal_WB, Jump_MEM, Jump_WB, JR_MEM, JR_WB, Clk, Reset,
-                  sadMUX_regwrite_value, sadMUX_regwrite_value_WB);
+                  sadMUX_regwrite_value_MEM, sadMUX_regwrite_value_WB);
 
 // BEGIN WB
     Mux32Bit2To1 Mux32Bit2To1_MemToReg(MemToReg_WB_MUX, sadMUX_regwrite_value_WB, ReadData_WB, MemToReg_WB);
