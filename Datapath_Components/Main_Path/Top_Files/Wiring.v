@@ -211,16 +211,16 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
 // FORWARDING UNIT AND HAZARD DETECTION (AND MUXES)
     ForwardingUnit ForwardingUnit_1(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, rs_address_EX, rt_address_EX, ALU_input_rs, ALU_input_rt, WriteMEMData_Signal);
 //                                 EX_MEM_RegWrite,  EX_MEM_rd,   MEM_WB_RegWrite,   MEM_WB_rd,        ID_EX_rs,      ID_EX_rt, ALU_input_rs, ALU_input_rt, WriteMEMData_Signal
-    Mux32Bit3To1 Mux32Bit3To1_rs(rs_value_EX, sadMUX_regwrite_value, MemToReg_WB_MUX, forward_rs_value, ALU_input_rs);
-    Mux32Bit3To1 Mux32Bit3To1_rt(rt_value_EX, sadMUX_regwrite_value, MemToReg_WB_MUX, forward_rt_value, ALU_input_rt);
+    Mux32Bit3To1 Mux32Bit3To1_rs(rs_value_EX, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, forward_rs_value, ALU_input_rs);
+    Mux32Bit3To1 Mux32Bit3To1_rt(rt_value_EX, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, forward_rt_value, ALU_input_rt);
 //                              (A,B,C,out,sel)
     HazardDetection HazardDetection_1(RegDst_MUX, RegDst1Result_MEM, MemRead_EX,MemRead_MEM, Branch, jump, IF_Flush, Instruction_ID[25:21], Instruction_ID[20:16], PC_Write, IF_ID_Write, 
                                         ControlMuxSig, isBranch, RegWrite_EX, RegWrite_WB, RegDst1Result_WB, jal_RA/*, RegWrite_MEM */, jal_Control);
 //FORWARDING UNIT FOR BRANCHING AND MUXES
     ForwardBranch ForwardBranch_1(Instruction_ID[25:21], Instruction_ID[20:16], RegDst1Result_MEM, RegWrite_MEM, rs_MUX, rt_MUX);
 //                                  rs_ID,                      rt_ID,            EX_MEM_rd,      EX_MEM_RegWrite, rs_MUX, rt_MUX
-    Mux32Bit2To1 Mux32Bit2To1_BRANCHrs(BranchCheckMUX_rs, rs_value_ID, sadMUX_regwrite_value, rs_MUX); 
-    Mux32Bit2To1 Mux32Bit2To1_BRANCHrt(BranchCheckMUX_rt, rt_value_ID, sadMUX_regwrite_value, rt_MUX);
+    Mux32Bit2To1 Mux32Bit2To1_BRANCHrs(BranchCheckMUX_rs, rs_value_ID, sadMUX_regwrite_value_MEM, rs_MUX); 
+    Mux32Bit2To1 Mux32Bit2To1_BRANCHrt(BranchCheckMUX_rt, rt_value_ID, sadMUX_regwrite_value_MEM, rt_MUX);
 //                                      out, A, B, sel
 // END of ID
     //PIPELINE
@@ -241,7 +241,7 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
     ALUControl ALUControl_1(Immediate_EX[5:0], ALUOp_EX, rt_address_EX[0], ALUControl);
     Mux32Bit2To1 Mux32Bit2To1_ALUSrc(ALUSrc_MUX, rt_value_EX, Immediate_EX, ALUSrc_EX);
 
-    Mux32Bit3To1 Mux32Bit3To1_WriteMEMData(rt_value_EX, sadMUX_regwrite_value, MemToReg_WB_MUX, WriteMEMData_MUX, WriteMEMData_Signal);
+    Mux32Bit3To1 Mux32Bit3To1_WriteMEMData(rt_value_EX, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, WriteMEMData_MUX, WriteMEMData_Signal);
 
     ALU32Bit ALU32Bit_1(ALUControl, forward_rs_value, forward_rt_value, Immediate_EX, ALUResult_EX /*, Zero*/);
                                 //out, A, B, sel
