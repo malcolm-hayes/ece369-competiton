@@ -23,7 +23,7 @@ input Clk, Reset;
 
 output reg [31:0] ALUResult_EX7, /* rt_Register_Value_EX2,*/ rs_value_EX7, rt_value_EX7, JumpPC_EX7;
 output reg [4:0] RegDst1Result_EX7;
-input [1:0] MemWrite_EX7, MemRead_EX7;
+output reg [1:0] MemWrite_EX7, MemRead_EX7;
 output reg MemToReg_EX7, RegWrite_EX7, jal_EX7, Jump_EX7, JR_EX7,sad_EX7;
 
 // custom instruction
