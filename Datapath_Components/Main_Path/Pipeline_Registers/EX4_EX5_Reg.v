@@ -19,21 +19,21 @@ module EX4_EX5_Reg(ALUResult_EX4, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX4
     tOut13_EX5,tOut14_EX5,tOut15_EX5,tOut16_EX5 
     ); 
 
-input [31:0] ALUResult_EX4, /* rt_Register_Value_EX,*/ rs_value_EX4, rt_value_EX4;
+input [31:0] ALUResult_EX4, /* rt_Register_Value_EX,*/ rs_value_EX4, rt_value_EX4, JumpPC_EX4;
 input [4:0] RegDst1Result_EX4;
-input MemWrite_EX4, MemToReg_EX4, MemRead_EX4, RegWrite_EX4, jal_EX4, Jump_EX4, JR_EX4, JumpPC_EX4;
+input MemWrite_EX4, MemToReg_EX4, MemRead_EX4, RegWrite_EX4, jal_EX4, Jump_EX4, JR_EX4,sad_EX4;
 input Clk, Reset;
 
-output reg [31:0] ALUResult_EX5, /* rt_Register_Value_EX2,*/ rs_value_EX5, rt_value_EX5;
+output reg [31:0] ALUResult_EX5, /* rt_Register_Value_EX2,*/ rs_value_EX5, rt_value_EX5, JumpPC_EX5;
 output reg [4:0] RegDst1Result_EX5;
-output reg MemWrite_EX5, MemToReg_EX5, MemRead_EX5, RegWrite_EX5, jal_EX5, Jump_EX5, JR_EX5, JumpPC_EX5;
+output reg MemWrite_EX5, MemToReg_EX5, MemRead_EX5, RegWrite_EX5, jal_EX5, Jump_EX5, JR_EX5,sad_EX5;
 
 //custom instruction
-input [31:0] t1_sad_value_EX4, t0_target_value_EX4, outx_EX4, outy_EX4, sad_EX4,
+input [31:0] t1_sad_value_EX4, t0_target_value_EX4, outx_EX4, outy_EX4, 
     Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16,
     tOut1,tOut2,tOut3,tOut4,tOut5,tOut6,tOut7,tOut8,tOut9,tOut10,tOut11,tOut12,tOut13,tOut14,tOut15,tOut16;  
 
-output reg [31:0] t1_sad_value_EX5, t0_target_value_EX5, outx_EX5, outy_EX5,sad_EX5,
+output reg [31:0] t1_sad_value_EX5, t0_target_value_EX5, outx_EX5, outy_EX5,
     Out1_EX5,Out2_EX5,Out3_EX5,Out4_EX5,Out5_EX5,Out6_EX5,Out7_EX5,Out8_EX5,
     Out9_EX5,Out10_EX5,Out11_EX5,Out12_EX5, Out13_EX5,Out14_EX5,Out15_EX5,Out16_EX5,
     tOut1_EX5,tOut2_EX5,tOut3_EX5,tOut4_EX5,tOut5_EX5,tOut6_EX5,tOut7_EX5,tOut8_EX5,

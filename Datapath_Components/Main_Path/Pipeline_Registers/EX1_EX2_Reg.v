@@ -7,29 +7,29 @@ module EX1_EX2_Reg(ALUResult_EX, /*PCPlusOffset_EX,*/ /* rt_Register_Value_EX,*/
     RegDst1Result_EX2, /*Zero_MEM,*/ MemWrite_EX2, MemToReg_EX2, MemRead_EX2, /*Branch_MEM,*/ RegWrite_EX2, 
     jal_EX2, Jump_EX2, JR_EX2, JumpPC_EX2, rs_value_EX2, rt_value_EX2, Clk, Reset,    
     //registers for custom instruction EX1
-    s0_numrow_value_EX1,s1_cdif_value_EX1,s2_it_value_EX1, t1_sad_value_EX1, s4_frow_value_EX1, sad_EX,
-	s6_x_value_EX1, s7_y_value_EX1,t0_target_value_EX1, outx, outy, check_wcol_out,a1_frame_value_EX1,
+    s0_numrow_value_EX1,s1_cdif_value_EX1,s2_it_value_EX1, t1_sad_value_EX1, s4_frow_value_EX1, sad_EX,moveCheck_outValue,
+	s6_x_value_EX1, s7_y_value_EX1,t0_target_value_EX1, outx, outy, check_wcol_out,a1_frame_value_EX1,move_EX,
     //registers for custom instruction EX2
-    s0_numrow_value_EX2,s1_cdif_value_EX2,s2_it_value_EX2, t1_sad_value_EX2, s4_frow_value_EX2, sad_EX2,
+    s0_numrow_value_EX2,s1_cdif_value_EX2,s2_it_value_EX2, t1_sad_value_EX2, s4_frow_value_EX2, sad_EX2,move_EX2,moveCheck_outValue_EX2,
 	s6_x_value_EX2, s7_y_value_EX2,t0_target_value_EX2, outx_EX2, outy_EX2, check_wcol_out_EX2, a1_frame_value_EX2
     ); 
 
-input [31:0] ALUResult_EX, /* rt_Register_Value_EX,*/ rs_value_EX, rt_value_EX;
+input [31:0] ALUResult_EX, /* rt_Register_Value_EX,*/ rs_value_EX, rt_value_EX, JumpPC_EX;
 input [4:0] RegDst1Result_EX;
-input MemWrite_EX, MemToReg_EX, MemRead_EX, RegWrite_EX, jal_EX, Jump_EX, JR_EX, JumpPC_EX;
+input MemWrite_EX, MemToReg_EX, MemRead_EX, RegWrite_EX, jal_EX, Jump_EX, JR_EX,sad_EX,move_EX;
 input Clk, Reset;
 
-output reg [31:0] ALUResult_EX2, /* rt_Register_Value_EX2,*/ rs_value_EX2, rt_value_EX2;
+output reg [31:0] ALUResult_EX2, /* rt_Register_Value_EX2,*/ rs_value_EX2, rt_value_EX2, JumpPC_EX2;
 output reg [4:0] RegDst1Result_EX2;
-output reg MemWrite_EX2, MemToReg_EX2, MemRead_EX2, RegWrite_EX2, jal_EX2, Jump_EX2, JR_EX2, JumpPC_EX2;
+output reg MemWrite_EX2, MemToReg_EX2, MemRead_EX2, RegWrite_EX2, jal_EX2, Jump_EX2, JR_EX2,move_EX2,sad_EX2;
 
 //custom instruction
 input [31:0] s0_numrow_value_EX1, s1_cdif_value_EX1, s2_it_value_EX1, t1_sad_value_EX1, s4_frow_value_EX1,
-             sad_EX, s6_x_value_EX1, s7_y_value_EX1, t0_target_value_EX1, outx, outy, a1_frame_value_EX1;
+            s6_x_value_EX1, s7_y_value_EX1, t0_target_value_EX1, outx, outy, a1_frame_value_EX1,moveCheck_outValue;
 input [1:0] check_wcol_out;
 
 output reg [31:0] s0_numrow_value_EX2, s1_cdif_value_EX2, s2_it_value_EX2, t1_sad_value_EX2, s4_frow_value_EX2,
-             sad_EX2, s6_x_value_EX2, s7_y_value_EX2, t0_target_value_EX2, outx_EX2, outy_EX2, a1_frame_value_EX2;
+             s6_x_value_EX2, s7_y_value_EX2, t0_target_value_EX2, outx_EX2, outy_EX2, a1_frame_value_EX2,moveCheck_outValue_EX2;
 output reg [1:0] check_wcol_out_EX2;
 
  initial begin
@@ -60,6 +60,8 @@ output reg [1:0] check_wcol_out_EX2;
     outy_EX2 <= 0;
     check_wcol_out_EX2 <= 0;
     a1_frame_value_EX2 <= 0;
+    move_EX2 <= 0;
+    moveCheck_outValue_EX2 <= 0;
  end
 
 always @(posedge Clk) begin
@@ -92,6 +94,8 @@ always @(posedge Clk) begin
         outy_EX2 <= 0;
         check_wcol_out_EX2 <= 0;
         a1_frame_value_EX2 <= 0;
+        move_EX2 <= 0;
+        moveCheck_outValue_EX2 <= 0;
     end
     else begin
         ALUResult_EX2 <= ALUResult_EX;
@@ -121,6 +125,8 @@ always @(posedge Clk) begin
         outy_EX2 <= outy;
         check_wcol_out_EX2 <= check_wcol_out;
         a1_frame_value_EX2 <= a1_frame_value_EX1;
+        move_EX2 <= move_EX;
+        moveCheck_outValue_EX2 <= moveCheck_outValue;
     end
     
 end

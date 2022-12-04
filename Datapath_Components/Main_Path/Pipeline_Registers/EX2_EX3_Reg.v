@@ -17,24 +17,26 @@ module EX2_EX3_Reg(ALUResult_EX2, /*PCPlusOffset_MEM,*/ /*rt_Register_Value_EX2,
     mul6_out_1_EX3,mul6_out_2_EX3,mul6_out_3_EX3,mul6_out_4_EX3, itxnumrow_out_EX3,a1_frame_value_EX3
     );
 
-input [31:0] ALUResult_EX2, /* rt_Register_Value_EX,*/ rs_value_EX2, rt_value_EX2;
+input [31:0] ALUResult_EX2, /* rt_Register_Value_EX,*/ rs_value_EX2, rt_value_EX2, JumpPC_EX2;
 input [4:0] RegDst1Result_EX2;
-input MemWrite_EX2, MemToReg_EX2, MemRead_EX2, RegWrite_EX2, jal_EX2, Jump_EX2, JR_EX2, JumpPC_EX2;
+input MemWrite_EX2, MemToReg_EX2, MemRead_EX2, RegWrite_EX2, jal_EX2, Jump_EX2, JR_EX2;
 input Clk, Reset;
 
-output reg [31:0] ALUResult_EX3, /* rt_Register_Value_EX2,*/ rs_value_EX3, rt_value_EX3;
+output reg [31:0] ALUResult_EX3, /* rt_Register_Value_EX2,*/ rs_value_EX3, rt_value_EX3, JumpPC_EX3;
 output reg [4:0] RegDst1Result_EX3;
-output reg MemWrite_EX3, MemToReg_EX3, MemRead_EX3, RegWrite_EX3, jal_EX3, Jump_EX3, JR_EX3, JumpPC_EX3;
+output reg MemWrite_EX3, MemToReg_EX3, MemRead_EX3, RegWrite_EX3, jal_EX3, Jump_EX3, JR_EX3;
 
 //custom instruction
 input [31:0] t1_sad_value_EX2, s4_frow_value_EX2,
-             sad_EX2, s6_x_value_EX2, s7_y_value_EX2, t0_target_value_EX2, outx_EX2, outy_EX2, a1_frame_value_EX2;
+             s6_x_value_EX2, s7_y_value_EX2, t0_target_value_EX2, outx_EX2, outy_EX2, a1_frame_value_EX2;
+input sad_EX2;
 input [1:0] check_wcol_out_EX2;
 input [31:0] mul6_out_1, mul6_out_2, mul6_out_3, mul6_out_4,
     itxnumrow_out;
 
 output reg [31:0] t1_sad_value_EX3, s4_frow_value_EX3,
-             sad_EX3, s6_x_value_EX3, s7_y_value_EX3, t0_target_value_EX3, outx_EX3, outy_EX3, a1_frame_value_EX3;
+             s6_x_value_EX3, s7_y_value_EX3, t0_target_value_EX3, outx_EX3, outy_EX3, a1_frame_value_EX3;
+output reg sad_EX3;
 output reg [1:0] check_wcol_out_EX3;
 output reg [31:0] mul6_out_1_EX3, mul6_out_2_EX3, mul6_out_3_EX3, mul6_out_4_EX3,
     itxnumrow_out_EX3;
