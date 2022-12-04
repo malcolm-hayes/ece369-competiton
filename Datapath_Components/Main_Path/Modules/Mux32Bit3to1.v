@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module Mux32Bit3To1(A, B, C, out, sel);
+module Mux32Bit3To1j(A, B, C, out, sel);
 
 input [31:0] A, B, C;
 output reg [31:0] out;
