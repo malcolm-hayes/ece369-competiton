@@ -35,16 +35,30 @@ module Top(Clk, Reset, v0_Out, v1_Out);
         s5_wcol_value_EX1,
         s6_x_value_EX1, s6_x_value_EX2, s6_x_value_EX3,
         s7_y_value_EX1, s7_y_value_EX2, s7_y_value_EX3,
+        
         t0_target_value_EX1, t0_target_value_EX2, t0_target_value_EX3, t0_target_value_EX4, t0_target_value_EX5,
         outx, outx_EX2, outx_EX3, outx_EX4, outx_EX5, outx_EX6, outx_EX7, outx_EX8, outx_MEM,
         outy, outy_EX2, outy_EX3, outy_EX4, outy_EX5, outy_EX6, outy_EX7, outy_EX8, outy_MEM,
         a1_frame_value_EX1, a1_frame_value_EX2, a1_frame_value_EX3, a1_frame_value_EX4,
+        
+        In1, In2, In3, In4, In5, In6, In7, In8, In9, In10, In11, In12, In13, In14, In15, In16,
+        In1_EX4, In2_EX4, In3_EX4, In4_EX4, In5_EX4, In6_EX4, In7_EX4, In8_EX4, In9_EX4, In10_EX4, In11_EX4, In12_EX4, In13_EX4, In14_EX4, In15_EX4, In16_EX4,
         Out1, Out2, Out3, Out4, Out5, Out6, Out7, Out8, Out8, Out9, Out10, Out11, Out12, Out13, Out14, Out15, Out16,
         tOut1, tOut2, tOut3, tOut4, tOut5, tOut6, tOut7, tOut8, tOut9, tOut10, tOut11, tOut12, tOut13, tOut14, tOut15, tOut16,
+        Out1_EX5, Out2_EX5, Out3_EX5, Out4_EX5, Out5_EX5, Out6_EX5, Out7_EX5, Out8_EX5, Out8_EX5, Out9_EX5, Out10_EX5, Out11_EX5, Out12_EX5, Out13_EX5, Out14_EX5, Out15_EX5, Out16_EX5,
+        tOut1_EX5, tOut2_EX5, tOut3_EX5, tOut4_EX5, tOut5_EX5, tOut6_EX5, tOut7_EX5, tOut8_EX5, tOut9_EX5, tOut10_EX5, tOut11_EX5, tOut12_EX5, tOut13_EX5, tOut14_EX5, tOut15_EX5, tOut16_EX5,
+        
         ReadData1, ReadData2, ReadData3, ReadData4, ReadData5, ReadData6, ReadData7, ReadData8, ReadData9, ReadData10, ReadData11, ReadData12, ReadData13, ReadData14, ReadData15, ReadData16,
         tReadData1, tReadData2, tReadData3, tReadData4, tReadData5, tReadData6, tReadData7, tReadData8, tReadData9, tReadData10, tReadData11, tReadData12, tReadData13, tReadData14, tReadData15, tReadData16,
+        ReadData1_EX6,ReadData2_EX6,ReadData3_EX6,ReadData4_EX6,ReadData5_EX6,ReadData6_EX6,ReadData7_EX6,ReadData8_EX6,ReadData9_EX6,
+        ReadData10_EX6,ReadData11_EX6,ReadData12_EX6,ReadData13_EX6,ReadData14_EX6,ReadData15_EX6,ReadData16_EX6,
+
         sOut1, sOut2, sOut3, sOut4, sOut5, sOut6, sOut7, sOut8,
+        sOut1_EX7,sOut2_EX7,sOut3_EX7,sOut4_EX7,sOut5_EX7,sOut6_EX7,sOut7_EX7,sOut8_EX7,
+
         foOut1, foOut2,
+        foOut1_EX8, foOut2_EX8,
+        
         mul6_out_1, mul6_out_1_EX3, mul6_out_2, mul6_out_2_EX3, mul6_out_3, mul6_out_3_EX3, mul6_out_4, mul6_out_4_EX3,
         mul_frow_out, mul_frow_out_EX4, Mul_frow_result;
     wire [1:0] check_wcol_out, check_wcol_out_EX1, check_wcol_out_EX2, check_wcol_out_EX3;
