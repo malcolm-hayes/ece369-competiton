@@ -130,7 +130,7 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
         t1_sad_value_ID, s4_frow_value_ID,s6_x_value_ID, s7_y_value_ID,t0_target_value_ID, a1_frame_value_ID,
         JumpPC_EX2, JumpPC_EX3, JumpPC_EX4, JumpPC_EX5, JumpPC_EX6, JumpPC_EX7, JumpPC_EX8,itxnumrow_out,itxnumrow_out_EX3,add7_out_1,
         add7_out_2,add7_out_3,add7_out_4,add_frame_out,ALUResult_EX2_MOVEMUX,sadMUX_regwrite_value,sadMUX_regwrite_value_MEM,
-        sadMUX_regwrite_value_WB,add_y_itxnumrow,FinalOut, SAD_Out,
+        sadMUX_regwrite_value_WB,add_y_itxnumrow,FinalOut, SAD_Out, thOut1,thOut2,thOut3,thOut4,
         fOut1,fOut2,fOut3,fOut4,fOut5,fOut6,fOut7,fOut8,fOut9,fOut10,fOut11,fOut12,fOut13,fOut14,fOut15,fOut16;
 
     wire [31:0] s0_numrow_value_EX1, s0_numrow_value_EX2,
@@ -410,8 +410,8 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
     );
 //EX7 stage
     Adder32bit_4 Adder_third_round(sOut1_EX7,sOut2_EX7,sOut3_EX7,sOut4_EX7,sOut5_EX7,sOut6_EX7,sOut7_EX7,sOut8_EX7,
-                	tOut1,tOut2,tOut3,tOut4);
-    Adder32bit_2 Adder_fourth_round(tOut1,tOut2,tOut3,tOut4,
+                	thOut1,thOut2,thOut3,thOut4);
+    Adder32bit_2 Adder_fourth_round(thOut1,thOut2,thOut3,thOut4,
                 	foOut1,foOut2);
 //END EX7 stage
     //PIPELINE
