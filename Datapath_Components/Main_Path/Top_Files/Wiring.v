@@ -200,7 +200,7 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
 
     //RegisterFile_ID RegisterFile_1(Instruction_ID[25:21], Instruction_ID[20:16], WriteReg_MUX, WriteData_MUX, RegWrite_ORGate, Clk, rs_value_ID, rt_value_ID);
                               //ReadRegister1     , ReadRegister2     , WriteRegister   , WriteData     , RegWrite, Clk, ReadData1  , ReadData2
-    RegisterFile_ID RegisterFile_ID_1(Instruction_ID[25:21], Instruction_ID[20:16], WriteReg_MUX, WriteData_MUX, RegWrite, Clk, 
+    RegisterFile_ID RegisterFile_ID_1(Instruction_ID[25:21], Instruction_ID[20:16], WriteReg_MUX, WriteData_MUX, RegWrite_ORGate, Clk, 
 						rs_value_ID, rt_value_ID,s0_numrow_value_ID,s1_cdif_value_ID,s2_it_value_ID, t1_sad_value_ID, s4_frow_value_ID, 
 						s5_wcol_value_ID,s6_x_value_ID, s7_y_value_ID,t0_target_value_ID, a1_frame_value_ID);
 
@@ -432,7 +432,7 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
 //EX8 stage
     Adder32Bit Adder_fifth_round(foOut1_EX8,foOut2_EX8, FinalOut);
     Adder32Bit Adder_incrementSAD(FinalOut, t1_sad_value_EX8, SAD_Out);
-    Mux32Bit2To1 Mux32Bit2To1_SADorNot(sadMUX_regwrite_value, SAD_Out, ALUResult_EX8, sad_EX8);
+    Mux32Bit2To1 Mux32Bit2To1_SADorNot(sadMUX_regwrite_value, ALUResult_EX8,SAD_Out, sad_EX8);
 //END EX8 stage
     //PIPELINE
     EX8_MEM_Reg EX8_MEM_Reg_1(sadMUX_regwrite_value, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX8,*/
