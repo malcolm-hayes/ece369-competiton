@@ -98,10 +98,10 @@ module Top(Clk, Reset, v0_Out, v1_Out);
 
 // END of EX1
     // PIPELINE
-    EX1_EX2_Reg EX1_EX2_Reg_1(ALUResult_EX, /*PCPlusOffset_EX,*/ rt_Register_Value_EX,
+    EX1_EX2_Reg EX1_EX2_Reg_1(ALUResult_EX, /*PCPlusOffset_EX,*/ /* rt_Register_Value_EX,*/
     RegDst1Result_EX, /*Zero_EX,*/ MemWrite_EX, MemToReg_EX, MemRead_EX, /*Branch_EX,*/ RegWrite_EX, 
     jal_EX, Jump_EX, JR_EX, JumpPC_EX, rs_value_EX, rt_value_EX,
-    ALUResult_EX2, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX2,
+    ALUResult_EX2, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX2,*/
     RegDst1Result_EX2, /*Zero_MEM,*/ MemWrite_EX2, MemToReg_EX2, MemRead_EX2, /*Branch_MEM,*/ RegWrite_EX2, 
     jal_EX2, Jump_EX2, JR_EX2, JumpPC_EX2, rs_value_EX2, rt_value_EX2 Clk, Reset    
     //registers for custom instruction EX1
@@ -121,11 +121,11 @@ module Top(Clk, Reset, v0_Out, v1_Out);
 
 //END EX2 stage
     //PIPELINE
-    EX2_EX3_Reg EX2_EX3_Reg_1(ALUResult_EX2, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX2,
+    EX2_EX3_Reg EX2_EX3_Reg_1(ALUResult_EX2, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX2,*/
     RegDst1Result_EX2, /*Zero_MEM,*/ MemWrite_EX2, MemToReg_EX2, MemRead_EX2, /*Branch_MEM,*/ RegWrite_EX2, 
     jal_EX2, Jump_EX2, JR_EX2, JumpPC_EX2, rs_value_EX2, rt_value_EX2, Clk, Reset
     //EX3
-    ALUResult_EX3, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX3,
+    ALUResult_EX3, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX3,*/
     RegDst1Result_EX3, /*Zero_MEM,*/ MemWrite_EX3, MemToReg_EX3, MemRead_EX3, /*Branch_MEM,*/ RegWrite_EX3, 
     jal_EX3, Jump_EX3, JR_EX3, JumpPC_EX3, rs_value_EX3, rt_value_EX3,
     //registers for custom instruction EX2
@@ -146,11 +146,11 @@ module Top(Clk, Reset, v0_Out, v1_Out);
     Multiplier32Bit Mul_frow_result(add_y_itxnumrow, s4_frow_value_EX3, mul_frow_out); //multiplies the number of rows in the frame and the result from Add_y_itxnumrow
 //END EX3 stage
     //PIPELINE
-    EX3_EX4_Reg EX3_EX4_Reg_1(ALUResult_EX3, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX3,
+    EX3_EX4_Reg EX3_EX4_Reg_1(ALUResult_EX3, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX3,*/
     RegDst1Result_EX3, /*Zero_MEM,*/ MemWrite_EX3, MemToReg_EX3, MemRead_EX3, /*Branch_MEM,*/ RegWrite_EX3, 
     jal_EX3, Jump_EX3, JR_EX3, JumpPC_EX3, rs_value_EX3, rt_value_EX3, Clk, Reset
     //EX4
-    ALUResult_EX4, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX4,
+    ALUResult_EX4, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX4,*/
     RegDst1Result_EX4, /*Zero_MEM,*/ MemWrite_EX4, MemToReg_EX4, MemRead_EX4, /*Branch_MEM,*/ RegWrite_EX4, 
     jal_EX4, Jump_EX4, JR_EX4, JumpPC_EX4, rs_value_EX4, rt_value_EX4,
     //registers for custom instruction EX3
@@ -174,15 +174,15 @@ module Top(Clk, Reset, v0_Out, v1_Out);
                 tOut1,tOut2,tOut3,tOut4,tOut5,tOut6,tOut7,tOut8,tOut9,tOut10,tOut11,tOut12,tOut13,tOut14,tOut15,tOut16);            
 //END EX4 stage
     //PIPELINE
-    EX4_EX5_Reg EX4_EX5_Reg_1(ALUResult_EX4, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX4,
+    EX4_EX5_Reg EX4_EX5_Reg_1(ALUResult_EX4, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX4, */
     RegDst1Result_EX4, /*Zero_MEM,*/ MemWrite_EX4, MemToReg_EX4, MemRead_EX4, /*Branch_MEM,*/ RegWrite_EX4, 
     jal_EX4, Jump_EX4, JR_EX4, JumpPC_EX4, rs_value_EX4,rt_value_EX4, Clk, Reset
     //EX5
-    ALUResult_EX5, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX5,
+    ALUResult_EX5, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX5, */
     RegDst1Result_EX5, /*Zero_MEM,*/ MemWrite_EX5, MemToReg_EX5, MemRead_EX5, /*Branch_MEM,*/ RegWrite_EX5, 
     jal_EX5, Jump_EX5, JR_EX5, JumpPC_EX5, rs_value_EX5,rt_value_EX5,
     //registers for custom instruction EX4
-    t1_sad_value_EX4, outx_EX4, outy_EX4,sad_EX4,
+    t1_sad_value_EX4, t0_target_value_EX4, outx_EX4, outy_EX4,sad_EX4,
     Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16,
     tOut1,tOut2,tOut3,tOut4,tOut5,tOut6,tOut7,tOut8,tOut9,tOut10,tOut11,tOut12,tOut13,tOut14,tOut15,tOut16, 
     //registers for custom instruction EX5
@@ -204,11 +204,11 @@ module Top(Clk, Reset, v0_Out, v1_Out);
     
 //END EX5 stage
     //PIPELINE
-    EX5_EX6_Reg EX5_EX6_Reg_1(ALUResult_EX5, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX5,
+    EX5_EX6_Reg EX5_EX6_Reg_1(ALUResult_EX5, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX5,*/
     RegDst1Result_EX5, /*Zero_MEM,*/ MemWrite_EX5, MemToReg_EX5, MemRead_EX5, /*Branch_MEM,*/ RegWrite_EX5, 
     jal_EX5, Jump_EX5, JR_EX5, JumpPC_EX5, rs_value_EX5, rt_value_EX5,Clk, Reset
     //EX6
-    ALUResult_EX6, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX6,
+    ALUResult_EX6, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX6,*/
     RegDst1Result_EX6, /*Zero_MEM,*/ MemWrite_EX6, MemToReg_EX6, MemRead_EX6, /*Branch_MEM,*/ RegWrite_EX6, 
     jal_EX6, Jump_EX6, JR_EX6, JumpPC_EX6, rs_value_EX6,rt_value_EX6,
     //registers for custom instruction EX5
@@ -234,11 +234,11 @@ module Top(Clk, Reset, v0_Out, v1_Out);
                 	sOut1,sOut2,sOut3,sOut4,sOut5,sOut6,sOut7,sOut8);
 //END EX6 stage
     //PIPELINE
-    EX6_EX7_Reg EX6_EX7_Reg_1(ALUResult_EX6, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX6,
+    EX6_EX7_Reg EX6_EX7_Reg_1(ALUResult_EX6, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX6,*/
     RegDst1Result_EX6, /*Zero_MEM,*/ MemWrite_EX6, MemToReg_EX6, MemRead_EX6, /*Branch_MEM,*/ RegWrite_EX6, 
     jal_EX6, Jump_EX6, JR_EX6, JumpPC_EX6, rs_value_EX6, rt_value_EX6,Clk, Reset
     //EX7
-    ALUResult_EX7, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX7,
+    ALUResult_EX7, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX7,*/
     RegDst1Result_EX7, /*Zero_MEM,*/ MemWrite_EX7, MemToReg_EX7, MemRead_EX7, /*Branch_MEM,*/ RegWrite_EX7, 
     jal_EX7, Jump_EX7, JR_EX7, JumpPC_EX7, rs_value_EX7,rt_value_EX7,
     //registers for custom instruction EX6
@@ -255,11 +255,11 @@ module Top(Clk, Reset, v0_Out, v1_Out);
                 	foOut1,foOut2);
 //END EX7 stage
     //PIPELINE
-    EX7_EX8_Reg EX7_EX8_Reg_1(ALUResult_EX7, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX7,
+    EX7_EX8_Reg EX7_EX8_Reg_1(ALUResult_EX7, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX7,*/
     RegDst1Result_EX7, /*Zero_MEM,*/ MemWrite_EX7, MemToReg_EX7, MemRead_EX7, /*Branch_MEM,*/ RegWrite_EX7, 
     jal_EX7, Jump_EX7, JR_EX7, JumpPC_EX7, rs_value_EX7, rt_value_EX7,Clk, Reset
     //EX8
-    ALUResult_EX8, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX8,
+    ALUResult_EX8, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX8,*/
     RegDst1Result_EX8, /*Zero_MEM,*/ MemWrite_EX8, MemToReg_EX8, MemRead_EX8, /*Branch_MEM,*/ RegWrite_EX8, 
     jal_EX8, Jump_EX8, JR_EX8, JumpPC_EX8, rs_value_EX8,rt_value_EX8,
     //registers for custom instruction EX7
@@ -275,11 +275,11 @@ module Top(Clk, Reset, v0_Out, v1_Out);
     Mux32Bit2To1 Mux32Bit2To1_SADorNot(sadMUX_regwrite_value, SAD_Out, ALUResult_EX8, sad_EX8);
 //END EX8 stage
     //PIPELINE
-    EX8_MEM_Reg EX8_MEM_Reg_1(ALUResult_EX8, /*PCPlusOffset_MEM,*/ rt_Register_Value_EX8,
+    EX8_MEM_Reg EX8_MEM_Reg_1(ALUResult_EX8, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX8,*/
     RegDst1Result_EX8, /*Zero_MEM,*/ MemWrite_EX8, MemToReg_EX8, MemRead_EX8, /*Branch_MEM,*/ RegWrite_EX8, 
     jal_EX8, Jump_EX8, JR_EX8, JumpPC_EX8, rs_value_EX8,rt_value_EX8, Clk, Reset
     //MEM
-    ALUResult_MEM, /*PCPlusOffset_MEM,*/ rt_Register_Value_MEM,
+    ALUResult_MEM, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_MEM,*/
     RegDst1Result_MEM, /*Zero_MEM,*/ MemWrite_MEM, MemToReg_MEM, MemRead_MEM, /*Branch_MEM,*/ RegWrite_MEM, 
     jal_MEM, Jump_MEM, JR_MEM, JumpPC_MEM, rs_value_MEM,rt_value_MEM,
     //registers for custom instruction EX8
