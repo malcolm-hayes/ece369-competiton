@@ -27,13 +27,17 @@ output reg [4:0] RegDst1Result_EX3;
 output reg MemWrite_EX3, MemToReg_EX3, MemRead_EX3, RegWrite_EX3, jal_EX3, Jump_EX3, JR_EX3, JumpPC_EX3;
 
 //custom instruction
-input [31:0] s0_numrow_value_EX2, s1_cdif_value_EX2, s2_it_value_EX2, t1_sad_value_EX2, s4_frow_value_EX2,
+input [31:0] t1_sad_value_EX2, s4_frow_value_EX2,
              sad_EX2, s6_x_value_EX2, s7_y_value_EX2, t0_target_value_EX2, outx_EX2, outy_EX2, a1_frame_value_EX2;
 input [1:0] check_wcol_out_EX2;
+input [31:0] mul6_out_1, mul6_out_2, mul6_out_3, mul6_out_4,
+    itxnumrow_out;
 
-output reg [31:0] s0_numrow_value_EX3, s1_cdif_value_EX3, s2_it_value_EX3, t1_sad_value_EX3, s4_frow_value_EX3,
+output reg [31:0] t1_sad_value_EX3, s4_frow_value_EX3,
              sad_EX3, s6_x_value_EX3, s7_y_value_EX3, t0_target_value_EX3, outx_EX3, outy_EX3, a1_frame_value_EX3;
 output reg [1:0] check_wcol_out_EX3;
+output reg [31:0] mul6_out_1_EX3, mul6_out_2_EX3, mul6_out_3_EX3, mul6_out_4_EX3,
+    itxnumrow_out_EX3;
 
  initial begin
     ALUResult_EX3 <= 0;
@@ -50,9 +54,6 @@ output reg [1:0] check_wcol_out_EX3;
     JR_EX3 <= 0;
     JumpPC_EX3 <= 0;
 
-    s0_numrow_value_EX3 <= 0;
-    s1_cdif_value_EX3 <= 0;
-    s2_it_value_EX3 <= 0;
     t1_sad_value_EX3 <= 0;
     s4_frow_value_EX3 <= 0;
     sad_EX3 <= 0;
@@ -63,6 +64,12 @@ output reg [1:0] check_wcol_out_EX3;
     outy_EX3 <= 0;
     check_wcol_out_EX3 <= 0;
     a1_frame_EX3 <= 0;
+
+    mul6_out_1_EX3 <= 0;
+    mul6_out_2_EX3 <= 0;
+    mul6_out_3_EX3 <= 0;
+    mul6_out_4_EX3 <= 0;
+    itxnumrow_out_EX3 <= 0;
  end
 
 always @(posedge Clk) begin
@@ -82,9 +89,6 @@ always @(posedge Clk) begin
         JR_EX3 <= 0;
         JumpPC_EX3 <= 0;
 
-        s0_numrow_value_EX3 <= 0;
-        s1_cdif_value_EX3 <= 0;
-        s2_it_value_EX3 <= 0;
         t1_sad_value_EX3 <= 0;
         s4_frow_value_EX3 <= 0;
         sad_EX3 <= 0;
@@ -95,6 +99,12 @@ always @(posedge Clk) begin
         outy_EX3 <= 0;
         check_wcol_out_EX3 <= 0;
         a1_frame_EX3 <= 0;
+
+        mul6_out_1_EX3 <= 0;
+        mul6_out_2_EX3 <= 0;
+        mul6_out_3_EX3 <= 0;
+        mul6_out_4_EX3 <= 0;
+        itxnumrow_out_EX3 <= 0;
     end
     else begin
         ALUResult_EX3 <= ALUResult_EX2;
@@ -111,9 +121,6 @@ always @(posedge Clk) begin
         JR_EX3 <= JR_EX2;
         JumpPC_EX3 <= JumpPC_EX2;
 
-        s0_numrow_value_EX3 <= s0_numrow_value_EX2;
-        s1_cdif_value_EX3 <= s1_cdif_value_EX2;
-        s2_it_value_EX3 <= s2_it_value_EX2;
         t1_sad_value_EX3 <= t1_sad_value_EX2;
         s4_frow_value_EX3 <= s4_frow_value_EX2;
         sad_EX3 <= sad_EX2;
@@ -124,6 +131,12 @@ always @(posedge Clk) begin
         outy_EX3 <= outy_EX2;
         check_wcol_out_EX3 <= check_wcol_out_EX2;
         a1_frame_EX3 <= a1_frame_EX2;
+
+        mul6_out_1_EX3 <= mul6_out_1;
+        mul6_out_2_EX3 <= mul6_out_2;
+        mul6_out_3_EX3 <= mul6_out_3;
+        mul6_out_4_EX3 <= mul6_out_4;
+        itxnumrow_out_EX3 <= itxnumrow_out;
     end
     
 end

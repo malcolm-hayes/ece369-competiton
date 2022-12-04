@@ -8,7 +8,7 @@ module EX4_EX5_Reg(ALUResult_EX4, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX4
     RegDst1Result_EX5, /*Zero_MEM,*/ MemWrite_EX5, MemToReg_EX5, MemRead_EX5, /*Branch_MEM,*/ RegWrite_EX5, 
     jal_EX5, Jump_EX5, JR_EX5, JumpPC_EX5, rs_value_EX5,rt_value_EX5,
     //registers for custom instruction EX4
-    t1_sad_value_EX4, outx_EX4, outy_EX4,sad_EX4,
+    t1_sad_value_EX4, t0_target_value_EX4, outx_EX4, outy_EX4,sad_EX4,
     Out1,Out2,Out3,Out4,Out5,Out6,Out7,Out8,Out9,Out10,Out11,Out12,Out13,Out14,Out15,Out16,
     tOut1,tOut2,tOut3,tOut4,tOut5,tOut6,tOut7,tOut8,tOut9,tOut10,tOut11,tOut12,tOut13,tOut14,tOut15,tOut16, 
     //registers for custom instruction EX5
