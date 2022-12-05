@@ -70,7 +70,7 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
         //To ALUControl
    (* mark_debug = "true" *) wire [31:0] Immediate_EX;
    (* mark_debug = "true" *) wire [3:0] ALUOp_EX;
-   (* mark_debug = "true" *) wire [5:0] ALUControl;
+   (* mark_debug = "true" *) wire [5:0] ALUControl, ALUControl_EX2;
     
         //To ALU
    (* mark_debug = "true" *) wire [31:0] rs_value_EX;
@@ -131,7 +131,9 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
         JumpPC_EX2, JumpPC_EX3, JumpPC_EX4, JumpPC_EX5, JumpPC_EX6, JumpPC_EX7, JumpPC_EX8,itxnumrow_out,itxnumrow_out_EX3,add7_out_1,
         add7_out_2,add7_out_3,add7_out_4,add_frame_out,ALUResult_EX2_MOVEMUX,sadMUX_regwrite_value,sadMUX_regwrite_value_MEM,
         sadMUX_regwrite_value_WB,add_y_itxnumrow,FinalOut, SAD_Out, thOut1,thOut2,thOut3,thOut4,
-        fOut1,fOut2,fOut3,fOut4,fOut5,fOut6,fOut7,fOut8,fOut9,fOut10,fOut11,fOut12,fOut13,fOut14,fOut15,fOut16;
+        fOut1,fOut2,fOut3,fOut4,fOut5,fOut6,fOut7,fOut8,fOut9,fOut10,fOut11,fOut12,fOut13,fOut14,fOut15,fOut16,
+        Immediate_EX2;
+        
 
     wire [31:0] s0_numrow_value_EX1, s0_numrow_value_EX2,
         s1_cdif_value_EX1, s1_cdif_value_EX2,
@@ -211,11 +213,11 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
 // FORWARDING UNIT AND HAZARD DETECTION (AND MUXES)
     ForwardingUnit ForwardingUnit_1(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, rs_address_EX, rt_address_EX, ALU_input_rs, ALU_input_rt, WriteMEMData_Signal);
 //                                 EX_MEM_RegWrite,  EX_MEM_rd,   MEM_WB_RegWrite,   MEM_WB_rd,        ID_EX_rs,      ID_EX_rt, ALU_input_rs, ALU_input_rt, WriteMEMData_Signal
-    Mux32Bit3To1 Mux32Bit3To1_rs(rs_value_EX, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, forward_rs_value, ALU_input_rs);
-    Mux32Bit3To1 Mux32Bit3To1_rt(rt_value_EX, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, forward_rt_value, ALU_input_rt);
+    Mux32Bit3To1 Mux32Bit3To1_rs(rs_value_EX2, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, forward_rs_value, ALU_input_rs);
+    Mux32Bit3To1 Mux32Bit3To1_rt(rt_value_EX2, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, forward_rt_value, ALU_input_rt);
 //                              (A,B,C,out,sel)
     HazardDetection HazardDetection_1(RegDst_MUX, RegDst1Result_MEM, MemRead_EX,MemRead_MEM, Branch, jump, IF_Flush, Instruction_ID[25:21], Instruction_ID[20:16], PC_Write, IF_ID_Write, 
-                                        ControlMuxSig, isBranch, RegWrite_EX, RegWrite_WB, RegDst1Result_WB, jal_RA/*, RegWrite_MEM */, jal_Control);
+                                        ControlMuxSig, isBranch, RegWrite_EX2, RegWrite_WB, RegDst1Result_WB, jal_RA/*, RegWrite_MEM */, jal_Control);
 //FORWARDING UNIT FOR BRANCHING AND MUXES
     ForwardBranch ForwardBranch_1(Instruction_ID[25:21], Instruction_ID[20:16], RegDst1Result_MEM, RegWrite_MEM, rs_MUX, rt_MUX);
 //                                  rs_ID,                      rt_ID,            EX_MEM_rd,      EX_MEM_RegWrite, rs_MUX, rt_MUX
@@ -243,7 +245,7 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
 
     Mux32Bit3To1 Mux32Bit3To1_WriteMEMData(rt_value_EX, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, WriteMEMData_MUX, WriteMEMData_Signal);
 
-    ALU32Bit ALU32Bit_1(ALUControl, forward_rs_value, forward_rt_value, Immediate_EX, ALUResult_EX /*, Zero*/);
+    
                                 //out, A, B, sel
     Mux5Bit2To1 Mux5Bit2To1_RegDst(RegDst1Result_EX, rt_address_EX, rd_address_EX, ORGate_movecheck_out_EX1); //important for bit code for move
 
@@ -255,10 +257,9 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
 
 // END of EX1
     // PIPELINE
-    EX1_EX2_Reg EX1_EX2_Reg_1(ALUResult_EX, /*PCPlusOffset_EX,*/ /* rt_Register_Value_EX,*/
+    EX1_EX2_Reg EX1_EX2_Reg_1(/*PCPlusOffset_EX,*/ /* rt_Register_Value_EX,*/
     RegDst1Result_EX, /*Zero_EX,*/ MemWrite_EX, MemToReg_EX, MemRead_EX, /*Branch_EX,*/ RegWrite_EX, 
-    jal_EX, Jump_EX, JR_EX, JumpPC_EX, rs_value_EX, rt_value_EX,
-    ALUResult_EX2, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX2,*/
+    jal_EX, Jump_EX, JR_EX, JumpPC_EX, rs_value_EX, rt_value_EX,/*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX2,*/
     RegDst1Result_EX2, /*Zero_MEM,*/ MemWrite_EX2, MemToReg_EX2, MemRead_EX2, /*Branch_MEM,*/ RegWrite_EX2, 
     jal_EX2, Jump_EX2, JR_EX2, JumpPC_EX2, rs_value_EX2, rt_value_EX2, Clk, Reset,    
     //registers for custom instruction EX1
@@ -266,13 +267,16 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
 	s6_x_value_EX1, s7_y_value_EX1, t0_target_value_EX1, outx, outy, check_wcol_out, a1_frame_value_EX1,move_EX, 
     //registers for custom instruction EX2
     s0_numrow_value_EX2,s1_cdif_value_EX2,s2_it_value_EX2, t1_sad_value_EX2, s4_frow_value_EX2, sad_EX2,move_EX2,moveCheck_outValue_EX2,
-	s6_x_value_EX2, s7_y_value_EX2,t0_target_value_EX2, outx_EX2, outy_EX2, check_wcol_out_EX2,a1_frame_value_EX2
+	s6_x_value_EX2, s7_y_value_EX2,t0_target_value_EX2, outx_EX2, outy_EX2, check_wcol_out_EX2,a1_frame_value_EX2,
+    //Registers for moving ALU
+    ALUControl, Immediate_EX,
+    ALUControl_EX2, Immediate_EX2
     ); 
 
 
 //EX2 stage
-    //Adder32Bit Add_x(A, B, Out);
-    //Adder32Bit Add_y(A, B, Out);
+    ALU32Bit ALU32Bit_1(ALUControl_EX2, forward_rs_value, forward_rt_value, Immediate_EX2, ALUResult_EX2 /*, Zero*/);
+
     Mux32Bit2To1 Mux32Bit2To1_Move_Value(ALUResult_EX2_MOVEMUX, ALUResult_EX2,moveCheck_outValue_EX2 , move_EX2);
     Multiplier32Bit Mul_it_numrow(s2_it_value_EX2, s0_numrow_value_EX2, itxnumrow_out); //multiplies the iterator and the initialized numrow value
     Gen_Mul_6 Gen_Mul_6_1(check_wcol_out_EX2, s4_frow_value_EX2, mul6_out_1,mul6_out_2,mul6_out_3,mul6_out_4);

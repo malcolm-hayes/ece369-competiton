@@ -30,13 +30,34 @@
 00000000	//		nop ->		nop
 00000000	//		nop ->		nop
 00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
 01095020	//		add	$t2, $t0, $t1 ->		add	$t2, $t0, $t1
 00000000	//		nop ->		nop
 00000000	//		nop ->		nop
 00000000	//		nop ->		nop
 00000000	//		nop ->		nop
 00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
 01495822	//		sub	$t3, $t2, $t1 ->		sub	$t3, $t2, $t1
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
 00000000	//		nop ->		nop
 00000000	//		nop ->		nop
 00000000	//		nop ->		nop
