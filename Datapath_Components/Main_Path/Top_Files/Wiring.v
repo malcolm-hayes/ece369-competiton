@@ -469,8 +469,8 @@ ForwardingUnit_EX2 ForwardingUnit_EX2_1RT(rt_address_EX2,RegDst1Result_EX3, RegW
     Adder32Bit Adder_incrementSAD(FinalOut, t1_sad_value_EX8, SAD_Out);
     Mux32Bit2To1 Mux32Bit2To1_SADorNot(sadMUX_regwrite_value, ALUResult_EX8,SAD_Out, sad_EX8);
 
-    Mux32Bit3To1 Mux32Bit3To1_WriteMEMDataRT(rt_value_EX8, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, WriteMEMData_MUXRS, WriteMEMData_SignalRT); //forward mux for datamemory
-    Mux32Bit3To1 Mux32Bit3To1_WriteMEMDataRS(ALUResult_EX8, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, WriteMEMData_MUX, WriteMEMData_SignalRS); //forward mux for datamemory
+    Mux32Bit3To1 Mux32Bit3To1_WriteMEMDataRT(rt_value_EX8, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, WriteMEMData_MUX, WriteMEMData_SignalRT); //forward mux for datamemory
+    Mux32Bit3To1 Mux32Bit3To1_WriteMEMDataRS(ALUResult_EX8, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, WriteMEMData_MUXRS, WriteMEMData_SignalRS); //forward mux for datamemory
 //END EX8 stage
     //PIPELINE
     EX8_MEM_Reg EX8_MEM_Reg_1(sadMUX_regwrite_value, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX8,*/
