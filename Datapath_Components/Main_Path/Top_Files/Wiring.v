@@ -79,8 +79,8 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
    (* mark_debug = "true" *) wire [4:0] rt_address_EX, rd_address_EX;
    // ForwardingUnit and HazardDetection
         //To 3x1 ALU_Mux's
-   (* mark_debug = "true" *) wire [3:0] ALU_input_rs;
-   (* mark_debug = "true" *) wire [3:0] ALU_input_rt;
+   (* mark_debug = "true" *) wire [3:0] ALU_input_rs,BRANCH_input_rt;
+   (* mark_debug = "true" *) wire [3:0] ALU_input_rt,BRANCH_input_rs;
    (* mark_debug = "true" *) wire IF_ID_Write, ControlMuxSig;
    (* mark_debug = "true" *) wire [31:0] forward_rs_value, forward_rt_value,forward_rs_value_EX2, forward_rt_value_EX2; // output
    (* mark_debug = "true" *) wire IF_Flush;
@@ -236,10 +236,20 @@ ForwardingUnit_EX2 ForwardingUnit_EX2_1RT(rt_address_EX2,RegDst1Result_EX3, RegW
     HazardDetection HazardDetection_1(RegDst_MUX, RegDst1Result_MEM, MemRead_EX,MemRead_MEM, Branch, jump, IF_Flush, Instruction_ID[25:21], Instruction_ID[20:16], PC_Write, IF_ID_Write, 
                                         ControlMuxSig, isBranch, RegWrite_EX, RegWrite_WB, RegDst1Result_WB, jal_RA/*, RegWrite_MEM */, jal_Control);
 //FORWARDING UNIT FOR BRANCHING AND MUXES
-    ForwardBranch ForwardBranch_1(Instruction_ID[25:21], Instruction_ID[20:16], RegDst1Result_MEM, RegWrite_MEM, rs_MUX, rt_MUX);
+    //ForwardBranch ForwardBranch_1(Instruction_ID[25:21], Instruction_ID[20:16], RegDst1Result_MEM, RegWrite_MEM, rs_MUX, rt_MUX);
 //                                  rs_ID,                      rt_ID,            EX_MEM_rd,      EX_MEM_RegWrite, rs_MUX, rt_MUX
-    Mux32Bit2To1 Mux32Bit2To1_BRANCHrs(BranchCheckMUX_rs, rs_value_ID, sadMUX_regwrite_value_MEM, rs_MUX); 
-    Mux32Bit2To1 Mux32Bit2To1_BRANCHrt(BranchCheckMUX_rt, rt_value_ID, sadMUX_regwrite_value_MEM, rt_MUX);
+    ForwardingUnit Forward_BRANCHRT(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, Instruction_ID[20:16], BRANCH_input_rt, 
+                    RegWrite_EX3,RegWrite_EX4,RegWrite_EX5,RegWrite_EX6,RegWrite_EX7,RegWrite_EX8,
+                    RegDst1Result_EX3,RegDst1Result_EX4,RegDst1Result_EX5,RegDst1Result_EX6,RegDst1Result_EX7,RegDst1Result_EX8);
+
+ForwardingUnit Forward_BRANCHRS(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, Instruction_ID[25:21], BRANCH_input_rs, 
+                    RegWrite_EX3,RegWrite_EX4,RegWrite_EX5,RegWrite_EX6,RegWrite_EX7,RegWrite_EX8,
+                    RegDst1Result_EX3,RegDst1Result_EX4,RegDst1Result_EX5,RegDst1Result_EX6,RegDst1Result_EX7,RegDst1Result_EX8);
+
+    Mux32Bit9To1 Mux32Bit9To1_BRANCHrs(rs_value_ID, ALUResult_EX3,ALUResult_EX4,ALUResult_EX5,ALUResult_EX6,ALUResult_EX7,
+             sadMUX_regwrite_value, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, BranchCheckMUX_rs, BRANCH_input_rs); 
+    Mux32Bit9To1 Mux32Bit9To1_BRANCHrt(rt_value_ID, ALUResult_EX3,ALUResult_EX4,ALUResult_EX5,ALUResult_EX6,ALUResult_EX7,
+             sadMUX_regwrite_value, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, BranchCheckMUX_rs, BRANCH_input_rs);
 //                                      out, A, B, sel
 // END of ID
     //PIPELINE

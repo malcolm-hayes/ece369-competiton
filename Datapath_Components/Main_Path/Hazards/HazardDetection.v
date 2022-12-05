@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 
 module HazardDetection(RegDst_MUX,RegDst1Result_MEM, MemRead_EX, MemRead_MEM, branch, jump, IF_Flush, rs_address_ID, rt_address_ID , PC_Write, IF_ID_Write, ControlMuxSig, 
-                        isBranch, RegWrite_EX, RegWrite_WB, RegDst1Result_WB, jal/*, RegWrite_MEM */,jal_Control);
+                        isBranch, RegWrite_EX, RegWrite_WB, RegDst1Result_WB, jal/*, RegWrite_MEM */,jal_Control/*,RegWrite_EX2,RegDst1Result_EX2*/);
 
     input [4:0] RegDst_MUX, RegDst1Result_MEM,
                 rs_address_ID, rt_address_ID;

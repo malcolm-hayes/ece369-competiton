@@ -1,47 +1,57 @@
 `timescale 1ns / 1ps
 
-module ForwardBranch(rs_ID, rt_ID, EX_MEM_rd, EX_MEM_RegWrite, rs_MUX, rt_MUX);
+module ForwardingUnit(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, rs_address_ID, ALU_input_rs, 
+                    RegWrite_EX3,RegWrite_EX4,RegWrite_EX5,RegWrite_EX6,RegWrite_EX7,RegWrite_EX8,
+                    RegDst1Result_EX3,RegDst1Result_EX4,RegDst1Result_EX5,RegDst1Result_EX6,RegDst1Result_EX7,RegDst1Result_EX8);
 
-    input EX_MEM_RegWrite; //checks if the register is being written to
-    input [4:0] rs_ID, rt_ID; //register addresses for branch instruction
-    input [4:0] EX_MEM_rd; //rd register being written to by the ALU
-    //input EX_MEM_MemRead; // checks if it is loadword in memory
-
-    output reg rs_MUX, rt_MUX; //controls the mux signals
+    input RegWrite_MEM, RegWrite_WB,RegWrite_EX3,RegWrite_EX4,RegWrite_EX5,RegWrite_EX6,RegWrite_EX7,RegWrite_EX8;
+    input [4:0] RegDst1Result_MEM, RegDst1Result_WB,RegDst1Result_EX3,RegDst1Result_EX4,RegDst1Result_EX5,RegDst1Result_EX6,RegDst1Result_EX7,RegDst1Result_EX8;
+    input [4:0] rs_address_EX1;
+    output reg [3:0] ALU_input_rs;
     // MUX SIGNAL KEY:
-    // 0 --> value from Register File
-    // 1 --> value from EX_MEM pipeline
+    // 0 --> default
+    // 1 --> EX3
+    // 2 --> EX4
+    // 3 --> EX5
+    // 4 --> EX6
+    // 5 --> EX7
+    // 6 --> EX8
+    // 7 --> forwarding from Memory
+    // 8 --> forwarding from WriteBack
 
     initial begin
-            rs_MUX <= 0;
-            rt_MUX <= 0;
-    end
-        always @(rs_ID, rt_ID, EX_MEM_rd, EX_MEM_RegWrite)begin
-        
-            if (EX_MEM_RegWrite/* && !EX_MEM_MemRead*/)begin
-                if ((rs_ID == EX_MEM_rd) && (rt_ID != EX_MEM_rd))begin
-                    rs_MUX <= 1;
-                    rt_MUX <= 0;
-                end
-                else if ((rs_ID != EX_MEM_rd) && (rt_ID == EX_MEM_rd))begin
-                    rs_MUX <= 0;
-                    rt_MUX <= 1;
-                end
-                else if ((rs_ID == EX_MEM_rd) && (rt_ID == EX_MEM_rd))begin
-                    rs_MUX <= 1;
-                    rt_MUX <= 1;
-                end
-                else begin
-                    rs_MUX <= 0;
-                    rt_MUX <= 0;
-                end
+            ALU_input_rs <= 0;
 
-            end
-            
-            else begin
-                rs_MUX <= 0;
-                rt_MUX <= 0;
-            end
+    end
+        always @(*)begin
+        
+        if ((rs_address_EX1 == RegDst1Result_EX3) && RegWrite_EX3)begin
+                ALU_input_rs <= 4'b0001;
+        end
+        else if ((rs_address_EX1 == RegDst1Result_EX4) && RegWrite_EX4)begin
+                ALU_input_rs <= 4'b0010;
+        end
+        else if ((rs_address_EX1 == RegDst1Result_EX5) && RegWrite_EX5)begin
+                ALU_input_rs <= 4'b0011;
+        end
+        else if ((rs_address_EX1 == RegDst1Result_EX6) && RegWrite_EX6)begin
+                ALU_input_rs <= 4'b0100;
+        end
+        else if ((rs_address_EX1 == RegDst1Result_EX7) && RegWrite_EX7)begin
+                ALU_input_rs <= 4'b0101;
+        end
+        else if ((rs_address_EX1 == RegDst1Result_EX8) && RegWrite_EX8)begin
+                ALU_input_rs <= 4'b0110;
+        end
+        else if ((rs_address_EX1 == RegDst1Result_MEM) && RegWrite_MEM)begin
+                ALU_input_rs <= 4'b0111;
+        end
+        else if ((rs_address_EX1 == RegDst1Result_WB) && RegWrite_WB)begin
+                ALU_input_rs <= 4'b1000;
+        end
+        else
+            ALU_input_rs <= 4'b0000;
+        
     end
 
 
