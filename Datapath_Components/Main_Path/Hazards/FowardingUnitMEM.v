@@ -15,11 +15,11 @@ module ForwardingUnitMEM(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Re
             WriteMEMData_Signal <= 0;
     end
         always @(*)begin
-        if ((rt_address_EX8 == RegDst1Result_WB) && RegWrite_WB)begin
-            WriteMEMData_Signal <= 2;
-        end
-        else if ((rt_address_EX8 == RegDst1Result_MEM)&& RegWrite_MEM)begin
+        if ((rt_address_EX8 == RegDst1Result_MEM) && RegWrite_MEM)begin
             WriteMEMData_Signal <= 1;
+        end
+        else if ((rt_address_EX8 == RegDst1Result_WB)&& RegWrite_WB)begin
+            WriteMEMData_Signal <= 2;
         end
         else
         WriteMEMData_Signal <= 0;

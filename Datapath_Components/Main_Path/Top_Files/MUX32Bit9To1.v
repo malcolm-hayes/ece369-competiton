@@ -34,7 +34,7 @@ module Mux32Bit9To1 (rs_value_EX,ALUResult_EX3,ALUResult_EX4,ALUResult_EX5,ALURe
 
 		Mux32Bit2To1 MUX_7(MUX_5_6, MUX_1_2, MUX_3_4, ALU_input_rs[2]);
 
-		Mux32Bit2To1 MUX_8(forward_rs_value, MemToReg_WB_MUX, ALU_input_rs[3]);
+		Mux32Bit2To1 MUX_8(forward_rs_value, MUX_5_6,MemToReg_WB_MUX, ALU_input_rs[3]);
 		
 
 

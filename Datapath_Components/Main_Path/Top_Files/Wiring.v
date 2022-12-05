@@ -192,7 +192,7 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
                             MemWrite, MemRead, MemToReg, Branch, jump, jal_RA, jr, isBranch, move, sad); // new controller signals needed (jump instruction, etc.)
 
     Mux5Bit2To1 Mux5Bit2To1_WriteReg(WriteReg_MUX, RegDst1Result_WB, 5'b11111, jal_Control);
-    Mux32Bit2To1 Mux32Bit2To1_WriteDat(WriteData_MUX, MemToReg_WB_MUX, PCAddResult_ID, jal_Control);
+    Mux32Bit2To1 Mux32Bit2To1_WriteData(WriteData_MUX, MemToReg_WB_MUX, PCAddResult_ID, jal_Control);
 
     ShiftLeft2 ShiftLeft2__1(Immediate_ID, ShiftLeft2Out_ID); // debug this
 
@@ -221,7 +221,7 @@ ForwardingUnit Forward_RS(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1R
                     RegWrite_EX3,RegWrite_EX4,RegWrite_EX5,RegWrite_EX6,RegWrite_EX7,RegWrite_EX8,
                     RegDst1Result_EX3,RegDst1Result_EX4,RegDst1Result_EX5,RegDst1Result_EX6,RegDst1Result_EX7,RegDst1Result_EX8);
 
-ForwardingUnitMEM Forward_MEM(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, rt_address_EX8, WriteMEMData_Signal);
+ForwardingUnitMEM Forward_MEM(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, RegDst1Result_EX8, WriteMEMData_Signal);
 
     Mux32Bit9To1 Mux32Bit9To1_rs(rs_value_EX,ALUResult_EX3,ALUResult_EX4,ALUResult_EX5,ALUResult_EX6,ALUResult_EX7,
              sadMUX_regwrite_value, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, forward_rs_value, ALU_input_rs);
@@ -281,8 +281,8 @@ ForwardingUnitMEM Forward_MEM(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegD
     s0_numrow_value_EX2,s1_cdif_value_EX2,s2_it_value_EX2, t1_sad_value_EX2, s4_frow_value_EX2, sad_EX2,move_EX2,moveCheck_outValue_EX2,
 	s6_x_value_EX2, s7_y_value_EX2,t0_target_value_EX2, outx_EX2, outy_EX2, check_wcol_out_EX2,a1_frame_value_EX2,
     //Registers for moving ALU
-    ALUControl, Immediate_EX, forward_rs_value, forward_rt_value,
-    ALUControl_EX2, Immediate_EX2,forward_rs_value_EX2, forward_rt_value_EX2
+    ALUControl, Immediate_EX, forward_rs_value, forward_rt_value, rs_address_EX, rt_address_EX,
+    ALUControl_EX2, Immediate_EX2,forward_rs_value_EX2, forward_rt_value_EX2,rs_address_EX2, rt_address_EX2
     ); 
 
 
