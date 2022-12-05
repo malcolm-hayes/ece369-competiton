@@ -50,7 +50,7 @@ module ForwardingUnit(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Resul
                 ALU_input_rs <= 1;
         end
         else
-        ALU_input_rs <= 0;
+            ALU_input_rs <= 0;
         
     end
 

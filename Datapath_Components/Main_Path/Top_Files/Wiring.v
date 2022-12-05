@@ -213,7 +213,7 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
 // FORWARDING UNIT AND HAZARD DETECTION (AND MUXES)
 //   ForwardingUnit ForwardingUnit_1(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, rs_address_EX, rt_address_EX, ALU_input_rs, ALU_input_rt, WriteMEMData_Signal);
 //                                 EX_MEM_RegWrite,  EX_MEM_rd,   MEM_WB_RegWrite,   MEM_WB_rd,        ID_EX_rs,      ID_EX_rt, ALU_input_rs, ALU_input_rt, WriteMEMData_Signal
-ForwardingUnit Forward_RT(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, rt_address_EX, ALU_input_rs, 
+ForwardingUnit Forward_RT(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, rt_address_EX, ALU_input_rt, 
                     RegWrite_EX3,RegWrite_EX4,RegWrite_EX5,RegWrite_EX6,RegWrite_EX7,RegWrite_EX8,
                     RegDst1Result_EX3,RegDst1Result_EX4,RegDst1Result_EX5,RegDst1Result_EX6,RegDst1Result_EX7,RegDst1Result_EX8);
 
