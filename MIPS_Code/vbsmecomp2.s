@@ -443,14 +443,15 @@ vbsme:
    add $s3, $t5, $t6 # total moves---
    # x,y is s6,s7
    add $t0, $zero, $a2
-   add $t1, $zero, $zero # iterator --------
+   add $t2, $zero, $zero # iterator --------
 
    sadloop:
-   # sad
-   addi $t1, $t1, 1
-   bne $s2, $t1, sadloop
-   # move
-   addi $t1, $zero, 0
+   nop # sad
+   addi $t2, $t2, 1
+   bne $s2, $t2, sadloop
+
+   nop # move
+   addi $t2, $zero, 0
    addi $s3, $s3, -1
    bne $s3, $zero, sadloop
 
