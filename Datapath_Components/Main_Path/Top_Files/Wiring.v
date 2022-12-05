@@ -223,6 +223,9 @@ ForwardingUnit Forward_RS(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1R
 
 ForwardingUnitMEM Forward_MEM(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, RegDst1Result_EX8, WriteMEMData_Signal);
 
+ForwardingUnit_EX2 ForwardingUnit_EX2_1RS(rs_address_EX2,RegDst1Result_EX3, RegWrite_EX3, ALU_input_rs_MUX_EX2);
+ForwardingUnit_EX2 ForwardingUnit_EX2_1RT(rt_address_EX2,RegDst1Result_EX3, RegWrite_EX3, ALU_input_rt_MUX_EX2);
+
     Mux32Bit9To1 Mux32Bit9To1_rs(rs_value_EX,ALUResult_EX3,ALUResult_EX4,ALUResult_EX5,ALUResult_EX6,ALUResult_EX7,
              sadMUX_regwrite_value, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, forward_rs_value, ALU_input_rs);
     Mux32Bit9To1 Mux32Bit9To1_rt(rt_value_EX,ALUResult_EX3,ALUResult_EX4,ALUResult_EX5,ALUResult_EX6,ALUResult_EX7,
@@ -287,7 +290,9 @@ ForwardingUnitMEM Forward_MEM(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegD
 
 
 //EX2 stage
-    ALU32Bit ALU32Bit_1(ALUControl_EX2, forward_rs_value_EX2, forward_rt_value_EX2, Immediate_EX2, ALUResult_EX2 /*, Zero*/);
+    Mux32Bit2To1 Mux32Bit2To1_ALUINPUT_ForwardRS(ALU_Input_value_rs, forward_rs_value_EX2, ALUResult_EX3, ALU_input_rs_MUX_EX2);
+    Mux32Bit2To1 Mux32Bit2To1_ALUINPUT_ForwardRT(ALU_Input_value_rt, forward_rt_value_EX2, ALUResult_EX3, ALU_input_rt_MUX_EX2);
+    ALU32Bit ALU32Bit_1(ALUControl_EX2, ALU_Input_value_rs, ALU_Input_value_rt, Immediate_EX2, ALUResult_EX2 /*, Zero*/);
 
     Mux32Bit2To1 Mux32Bit2To1_Move_Value(ALUResult_EX2_MOVEMUX, ALUResult_EX2,moveCheck_outValue_EX2 , move_EX2);
     Multiplier32Bit Mul_it_numrow(s2_it_value_EX2, s0_numrow_value_EX2, itxnumrow_out); //multiplies the iterator and the initialized numrow value
