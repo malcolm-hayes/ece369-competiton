@@ -16,17 +16,19 @@ module EX4_EX5_Reg(ALUResult_EX4, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX4
     Out1_EX5,Out2_EX5,Out3_EX5,Out4_EX5,Out5_EX5,Out6_EX5,Out7_EX5,Out8_EX5,Out9_EX5,Out10_EX5,Out11_EX5,Out12_EX5,
     Out13_EX5,Out14_EX5,Out15_EX5,Out16_EX5,
     tOut1_EX5,tOut2_EX5,tOut3_EX5,tOut4_EX5,tOut5_EX5,tOut6_EX5,tOut7_EX5,tOut8_EX5,tOut9_EX5,tOut10_EX5,tOut11_EX5,tOut12_EX5,
-    tOut13_EX5,tOut14_EX5,tOut15_EX5,tOut16_EX5 
+    tOut13_EX5,tOut14_EX5,tOut15_EX5,tOut16_EX5,
+    //EXTRA ADDITIONS
+    rs_address_EX4,rs_address_EX5
     ); 
 
 input [31:0] ALUResult_EX4, /* rt_Register_Value_EX,*/ rs_value_EX4, rt_value_EX4, JumpPC_EX4;
-input [4:0] RegDst1Result_EX4;
+input [4:0] RegDst1Result_EX4,rs_address_EX4;
 input [1:0] MemWrite_EX4, MemRead_EX4;
 input MemToReg_EX4, RegWrite_EX4, jal_EX4, Jump_EX4, JR_EX4,sad_EX4;
 input Clk, Reset;
 
 output reg [31:0] ALUResult_EX5, /* rt_Register_Value_EX2,*/ rs_value_EX5, rt_value_EX5, JumpPC_EX5;
-output reg [4:0] RegDst1Result_EX5;
+output reg [4:0] RegDst1Result_EX5,rs_address_EX5;
 output reg [1:0] MemWrite_EX5, MemRead_EX5;
 output reg MemToReg_EX5, RegWrite_EX5, jal_EX5, Jump_EX5, JR_EX5,sad_EX5;
 
@@ -95,6 +97,8 @@ output reg [31:0] t1_sad_value_EX5, t0_target_value_EX5, outx_EX5, outy_EX5,
     tOut14_EX5 <= 0;
     tOut15_EX5 <= 0;
     tOut16_EX5 <= 0;
+
+    rs_address_EX5 <= 0;
  end
 
 always @(posedge Clk) begin
@@ -153,6 +157,8 @@ always @(posedge Clk) begin
         tOut14_EX5 <= 0;
         tOut15_EX5 <= 0;
         tOut16_EX5 <= 0;
+
+        rs_address_EX5 <= 0;
     end
     else begin
         ALUResult_EX5 <= ALUResult_EX4;
@@ -208,6 +214,8 @@ always @(posedge Clk) begin
         tOut14_EX5 <= tOut14;
         tOut15_EX5 <= tOut15;
         tOut16_EX5 <= tOut16;
+
+        rs_address_EX5 <= rs_address_EX4;
     end
     
 end

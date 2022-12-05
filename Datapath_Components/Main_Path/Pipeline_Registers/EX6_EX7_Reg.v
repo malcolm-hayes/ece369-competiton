@@ -12,17 +12,19 @@ module EX6_EX7_Reg(ALUResult_EX6, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX6
     sOut1,sOut2,sOut3,sOut4,sOut5,sOut6,sOut7,sOut8,
     //registers for custom instruction EX7
     t1_sad_value_EX7, outx_EX7, outy_EX7,sad_EX7,
-    sOut1_EX7,sOut2_EX7,sOut3_EX7,sOut4_EX7,sOut5_EX7,sOut6_EX7,sOut7_EX7,sOut8_EX7
+    sOut1_EX7,sOut2_EX7,sOut3_EX7,sOut4_EX7,sOut5_EX7,sOut6_EX7,sOut7_EX7,sOut8_EX7,
+    //EXTRA ADDITIONS
+    rs_address_EX6,rs_address_EX7
     );
 
 input [31:0] ALUResult_EX6, /* rt_Register_Value_EX,*/ rs_value_EX6, rt_value_EX6, JumpPC_EX6;
-input [4:0] RegDst1Result_EX6;
+input [4:0] RegDst1Result_EX6,rs_address_EX6;
 input [1:0] MemWrite_EX6, MemRead_EX6;
 input MemToReg_EX6, RegWrite_EX6, jal_EX6, Jump_EX6, JR_EX6,sad_EX6;
 input Clk, Reset;
 
 output reg [31:0] ALUResult_EX7, /* rt_Register_Value_EX2,*/ rs_value_EX7, rt_value_EX7, JumpPC_EX7;
-output reg [4:0] RegDst1Result_EX7;
+output reg [4:0] RegDst1Result_EX7,rs_address_EX7;
 output reg [1:0] MemWrite_EX7, MemRead_EX7;
 output reg MemToReg_EX7, RegWrite_EX7, jal_EX7, Jump_EX7, JR_EX7,sad_EX7;
 
@@ -62,6 +64,8 @@ initial begin
     sOut6_EX7 <= 0;
     sOut7_EX7 <= 0;
     sOut8_EX7 <= 0;
+
+    rs_address_EX7 <= 0;
 end
 
 always @(posedge Clk) begin
@@ -95,6 +99,8 @@ always @(posedge Clk) begin
     sOut6_EX7 <= 0;
     sOut7_EX7 <= 0;
     sOut8_EX7 <= 0;
+
+    rs_address_EX7 <= 0;
     end
     else begin
     ALUResult_EX7 <= ALUResult_EX6;
@@ -125,6 +131,8 @@ always @(posedge Clk) begin
     sOut6_EX7 <= sOut6;
     sOut7_EX7 <= sOut7;
     sOut8_EX7 <= sOut8;
+
+    rs_address_EX7 <= rs_address_EX6;
     end
     
 end
