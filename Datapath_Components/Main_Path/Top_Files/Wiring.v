@@ -249,7 +249,7 @@ ForwardingUnit Forward_BRANCHRS(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, Re
     Mux32Bit9To1 Mux32Bit9To1_BRANCHrs(rs_value_ID, ALUResult_EX3,ALUResult_EX4,ALUResult_EX5,ALUResult_EX6,ALUResult_EX7,
              sadMUX_regwrite_value, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, BranchCheckMUX_rs, BRANCH_input_rs); 
     Mux32Bit9To1 Mux32Bit9To1_BRANCHrt(rt_value_ID, ALUResult_EX3,ALUResult_EX4,ALUResult_EX5,ALUResult_EX6,ALUResult_EX7,
-             sadMUX_regwrite_value, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, BranchCheckMUX_rs, BRANCH_input_rs);
+             sadMUX_regwrite_value, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, BranchCheckMUX_rt, BRANCH_input_rt);
 //                                      out, A, B, sel
 // END of ID
     //PIPELINE

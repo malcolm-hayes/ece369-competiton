@@ -418,26 +418,52 @@ vbsme:
     add $s6, $zero, $zero
     add $s7, $zero, $zero
 
-   lw $t0, 0($a0) # load numRowsFrame into t0
+   lw $s4, 0($a0) # load numRowsFrame into s4-------------
    lw $t1, 4($a0) # load numColsFrame into t1
    lw $t2, 8($a0) # load numRowsWindow into t2
-   lw $t3, 12($a0) # load numColsWindow into t3
+   lw $s5, 12($a0) # load numColsWindow into s5
 
    addi $t4, $zero, 16
 
-   loopsnumrow: //loop to solve for numrow
-   addi $s0, $s0, 1
-   sub $t4, $t4, $t3
-   nop
-   nop
+   loopsnumrow: # loop to solve for numrow
+   addi $s0, $s0, 1 # numrow---------
+   sub $t4, $t4, $s5
    bne $zero, $t4, loopsnumrow 
-   sub $s1,  
+   sub $s1, $t1, $s5 # cdif----
+   mul $t4, $t2, $s5 
+
+   loopsit: # loop to solve for iterator
+   addi $s2, $s2, 1 # iterator constant----
+   addi $t4, $t4, -16
+   bne $zero, $t4, loopsit 
+
+   sub $t4, $s4, $t2 # rdif
+   mul $t5, $t4, $s1 # cdif * rdif
+   add $t6, $t4, $s1 # cdif + rdif
+   add $s3, $t5, $t6 # total moves---
+   # x,y is s6,s7
+   add $t0, $zero, $a2
+   add $t1, $zero, $zero # iterator --------
+
+   sadloop:
+   # sad
+   addi $t1, $t1, 1
+   bne $s2, $t1, sadloop
+   # move
+   addi $t1, $zero, 0
+   addi $s3, $s3, -1
+   bne $s3, $zero, sadloop
 
 
 
 
 
-      jr $ra  # jump back to tester    
+
+
+
+
+
+   jr $ra  # jump back to tester    
         
     
 
