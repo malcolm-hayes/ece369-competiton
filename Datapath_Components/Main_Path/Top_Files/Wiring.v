@@ -11,7 +11,7 @@
 module Wiring(Clk, Reset, v0_Out, v1_Out);
     
     //OLD WIRES
-    output wire [31:0] v0_Out, v1_Out;
+    output reg [31:0] v0_Out, v1_Out;
     // reg [31:0] v0, v1;
 (* mark_debug = "true" *) input Clk, Reset;
     // To PCSrc mux
@@ -498,6 +498,19 @@ ForwardingUnit_EX2 ForwardingUnit_EX2_1RT(rt_address_EX2,RegDst1Result_EX3, RegW
 
 // BEGIN WB
     Mux32Bit2To1 Mux32Bit2To1_MemToReg(MemToReg_WB_MUX, sadMUX_regwrite_value_WB, ReadData_WB, MemToReg_WB);
+
+    initial begin
+        v0_Out <= 0;
+        v1_Out <= 0;
+    end
+    always @(posedge Clk) begin
+        if (RegWrite_ORGate)begin
+            if (WriteReg_MUX == 2)
+                v0_Out <= WriteData_MUX;
+            else if (WriteReg_MUX == 3)
+                v1_Out <= WriteData_MUX;
+        end
+    end
 
 
 
