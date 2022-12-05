@@ -111,7 +111,8 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
     wire [31:0] ALUResult_EX2, ALUResult_EX3, ALUResult_EX4, ALUResult_EX5, ALUResult_EX6, ALUResult_EX7, ALUResult_EX8,
         rs_value_EX2, rs_value_EX3, rs_value_EX4, rs_value_EX5, rs_value_EX6, rs_value_EX7, rs_value_EX8, 
         rt_value_EX2, rt_value_EX3, rt_value_EX4, rt_value_EX5, rt_value_EX6, rt_value_EX7, rt_value_EX8,ALU_Input_value_rs,ALU_Input_value_rt;
-    wire [4:0] RegDst1Result_EX, RegDst1Result_EX2, RegDst1Result_EX3, RegDst1Result_EX4, RegDst1Result_EX5, RegDst1Result_EX6, RegDst1Result_EX7, RegDst1Result_EX8;
+    wire [4:0] RegDst1Result_EX, RegDst1Result_EX2, RegDst1Result_EX3, RegDst1Result_EX4, RegDst1Result_EX5, RegDst1Result_EX6, RegDst1Result_EX7, RegDst1Result_EX8,
+        rs_address_EX2,rt_address_EX2;
 
 
     wire [1:0] MemWrite_EX2, MemWrite_EX3, MemWrite_EX4, MemWrite_EX5, MemWrite_EX6, MemWrite_EX7, MemWrite_EX8,
