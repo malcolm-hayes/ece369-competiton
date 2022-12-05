@@ -1,111 +1,57 @@
 `timescale 1ns / 1ps
 
-module ForwardingUnit(EX_MEM_RegWrite, EX_MEM_rd, MEM_WB_RegWrite, MEM_WB_rd, ID_EX_rs, ID_EX_rt, ALU_input_rs, ALU_input_rt, WriteMEMData_Signal);
-//RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, rs_address_EX2, rt_address_EX2, ALU_input_rs, ALU_input_rt, WriteMEMData_Signal
-    input EX_MEM_RegWrite, MEM_WB_RegWrite;
-    input [4:0] EX_MEM_rd, MEM_WB_rd;
-    input [4:0] ID_EX_rs, ID_EX_rt;
-    output reg [1:0] WriteMEMData_Signal;
-    output reg [1:0] ALU_input_rs, ALU_input_rt;
+module ForwardingUnit(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, rs_address_EX1, ALU_input_rs, 
+                    RegWrite_EX3,RegWrite_EX4,RegWrite_EX5,RegWrite_EX6,RegWrite_EX7,RegWrite_EX8,
+                    RegDst1Result_EX3,RegDst1Result_EX4,RegDst1Result_EX5,RegDst1Result_EX6,RegDst1Result_EX7,RegDst1Result_EX8);
+
+    input RegWrite_MEM, RegWrite_WB,RegWrite_EX3,RegWrite_EX4,RegWrite_EX5,RegWrite_EX6,RegWrite_EX7,RegWrite_EX8;
+    input [4:0] RegDst1Result_MEM, RegDst1Result_WB,RegDst1Result_EX3,RegDst1Result_EX4,RegDst1Result_EX5,RegDst1Result_EX6,RegDst1Result_EX7,RegDst1Result_EX8;
+    input [4:0] rs_address_EX1;
+    output reg [3:0] ALU_input_rs;
     // MUX SIGNAL KEY:
-    // 0 --> value from ID_EX pipeline register
-    // 1 --> forwarding from Memory
-    // 2 --> forwarding from WriteBack
+    // 0 --> default
+    // 1 --> EX3
+    // 2 --> EX4
+    // 3 --> EX5
+    // 4 --> EX6
+    // 5 --> EX7
+    // 6 --> EX8
+    // 7 --> forwarding from Memory
+    // 8 --> forwarding from WriteBack
 
     initial begin
             ALU_input_rs <= 0;
-            ALU_input_rt <= 0;
-            WriteMEMData_Signal <= 0;
+
     end
         always @(*)begin
-        if (ID_EX_rs == EX_MEM_rd && EX_MEM_RegWrite == 1 && ID_EX_rt != MEM_WB_rd /* && MEM_WB_RegWrite == 0 */ &&
-                                                             ID_EX_rt != EX_MEM_rd)
-        begin
-            ALU_input_rs <= 1;
-            ALU_input_rt <= 0;
-            WriteMEMData_Signal <= 0;
+        
+        if ((rs_address_EX1 == RegDst1Result_WB) && RegWrite_WB)begin
+                ALU_input_rs <= 8;
         end
-        // rs from EX_MEM   rt is default
-
-        else if (ID_EX_rs == EX_MEM_rd && EX_MEM_RegWrite == 1 && ID_EX_rt == EX_MEM_rd && MEM_WB_RegWrite == 1)
-        begin
-            ALU_input_rs <= 1;
-            ALU_input_rt <= 1;
-            WriteMEMData_Signal <= 1;
+        else if ((rs_address_EX1 == RegDst1Result_MEM) && RegWrite_MEM)begin
+                ALU_input_rs <= 7;
         end
-        // rs from EX_MEM   rt from EX_MEM
-
-        else if (ID_EX_rs == EX_MEM_rd && EX_MEM_RegWrite == 1 && ID_EX_rt == MEM_WB_rd && MEM_WB_RegWrite == 1)
-        begin
-            ALU_input_rs <= 1;
-            ALU_input_rt <= 2;
-            WriteMEMData_Signal <= 2;
+        else if ((rs_address_EX1 == RegDst1Result_EX8) && RegWrite_EX8)begin
+                ALU_input_rs <= 6;
         end
-        //Fix for lab7
-        // else if (ID_EX_rs == EX_MEM_rd && EX_MEM_RegWrite == 1 && ID_EX_rs == MEM_WB_rd && MEM_WB_RegWrite == 1)
-        // begin
-        //     ALU_input_rs <= 1;
-        //     ALU_input_rt <= 0;
-        //     WriteMEMData_Signal <= 0;
-        // end
-        // rs from EX_MEM   rt from MEM_WB
-
-        else if (ID_EX_rs == MEM_WB_rd && /* EX_MEM_RegWrite == 0 && */ ID_EX_rt != EX_MEM_rd && MEM_WB_RegWrite == 1 &&
-                                                                   ID_EX_rt != MEM_WB_rd)
-        begin
-            ALU_input_rs <= 2;
-            ALU_input_rt <= 0;
-            WriteMEMData_Signal <= 0;
+        else if ((rs_address_EX1 == RegDst1Result_EX7) && RegWrite_EX7)begin
+                ALU_input_rs <= 5;
         end
-        // rs from MEM_WB   rt is default
-
-        else if (ID_EX_rs == MEM_WB_rd && EX_MEM_RegWrite == 1 && ID_EX_rt == EX_MEM_rd && MEM_WB_RegWrite == 1)
-        begin
-            ALU_input_rs <= 2;
-            ALU_input_rt <= 1;
-            WriteMEMData_Signal <= 1;
+        else if ((rs_address_EX1 == RegDst1Result_EX6) && RegWrite_EX6)begin
+                ALU_input_rs <= 4;
         end
-        // rs from MEM_WB   rt from EX_MEM
-
-        else if (ID_EX_rs == MEM_WB_rd  && EX_MEM_RegWrite == 1  && ID_EX_rt == MEM_WB_rd && MEM_WB_RegWrite == 1)
-        begin
-            ALU_input_rs <= 2;
-            ALU_input_rt <= 2;
-            WriteMEMData_Signal <= 2;
+        else if ((rs_address_EX1 == RegDst1Result_EX5) && RegWrite_EX5)begin
+                ALU_input_rs <= 3;
         end
-        // rs from MEM_WB   rt from MEM_WB
-
-        else if (ID_EX_rs != MEM_WB_rd /* && EX_MEM_RegWrite == 0 */ && ID_EX_rt != EX_MEM_rd /* && MEM_WB_RegWrite == 0 */ &&
-            ID_EX_rs != EX_MEM_rd            &&                    ID_EX_rt != MEM_WB_rd)
-        begin
-            ALU_input_rs <= 0;
-            ALU_input_rt <= 0;
-            WriteMEMData_Signal <= 0;
+        else if ((rs_address_EX1 == RegDst1Result_EX4) && RegWrite_EX4)begin
+                ALU_input_rs <= 2;
         end
-        // rs is default    rt is default
-
-        else if (ID_EX_rs != MEM_WB_rd && EX_MEM_RegWrite == 1 && ID_EX_rt == EX_MEM_rd /* && MEM_WB_RegWrite == 0 */ &&
-            ID_EX_rs != EX_MEM_rd)
-        begin
-            ALU_input_rs <= 0;
-            ALU_input_rt <= 1;
-            WriteMEMData_Signal <= 1;
+        else if ((rs_address_EX1 == RegDst1Result_EX3) && RegWrite_EX3)begin
+                ALU_input_rs <= 1;
         end
-        // rs is default    rt from EX_MEM
-
-        else if (ID_EX_rs != MEM_WB_rd /* && EX_MEM_RegWrite == 0 */ && ID_EX_rt == MEM_WB_rd && MEM_WB_RegWrite == 1 &&
-            ID_EX_rs != EX_MEM_rd)
-        begin
-            ALU_input_rs <= 0;
-            ALU_input_rt <= 2;
-            WriteMEMData_Signal <= 2;
-        end
-        else begin
-            ALU_input_rs <= 0;
-            ALU_input_rt <= 0;
-            WriteMEMData_Signal <= 0;
-        end
-        // rs is default    rt from MEM_WB
+        else
+        ALU_input_rs <= 0;
+        
     end
 
 
