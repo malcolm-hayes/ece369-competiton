@@ -26,31 +26,31 @@ module ForwardingUnit(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Resul
         always @(*)begin
         
         if ((rs_address_EX1 == RegDst1Result_EX3) && RegWrite_EX3)begin
-                ALU_input_rs <= 1;
+                ALU_input_rs <= 4'b0001;
         end
         else if ((rs_address_EX1 == RegDst1Result_EX4) && RegWrite_EX4)begin
-                ALU_input_rs <= 2;
+                ALU_input_rs <= 4'b0010;
         end
         else if ((rs_address_EX1 == RegDst1Result_EX5) && RegWrite_EX5)begin
-                ALU_input_rs <= 3;
+                ALU_input_rs <= 4'b0011;
         end
         else if ((rs_address_EX1 == RegDst1Result_EX6) && RegWrite_EX6)begin
-                ALU_input_rs <= 4;
+                ALU_input_rs <= 4'b0100;
         end
         else if ((rs_address_EX1 == RegDst1Result_EX7) && RegWrite_EX7)begin
-                ALU_input_rs <= 5;
+                ALU_input_rs <= 4'b0101;
         end
         else if ((rs_address_EX1 == RegDst1Result_EX8) && RegWrite_EX8)begin
-                ALU_input_rs <= 6;
+                ALU_input_rs <= 4'b0110;
         end
         else if ((rs_address_EX1 == RegDst1Result_MEM) && RegWrite_MEM)begin
-                ALU_input_rs <= 7;
+                ALU_input_rs <= 4'b0111;
         end
         else if ((rs_address_EX1 == RegDst1Result_WB) && RegWrite_WB)begin
-                ALU_input_rs <= 8;
+                ALU_input_rs <= 4'b1000;
         end
         else
-            ALU_input_rs <= 0;
+            ALU_input_rs <= 4'b0000;
         
     end
 
