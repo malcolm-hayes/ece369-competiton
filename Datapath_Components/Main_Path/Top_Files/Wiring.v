@@ -110,9 +110,9 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
     
     wire [31:0] ALUResult_EX2, ALUResult_EX3, ALUResult_EX4, ALUResult_EX5, ALUResult_EX6, ALUResult_EX7, ALUResult_EX8,
         rs_value_EX2, rs_value_EX3, rs_value_EX4, rs_value_EX5, rs_value_EX6, rs_value_EX7, rs_value_EX8, 
-        rt_value_EX2, rt_value_EX3, rt_value_EX4, rt_value_EX5, rt_value_EX6, rt_value_EX7, rt_value_EX8,ALU_Input_value_rs,ALU_Input_value_rt;
+        rt_value_EX2, rt_value_EX3, rt_value_EX4, rt_value_EX5, rt_value_EX6, rt_value_EX7, rt_value_EX8,ALU_Input_value_rs,ALU_Input_value_rt,WriteMEMData_MUX_MEM;
     wire [4:0] RegDst1Result_EX, RegDst1Result_EX2, RegDst1Result_EX3, RegDst1Result_EX4, RegDst1Result_EX5, RegDst1Result_EX6, RegDst1Result_EX7, RegDst1Result_EX8,
-        rs_address_EX2,rt_address_EX2;
+        rs_address_EX2,rt_address_EX2,rs_address_EX3,rs_address_EX4,rs_address_EX5,rs_address_EX6,rs_address_EX7,rs_address_EX8;
 
 
     wire [1:0] MemWrite_EX2, MemWrite_EX3, MemWrite_EX4, MemWrite_EX5, MemWrite_EX6, MemWrite_EX7, MemWrite_EX8,
@@ -222,7 +222,8 @@ ForwardingUnit Forward_RS(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1R
                     RegWrite_EX3,RegWrite_EX4,RegWrite_EX5,RegWrite_EX6,RegWrite_EX7,RegWrite_EX8,
                     RegDst1Result_EX3,RegDst1Result_EX4,RegDst1Result_EX5,RegDst1Result_EX6,RegDst1Result_EX7,RegDst1Result_EX8);
 
-ForwardingUnitMEM Forward_MEM(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, RegDst1Result_EX8, WriteMEMData_Signal);
+ForwardingUnitMEM Forward_MEMRT(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, RegDst1Result_EX8, WriteMEMData_Signal);
+ForwardingUnitMEM Forward_MEMRS(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, rs_address_EX8, WriteMEMData_Signal);
 
 ForwardingUnit_EX2 ForwardingUnit_EX2_1RS(rs_address_EX2,RegDst1Result_EX3, RegWrite_EX3, ALU_input_rs_MUX_EX2);
 ForwardingUnit_EX2 ForwardingUnit_EX2_1RT(rt_address_EX2,RegDst1Result_EX3, RegWrite_EX3, ALU_input_rt_MUX_EX2);
@@ -315,7 +316,9 @@ ForwardingUnit_EX2 ForwardingUnit_EX2_1RT(rt_address_EX2,RegDst1Result_EX3, RegW
     //registers for custom instruction EX3
     t1_sad_value_EX3, s4_frow_value_EX3, sad_EX3,
 	s6_x_value_EX3, s7_y_value_EX3, t0_target_value_EX3, outx_EX3, outy_EX3, check_wcol_out_EX3,
-    mul6_out_1_EX3,mul6_out_2_EX3,mul6_out_3_EX3,mul6_out_4_EX3, itxnumrow_out_EX3,a1_frame_value_EX3
+    mul6_out_1_EX3,mul6_out_2_EX3,mul6_out_3_EX3,mul6_out_4_EX3, itxnumrow_out_EX3,a1_frame_value_EX3,
+    //EXTRA ADDITIONS
+    rs_address_EX2,rs_address_EX3
     ); 
 //EX3 stage
     Adder32Bit Add_y_itxnumrow_1(s7_y_value_EX3, itxnumrow_out_EX3, add_y_itxnumrow); //adds the iterator and numrow to the y coord  
@@ -342,7 +345,9 @@ ForwardingUnit_EX2 ForwardingUnit_EX2_1RT(rt_address_EX2,RegDst1Result_EX3, RegW
     t1_sad_value_EX4, 
 	t0_target_value_EX4, outx_EX4, outy_EX4,sad_EX4,
     a1_frame_value_EX4, In1_EX4,In2_EX4,In3_EX4,In4_EX4,In5_EX4,In6_EX4,In7_EX4,In8_EX4,In9_EX4,In10_EX4,In11_EX4,In12_EX4,In13_EX4,
-    In14_EX4,In15_EX4,In16_EX4, mul_frow_out_EX4
+    In14_EX4,In15_EX4,In16_EX4, mul_frow_out_EX4,
+    //EXTRA ADDITIONS
+    rs_address_EX3,rs_address_EX4
     ); 
 //EX4 stage
     Adder32Bit Add_frame_result(mul_frow_out_EX4,a1_frame_value_EX4, add_frame_out); //adds frame base address to the result of Add_y_itxnumrow*frow
@@ -370,7 +375,9 @@ ForwardingUnit_EX2 ForwardingUnit_EX2_1RT(rt_address_EX2,RegDst1Result_EX3, RegW
     Out1_EX5,Out2_EX5,Out3_EX5,Out4_EX5,Out5_EX5,Out6_EX5,Out7_EX5,Out8_EX5,Out9_EX5,Out10_EX5,Out11_EX5,Out12_EX5,
     Out13_EX5,Out14_EX5,Out15_EX5,Out16_EX5,
     tOut1_EX5,tOut2_EX5,tOut3_EX5,tOut4_EX5,tOut5_EX5,tOut6_EX5,tOut7_EX5,tOut8_EX5,tOut9_EX5,tOut10_EX5,tOut11_EX5,tOut12_EX5,
-    tOut13_EX5,tOut14_EX5,tOut15_EX5,tOut16_EX5 
+    tOut13_EX5,tOut14_EX5,tOut15_EX5,tOut16_EX5,
+    //EXTRA ADDITIONS
+    rs_address_EX4,rs_address_EX5 
     ); 
 //EX5 stage
     Memmory_16 Memory_16_Generate(Clk, Out1_EX5,Out2_EX5,Out3_EX5,Out4_EX5,Out5_EX5,Out6_EX5,Out7_EX5,Out8_EX5,Out9_EX5,Out10_EX5,
@@ -404,7 +411,9 @@ ForwardingUnit_EX2 ForwardingUnit_EX2_1RT(rt_address_EX2,RegDst1Result_EX3, RegW
     ReadData1_EX6,ReadData2_EX6,ReadData3_EX6,ReadData4_EX6,ReadData5_EX6,ReadData6_EX6,ReadData7_EX6,ReadData8_EX6,ReadData9_EX6,
     ReadData10_EX6,ReadData11_EX6,ReadData12_EX6,ReadData13_EX6,ReadData14_EX6,ReadData15_EX6,ReadData16_EX6,
     tReadData1_EX6,tReadData2_EX6,tReadData3_EX6,tReadData4_EX6,tReadData5_EX6,tReadData6_EX6,tReadData7_EX6,tReadData8_EX6,
-    tReadData9_EX6,tReadData10_EX6, tReadData11_EX6,tReadData12_EX6,tReadData13_EX6,tReadData14_EX6,tReadData15_EX6,tReadData16_EX6 
+    tReadData9_EX6,tReadData10_EX6, tReadData11_EX6,tReadData12_EX6,tReadData13_EX6,tReadData14_EX6,tReadData15_EX6,tReadData16_EX6,
+    //EXTRA ADDITIONS
+    rs_address_EX5,rs_address_EX6 
     );
 //EX6 stage
     Adder32bit_16 Adder_first_round(ReadData1_EX6,ReadData2_EX6,ReadData3_EX6,ReadData4_EX6,ReadData5_EX6,ReadData6_EX6,ReadData7_EX6,
@@ -428,7 +437,9 @@ ForwardingUnit_EX2 ForwardingUnit_EX2_1RT(rt_address_EX2,RegDst1Result_EX3, RegW
     sOut1,sOut2,sOut3,sOut4,sOut5,sOut6,sOut7,sOut8,
     //registers for custom instruction EX7
     t1_sad_value_EX7, outx_EX7, outy_EX7,sad_EX7,
-    sOut1_EX7,sOut2_EX7,sOut3_EX7,sOut4_EX7,sOut5_EX7,sOut6_EX7,sOut7_EX7,sOut8_EX7
+    sOut1_EX7,sOut2_EX7,sOut3_EX7,sOut4_EX7,sOut5_EX7,sOut6_EX7,sOut7_EX7,sOut8_EX7,
+    //EXTRA ADDITIONS
+    rs_address_EX6,rs_address_EX7
     );
 //EX7 stage
     Adder32bit_4 Adder_third_round(sOut1_EX7,sOut2_EX7,sOut3_EX7,sOut4_EX7,sOut5_EX7,sOut6_EX7,sOut7_EX7,sOut8_EX7,
@@ -449,14 +460,16 @@ ForwardingUnit_EX2 ForwardingUnit_EX2_1RT(rt_address_EX2,RegDst1Result_EX3, RegW
     foOut1,foOut2,
     //registers for custom instruction EX8
     t1_sad_value_EX8, outx_EX8, outy_EX8,sad_EX8,
-    foOut1_EX8,foOut2_EX8
+    foOut1_EX8,foOut2_EX8,
+    //EXTRA ADDITIONS
+    rs_address_EX7,rs_address_EX8
     );
 //EX8 stage
     Adder32Bit Adder_fifth_round(foOut1_EX8,foOut2_EX8, FinalOut);
     Adder32Bit Adder_incrementSAD(FinalOut, t1_sad_value_EX8, SAD_Out);
     Mux32Bit2To1 Mux32Bit2To1_SADorNot(sadMUX_regwrite_value, ALUResult_EX8,SAD_Out, sad_EX8);
 
-    Mux32Bit3To1 Mux32Bit3To1_WriteMEMData(rt_value_EX8, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, WriteMEMData_MUX, WriteMEMData_Signal); //forward mux for datamemory
+    Mux32Bit3To1 Mux32Bit3To1_WriteMEMData(ALUResult_EX8, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, WriteMEMData_MUX, WriteMEMData_Signal); //forward mux for datamemory
 //END EX8 stage
     //PIPELINE
     EX8_MEM_Reg EX8_MEM_Reg_1(sadMUX_regwrite_value, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX8,*/
@@ -465,7 +478,7 @@ ForwardingUnit_EX2 ForwardingUnit_EX2_1RT(rt_address_EX2,RegDst1Result_EX3, RegW
     //MEM
     sadMUX_regwrite_value_MEM, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_MEM,*/
     RegDst1Result_MEM, /*Zero_MEM,*/ MemWrite_MEM, MemToReg_MEM, MemRead_MEM, /*Branch_MEM,*/ RegWrite_MEM, 
-    jal_MEM, Jump_MEM, JR_MEM, JumpPC_MEM, rs_value_MEM,rt_value_MEM,
+    jal_MEM, Jump_MEM, JR_MEM, JumpPC_MEM, rs_value_MEM,rt_value_MEM,WriteMEMData_MUX,WriteMEMData_MUX_MEM,
     //registers for custom instruction EX8
     t1_sad_value_EX8, outx_EX8, outy_EX8,
     //registers for custom instruction MEM
@@ -473,7 +486,7 @@ ForwardingUnit_EX2 ForwardingUnit_EX2_1RT(rt_address_EX2,RegDst1Result_EX3, RegW
     );
 // MEMORY STAGE
     
-    DataMemory DataMemory_1(WriteMEMData_MUX, rt_value_MEM, Clk, MemWrite_MEM, MemRead_MEM, ReadData_MEM);
+    DataMemory DataMemory_1(WriteMEMData_MUX_MEM,rt_value_MEM,Clk, MemWrite_MEM, MemRead_MEM, ReadData_MEM);
 
 // END OF MEM
     // PIPELINE

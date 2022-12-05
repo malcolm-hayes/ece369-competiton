@@ -5,7 +5,8 @@ module HazardDetection(RegDst_MUX,RegDst1Result_MEM, MemRead_EX, MemRead_MEM, br
 
     input [4:0] RegDst_MUX, RegDst1Result_MEM,
                 rs_address_ID, rt_address_ID;
-    input MemRead_EX, MemRead_MEM, branch, jump, isBranch, RegWrite_EX; //branch means a branch is happening, isBranch means there is a branch instruction
+    input branch, jump, isBranch, RegWrite_EX; //branch means a branch is happening, isBranch means there is a branch instruction
+    input [1:0] MemRead_EX, MemRead_MEM;
     input jal;//, RegWrite_MEM; //jal
     input RegWrite_WB; //Used for writeback to ID dependency
     input [4:0] RegDst1Result_WB; //Used for writeback to ID dependency
@@ -32,7 +33,7 @@ module HazardDetection(RegDst_MUX,RegDst1Result_MEM, MemRead_EX, MemRead_MEM, br
                 jal_Control <= 0;
         end
         // lw stall logic
-        else if (MemRead_EX) begin
+        else if (MemRead_EX != 0) begin
             if ((RegDst_MUX == rs_address_ID) || (RegDst_MUX == rt_address_ID)) begin
                 ControlMuxSig <= 0;
                 IF_ID_Write <= 0;
