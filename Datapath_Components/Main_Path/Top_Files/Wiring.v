@@ -110,7 +110,7 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
     
     wire [31:0] ALUResult_EX2, ALUResult_EX3, ALUResult_EX4, ALUResult_EX5, ALUResult_EX6, ALUResult_EX7, ALUResult_EX8,
         rs_value_EX2, rs_value_EX3, rs_value_EX4, rs_value_EX5, rs_value_EX6, rs_value_EX7, rs_value_EX8, 
-        rt_value_EX2, rt_value_EX3, rt_value_EX4, rt_value_EX5, rt_value_EX6, rt_value_EX7, rt_value_EX8;
+        rt_value_EX2, rt_value_EX3, rt_value_EX4, rt_value_EX5, rt_value_EX6, rt_value_EX7, rt_value_EX8,ALU_Input_value_rs,ALU_Input_value_rt;
     wire [4:0] RegDst1Result_EX, RegDst1Result_EX2, RegDst1Result_EX3, RegDst1Result_EX4, RegDst1Result_EX5, RegDst1Result_EX6, RegDst1Result_EX7, RegDst1Result_EX8;
 
 
@@ -121,7 +121,7 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
         RegWrite_EX2, RegWrite_EX3, RegWrite_EX4, RegWrite_EX5, RegWrite_EX6, RegWrite_EX7, RegWrite_EX8,
         jal_EX2, jal_EX3, jal_EX4, jal_EX5, jal_EX6, jal_EX7, jal_EX8, 
         Jump_EX2, Jump_EX3, Jump_EX4, Jump_EX5, Jump_EX6, Jump_EX7, Jump_EX8,
-        JR_EX2, JR_EX3, JR_EX4, JR_EX5, JR_EX6, JR_EX7, JR_EX8;
+        JR_EX2, JR_EX3, JR_EX4, JR_EX5, JR_EX6, JR_EX7, JR_EX8,ALU_input_rs_MUX_EX2,ALU_input_rt_MUX_EX2;
         
     wire sad, sad_EX, sad_EX2, sad_EX3, sad_EX4, sad_EX5, sad_EX6, sad_EX7, sad_EX8,
          move, move_EX,move_EX2,ORGate_movecheck_out_EX1;
