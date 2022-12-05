@@ -133,7 +133,7 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
         add7_out_2,add7_out_3,add7_out_4,add_frame_out,ALUResult_EX2_MOVEMUX,sadMUX_regwrite_value,sadMUX_regwrite_value_MEM,
         sadMUX_regwrite_value_WB,add_y_itxnumrow,FinalOut, SAD_Out, thOut1,thOut2,thOut3,thOut4,
         fOut1,fOut2,fOut3,fOut4,fOut5,fOut6,fOut7,fOut8,fOut9,fOut10,fOut11,fOut12,fOut13,fOut14,fOut15,fOut16,
-        Immediate_EX2;
+        Immediate_EX2,WriteMEMData_MUXRS_MEM;
         
 
     wire [31:0] s0_numrow_value_EX1, s0_numrow_value_EX2,
@@ -487,7 +487,7 @@ ForwardingUnit_EX2 ForwardingUnit_EX2_1RT(rt_address_EX2,RegDst1Result_EX3, RegW
     );
 // MEMORY STAGE
     
-    DataMemory DataMemory_1(WriteMEMData_MUX_MEMRS,WriteMEMData_MUX_MEM, MemWrite_MEM, MemRead_MEM, ReadData_MEM);
+    DataMemory DataMemory_1(WriteMEMData_MUXRS_MEM,WriteMEMData_MUX_MEM, Clk, MemWrite_MEM, MemRead_MEM, ReadData_MEM);
 
 // END OF MEM
     // PIPELINE
