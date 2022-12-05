@@ -84,8 +84,8 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
    (* mark_debug = "true" *) wire IF_ID_Write, ControlMuxSig;
    (* mark_debug = "true" *) wire [31:0] forward_rs_value, forward_rt_value,forward_rs_value_EX2, forward_rt_value_EX2; // output
    (* mark_debug = "true" *) wire IF_Flush;
-   (* mark_debug = "true" *) wire [31:0] WriteMEMData_MUX; //mux data that goes into the mem register then into the WriteData for memory unit
-   (* mark_debug = "true" *) wire [1:0] WriteMEMData_Signal;
+   (* mark_debug = "true" *) wire [31:0] WriteMEMData_MUX,WriteMEMData_MUXRS; //mux data that goes into the mem register then into the WriteData for memory unit
+   (* mark_debug = "true" *) wire [1:0] WriteMEMData_SignalRS,WriteMEMData_SignalRT;
      // EX_MEM output
    (* mark_debug = "true" *) wire [4:0] RegDst1Result_MEM;
    (* mark_debug = "true" *) wire [31:0] PCPlusOffset_MEM;
@@ -222,8 +222,8 @@ ForwardingUnit Forward_RS(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1R
                     RegWrite_EX3,RegWrite_EX4,RegWrite_EX5,RegWrite_EX6,RegWrite_EX7,RegWrite_EX8,
                     RegDst1Result_EX3,RegDst1Result_EX4,RegDst1Result_EX5,RegDst1Result_EX6,RegDst1Result_EX7,RegDst1Result_EX8);
 
-ForwardingUnitMEM Forward_MEMRT(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, RegDst1Result_EX8, WriteMEMData_Signal);
-ForwardingUnitMEM Forward_MEMRS(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, rs_address_EX8, WriteMEMData_Signal);
+ForwardingUnitMEM Forward_MEMRT(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, RegDst1Result_EX8, WriteMEMData_SignalRT);
+ForwardingUnitMEM Forward_MEMRS(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, rs_address_EX8, WriteMEMData_SignalRS);
 
 ForwardingUnit_EX2 ForwardingUnit_EX2_1RS(rs_address_EX2,RegDst1Result_EX3, RegWrite_EX3, ALU_input_rs_MUX_EX2);
 ForwardingUnit_EX2 ForwardingUnit_EX2_1RT(rt_address_EX2,RegDst1Result_EX3, RegWrite_EX3, ALU_input_rt_MUX_EX2);
@@ -469,7 +469,8 @@ ForwardingUnit_EX2 ForwardingUnit_EX2_1RT(rt_address_EX2,RegDst1Result_EX3, RegW
     Adder32Bit Adder_incrementSAD(FinalOut, t1_sad_value_EX8, SAD_Out);
     Mux32Bit2To1 Mux32Bit2To1_SADorNot(sadMUX_regwrite_value, ALUResult_EX8,SAD_Out, sad_EX8);
 
-    Mux32Bit3To1 Mux32Bit3To1_WriteMEMData(ALUResult_EX8, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, WriteMEMData_MUX, WriteMEMData_Signal); //forward mux for datamemory
+    Mux32Bit3To1 Mux32Bit3To1_WriteMEMDataRT(ALUResult_EX8, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, WriteMEMData_MUXRS, WriteMEMData_SignalRT); //forward mux for datamemory
+    Mux32Bit3To1 Mux32Bit3To1_WriteMEMDataRS(rs_value_EX8, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, WriteMEMData_MUX, WriteMEMData_SignalRS); //forward mux for datamemory
 //END EX8 stage
     //PIPELINE
     EX8_MEM_Reg EX8_MEM_Reg_1(sadMUX_regwrite_value, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_EX8,*/
@@ -478,7 +479,7 @@ ForwardingUnit_EX2 ForwardingUnit_EX2_1RT(rt_address_EX2,RegDst1Result_EX3, RegW
     //MEM
     sadMUX_regwrite_value_MEM, /*PCPlusOffset_MEM,*/ /* rt_Register_Value_MEM,*/
     RegDst1Result_MEM, /*Zero_MEM,*/ MemWrite_MEM, MemToReg_MEM, MemRead_MEM, /*Branch_MEM,*/ RegWrite_MEM, 
-    jal_MEM, Jump_MEM, JR_MEM, JumpPC_MEM, rs_value_MEM,rt_value_MEM,WriteMEMData_MUX,WriteMEMData_MUX_MEM,
+    jal_MEM, Jump_MEM, JR_MEM, JumpPC_MEM, rs_value_MEM,rt_value_MEM,WriteMEMData_MUX,WriteMEMData_MUX_MEM,WriteMEMData_MUXRS,WriteMEMData_MUXRS_MEM,
     //registers for custom instruction EX8
     t1_sad_value_EX8, outx_EX8, outy_EX8,
     //registers for custom instruction MEM
@@ -486,7 +487,7 @@ ForwardingUnit_EX2 ForwardingUnit_EX2_1RT(rt_address_EX2,RegDst1Result_EX3, RegW
     );
 // MEMORY STAGE
     
-    DataMemory DataMemory_1(WriteMEMData_MUX_MEM,rt_value_MEM,Clk, MemWrite_MEM, MemRead_MEM, ReadData_MEM);
+    DataMemory DataMemory_1(WriteMEMData_MUX_MEMRS,WriteMEMData_MUX_MEM, MemWrite_MEM, MemRead_MEM, ReadData_MEM);
 
 // END OF MEM
     // PIPELINE
