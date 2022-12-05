@@ -10,7 +10,21 @@
 00000000	//		nop ->		nop
 71096002	//		mul	$t4, $t0, $t1 ->		mul	$t4, $t0, $t1
 00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
 ad280000	//		sw	$t0, 0($t1) ->		sw	$t0, 0($t1)
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
+00000000	//		nop ->		nop
 00000000	//		nop ->		nop
 8d2d0000	//		lw	$t5, 0($t1) ->		lw	$t5, 0($t1)
 00000000	//		nop ->		nop

@@ -356,7 +356,7 @@ output reg [3:0] ALUOp;
         6'b101011: //sw 
         begin
         isBranch <= 0; 
-        //RegDst <=   0;
+        RegDst <=   0;
         ALUSrc <=   1;
         //MemToReg <= 0;
         RegWrite <= 0;
@@ -373,7 +373,7 @@ output reg [3:0] ALUOp;
         6'b101000: //sb
         begin
         isBranch <= 0; 
-        //RegDst <=   0;
+        RegDst <=   0;
         ALUSrc <=   1;
         //MemToReg <= 0;
         RegWrite <= 0;
@@ -424,7 +424,7 @@ output reg [3:0] ALUOp;
         6'b101001: //sh 
         begin
         isBranch <= 0; 
-        //RegDst <=   0;
+        RegDst <=   0;
         ALUSrc <=   1;
         //MemToReg <= 0;
         RegWrite <= 0;
