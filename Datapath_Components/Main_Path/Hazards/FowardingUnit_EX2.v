@@ -12,16 +12,16 @@ module ForwardingUnit_EX2(rs_address_EX2,RegDst1Result_EX3, RegWrite_EX3, ALU_in
     
 
     initial begin
-            ALU_input_rs <= 0;
+            ALU_input_rs_MUXEX2 <= 0;
 
     end
         always @(*)begin
         
         if ((rs_address_EX2 == RegDst1Result_EX3) && RegWrite_EX3)begin
-                ALU_input_rs <= 1;
+                ALU_input_rs_MUXEX2 <= 1;
         end
         else
-            ALU_input_rs <= 0;
+            ALU_input_rs_MUXEX2 <= 0;
         
     end
 

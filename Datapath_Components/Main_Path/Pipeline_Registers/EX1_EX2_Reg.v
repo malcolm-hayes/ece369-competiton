@@ -13,7 +13,7 @@ module EX1_EX2_Reg(/*PCPlusOffset_EX,*/ /* rt_Register_Value_EX,*/
 	s6_x_value_EX2, s7_y_value_EX2,t0_target_value_EX2, outx_EX2, outy_EX2, check_wcol_out_EX2, a1_frame_value_EX2,
     //Registers for moving ALU
     ALUControl, Immediate_EX,forward_rs_value, forward_rt_value,rs_address_EX, rt_address_EX,
-    ALUControl_EX2, Immediate_EX2,forward_rs_value_EX2, forward_rt_value_EX2rs_address_EX2, rt_address_EX2
+    ALUControl_EX2, Immediate_EX2,forward_rs_value_EX2, forward_rt_value_EX2,rs_address_EX2, rt_address_EX2
     ); 
 
 input [31:0] /* rt_Register_Value_EX,*/ rs_value_EX, rt_value_EX, JumpPC_EX,Immediate_EX,forward_rs_value, forward_rt_value;
