@@ -82,7 +82,7 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
    (* mark_debug = "true" *) wire [1:0] ALU_input_rs;
    (* mark_debug = "true" *) wire [1:0] ALU_input_rt;
    (* mark_debug = "true" *) wire IF_ID_Write, ControlMuxSig;
-   (* mark_debug = "true" *) wire [31:0] forward_rs_value, forward_rt_value; // output
+   (* mark_debug = "true" *) wire [31:0] forward_rs_value, forward_rt_value,forward_rs_value_EX2, forward_rt_value_EX2; // output
    (* mark_debug = "true" *) wire IF_Flush;
    (* mark_debug = "true" *) wire [31:0] WriteMEMData_MUX; //mux data that goes into the mem register then into the WriteData for memory unit
    (* mark_debug = "true" *) wire [1:0] WriteMEMData_Signal;
@@ -211,10 +211,10 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
     JumpConcatenate JumpConcatenate_1(Instruction_ID[25:0], PCAddResult_ID[31:28], JumpPC);
 
 // FORWARDING UNIT AND HAZARD DETECTION (AND MUXES)
-    ForwardingUnit ForwardingUnit_1(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, rs_address_EX2, rt_address_EX2, ALU_input_rs, ALU_input_rt, WriteMEMData_Signal);
+    ForwardingUnit ForwardingUnit_1(RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, rs_address_EX, rt_address_EX, ALU_input_rs, ALU_input_rt, WriteMEMData_Signal);
 //                                 EX_MEM_RegWrite,  EX_MEM_rd,   MEM_WB_RegWrite,   MEM_WB_rd,        ID_EX_rs,      ID_EX_rt, ALU_input_rs, ALU_input_rt, WriteMEMData_Signal
-    Mux32Bit3To1 Mux32Bit3To1_rs(rs_value_EX2, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, forward_rs_value, ALU_input_rs);
-    Mux32Bit3To1 Mux32Bit3To1_rt(rt_value_EX2, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, forward_rt_value, ALU_input_rt);
+    Mux32Bit3To1 Mux32Bit3To1_rs(rs_value_EX, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, forward_rs_value, ALU_input_rs);
+    Mux32Bit3To1 Mux32Bit3To1_rt(rt_value_EX, sadMUX_regwrite_value_MEM, MemToReg_WB_MUX, forward_rt_value, ALU_input_rt);
 //                              (A,B,C,out,sel)
     HazardDetection HazardDetection_1(RegDst_MUX, RegDst1Result_MEM, MemRead_EX,MemRead_MEM, Branch, jump, IF_Flush, Instruction_ID[25:21], Instruction_ID[20:16], PC_Write, IF_ID_Write, 
                                         ControlMuxSig, isBranch, RegWrite_EX, RegWrite_WB, RegDst1Result_WB, jal_RA/*, RegWrite_MEM */, jal_Control);
@@ -231,7 +231,7 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
     //                                          rs_address_ID  ^      rt_address_ID   ^    , rd_address_ID   ^
       RegWrite_EX, RegDst_EX, ALUOp_EX, ALUSrc_EX, /*Branch_EX,*/ MemWrite_EX, MemToReg_EX, MemRead_EX, 
       rs_value_EX, rt_value_EX, Immediate_EX, rs_address_EX, rt_address_EX, rd_address_EX, /*PCAddResult_EX,*/ jal_EX, Jump_EX, JR_EX, JumpPC_EX, ControlMuxSig, Clk, Reset,
-    move, sad, move_EX, sad_EX,
+    move, sad, move_EX, sad_EX, 
     //registers for custom instruction ID
     s0_numrow_value_ID,s1_cdif_value_ID,s2_it_value_ID, t1_sad_value_ID, s4_frow_value_ID, 
 	s5_wcol_value_ID,s6_x_value_ID, s7_y_value_ID,t0_target_value_ID, a1_frame_value_ID,
@@ -269,13 +269,13 @@ module Wiring(Clk, Reset, v0_Out, v1_Out);
     s0_numrow_value_EX2,s1_cdif_value_EX2,s2_it_value_EX2, t1_sad_value_EX2, s4_frow_value_EX2, sad_EX2,move_EX2,moveCheck_outValue_EX2,
 	s6_x_value_EX2, s7_y_value_EX2,t0_target_value_EX2, outx_EX2, outy_EX2, check_wcol_out_EX2,a1_frame_value_EX2,
     //Registers for moving ALU
-    ALUControl, Immediate_EX,
-    ALUControl_EX2, Immediate_EX2
+    ALUControl, Immediate_EX, forward_rs_value, forward_rt_value,
+    ALUControl_EX2, Immediate_EX2,forward_rs_value_EX2, forward_rt_value_EX2
     ); 
 
 
 //EX2 stage
-    ALU32Bit ALU32Bit_1(ALUControl_EX2, forward_rs_value, forward_rt_value, Immediate_EX2, ALUResult_EX2 /*, Zero*/);
+    ALU32Bit ALU32Bit_1(ALUControl_EX2, forward_rs_value_EX2, forward_rt_value_EX2, Immediate_EX2, ALUResult_EX2 /*, Zero*/);
 
     Mux32Bit2To1 Mux32Bit2To1_Move_Value(ALUResult_EX2_MOVEMUX, ALUResult_EX2,moveCheck_outValue_EX2 , move_EX2);
     Multiplier32Bit Mul_it_numrow(s2_it_value_EX2, s0_numrow_value_EX2, itxnumrow_out); //multiplies the iterator and the initialized numrow value

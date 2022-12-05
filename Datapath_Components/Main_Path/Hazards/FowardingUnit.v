@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 
 module ForwardingUnit(EX_MEM_RegWrite, EX_MEM_rd, MEM_WB_RegWrite, MEM_WB_rd, ID_EX_rs, ID_EX_rt, ALU_input_rs, ALU_input_rt, WriteMEMData_Signal);
-
+//RegWrite_MEM, RegDst1Result_MEM, RegWrite_WB, RegDst1Result_WB, rs_address_EX2, rt_address_EX2, ALU_input_rs, ALU_input_rt, WriteMEMData_Signal
     input EX_MEM_RegWrite, MEM_WB_RegWrite;
     input [4:0] EX_MEM_rd, MEM_WB_rd;
     input [4:0] ID_EX_rs, ID_EX_rt;

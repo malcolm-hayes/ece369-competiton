@@ -12,18 +12,18 @@ module EX1_EX2_Reg(/*PCPlusOffset_EX,*/ /* rt_Register_Value_EX,*/
     s0_numrow_value_EX2,s1_cdif_value_EX2,s2_it_value_EX2, t1_sad_value_EX2, s4_frow_value_EX2, sad_EX2,move_EX2,moveCheck_outValue_EX2,
 	s6_x_value_EX2, s7_y_value_EX2,t0_target_value_EX2, outx_EX2, outy_EX2, check_wcol_out_EX2, a1_frame_value_EX2,
     //Registers for moving ALU
-    ALUControl, Immediate_EX,
-    ALUControl_EX2, Immediate_EX2
+    ALUControl, Immediate_EX,forward_rs_value, forward_rt_value,
+    ALUControl_EX2, Immediate_EX2,forward_rs_value_EX2, forward_rt_value_EX2
     ); 
 
-input [31:0] /* rt_Register_Value_EX,*/ rs_value_EX, rt_value_EX, JumpPC_EX,Immediate_EX;
+input [31:0] /* rt_Register_Value_EX,*/ rs_value_EX, rt_value_EX, JumpPC_EX,Immediate_EX,forward_rs_value, forward_rt_value;
 input [4:0] RegDst1Result_EX;
 input [5:0] ALUControl;
 input [1:0] MemWrite_EX, MemRead_EX;
 input MemToReg_EX,  RegWrite_EX, jal_EX, Jump_EX, JR_EX,sad_EX,move_EX;
 input Clk, Reset;
 
-output reg [31:0] /* rt_Register_Value_EX2,*/ rs_value_EX2, rt_value_EX2, JumpPC_EX2,Immediate_EX2;
+output reg [31:0] /* rt_Register_Value_EX2,*/ rs_value_EX2, rt_value_EX2, JumpPC_EX2,Immediate_EX2,forward_rs_value_EX2, forward_rt_value_EX2;
 output reg [4:0] RegDst1Result_EX2;
 output reg [1:0] MemWrite_EX2, MemRead_EX2;
 output reg MemToReg_EX2, RegWrite_EX2, jal_EX2, Jump_EX2, JR_EX2,move_EX2,sad_EX2;
@@ -71,6 +71,8 @@ output reg [5:0] ALUControl_EX2;
 
     ALUControl_EX2 <= 0;
     Immediate_EX2 <= 0;
+    forward_rs_value_EX2 <= 0;
+    forward_rt_value_EX2 <= 0;
  end
 
 always @(posedge Clk) begin
@@ -108,6 +110,8 @@ always @(posedge Clk) begin
 
         ALUControl_EX2 <= 0;
         Immediate_EX2 <= 0;
+        forward_rs_value_EX2 <= 0;
+        forward_rt_value_EX2 <= 0;
     end
     else begin
 //        ALUResult_EX2 <= ALUResult_EX;
@@ -142,6 +146,8 @@ always @(posedge Clk) begin
 
         ALUControl_EX2 <= ALUControl;
         Immediate_EX2 <= Immediate_EX;
+        forward_rs_value_EX2 <= forward_rs_value;
+        forward_rt_value_EX2 <= forward_rt_value;
     end
     
 end
